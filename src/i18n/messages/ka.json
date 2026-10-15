@@ -8686,6 +8686,7 @@
     "cliproxyapiPort": "პორტი",
     "qdrantHost": "ჰოსტი",
     "qdrantCollection": "კოლექცია",
+    "catalogVisibilityHint": "დამალული მოდელების იდენტიფიკატორების გამოძახება კვლავ შესაძლებელია წვდომის იმავე ნებართვებით.",
     "catalogScopeTitle": "Models API-ის სია",
     "catalogScopeDesc": "რას აჩვენებს GET /v1/models ამ გასაღებისთვის. სიის შევიწროება არასოდეს ცვლის იმას, თუ რისი გამოძახება შეუძლია გასაღებს.",
     "catalogScopeAll": "ორივე",

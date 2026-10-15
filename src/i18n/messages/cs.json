@@ -8686,6 +8686,7 @@
     "cliproxyapiPort": "Port",
     "qdrantHost": "Hostitel",
     "qdrantCollection": "Kolekce",
+    "catalogVisibilityHint": "Skryté identifikátory modelů lze nadále volat se stejnými přístupovými oprávněními.",
     "catalogScopeTitle": "Výpis API modelů",
     "catalogScopeDesc": "Co GET /v1/models uvádí pro tento klíč. Zúžení seznamu nikdy nezmění, které modely může klíč volat.",
     "catalogScopeAll": "Obojí",

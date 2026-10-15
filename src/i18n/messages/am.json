@@ -8686,6 +8686,7 @@
     "cliproxyapiPort": "ፖርት",
     "qdrantHost": "አስተናጋጅ",
     "qdrantCollection": "ስብስብ",
+    "catalogVisibilityHint": "የተደበቁ የሞዴል መለያዎች በተመሳሳይ የመዳረሻ ፈቃዶች መጠራት ይችላሉ።",
     "catalogScopeTitle": "የModels API ዝርዝር",
     "catalogScopeDesc": "GET /v1/models ለዚህ ቁልፍ የሚያሳየው። ዝርዝሩን ማጥበብ ቁልፉ ሊጠራቸው የሚችላቸውን በፍጹም አይቀይርም።",
     "catalogScopeAll": "ሁለቱም",
