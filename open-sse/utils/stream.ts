@@ -58,6 +58,7 @@ import {
   type StreamFailurePayload,
 } from "./streamErrorFormat.ts";
 import { createStreamFailureAborter } from "./streamFailureBoundary.ts";
+import { nativeFinishFailure, readPassthroughChatId } from "./streamPassthroughFinish.ts";
 import { createReasoningStreamObserver } from "./responsesReasoningObservation.ts";
 import { recordToolLatency } from "../services/toolLatencyTracker.ts";
 import { extractToolSchemaMap } from "../translator/response/openai-responses/toolSchemas.ts";
@@ -2018,6 +2019,7 @@ export function createSSEStream(options: StreamOptions = {}) {
                   // Typed content-part arrays are folded into strings by
                   // sanitizeStreamingChunk, so the raw line must not be forwarded.
                   const hadArrayContent = Array.isArray(rawDelta?.content);
+                  const nativeFailure = nativeFinishFailure(parsed); // before sanitize drops it
 
                   if (!projectedFailure) {
                     parsed = sanitizeStreamingChunk(parsed);
@@ -2184,17 +2186,13 @@ export function createSSEStream(options: StreamOptions = {}) {
 
                   const isFinishChunk = parsed.choices?.[0]?.finish_reason;
 
-                  // Remember the upstream's chat-completion id so synthetic chunks
-                  // emitted at flush (e.g. the estimated usage-only chunk) carry the
-                  // stream's real string id instead of null on the chat path
-                  // (passthroughResponsesId is only ever set on the Responses path).
-                  if (typeof parsed.id === "string" && parsed.id) {
-                    passthroughLastChatId = parsed.id;
-                  } else if (typeof parsed.id === "number") {
-                    passthroughLastChatId = String(parsed.id);
-                  }
+                  passthroughLastChatId = readPassthroughChatId(parsed) ?? passthroughLastChatId;
 
+                  // Empty native-error finish → 502; repeated finish chunk → dropped.
                   if (isFinishChunk) {
+                    if (passthroughSawFinishReason) continue;
+                    if (nativeFailure && !totalContentLength && !passthroughHasToolCalls)
+                      return abortStreamFailure(controller, nativeFailure, nativeFailure.message);
                     passthroughSawFinishReason = true;
                   }
 
