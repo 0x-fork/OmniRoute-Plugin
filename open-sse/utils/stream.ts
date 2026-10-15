@@ -92,6 +92,7 @@ import { restoreClaudeToolName } from "../services/claudeCodeToolRemapper.ts";
 import { normalizeFinalOpenAIStreamChunk } from "./openAIStreamChunk.ts";
 import { collectClaudeDelta } from "./streamClaudeDelta.ts";
 import { createStreamTiming, registerStreamTiming, type StreamTiming } from "./streamTiming.ts";
+import { trackStreamPartialUsage } from "./streamPartialUsage.ts";
 import { buildUsageOnlyChunk } from "./usageOnlyChunk.ts";
 import { normalizeArrayContentChunk } from "./arrayContentDelta.ts";
 
@@ -3240,12 +3241,11 @@ export function createSSEStream(options: StreamOptions = {}) {
           console.log(`[STREAM] Error in flush (${model || "unknown"}):`, error.message || error);
         }
       },
-      cancel(reason) {
-        clearIdleTimer();
-      },
+      cancel: () => clearIdleTimer(),
     },
     ...createByteLengthQueueStrategies(streamBufferBytes)
   );
+  trackStreamPartialUsage(sseStream, body, () => [state?.usage ?? usage, totalContentLength]);
   return registerStreamTiming(sseStream, timing);
 }
 
