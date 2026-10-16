@@ -94,6 +94,7 @@ import {
 import { copilotRejectionFlag, lockCopilotModelNotSupported } from "./copilotModelNotSupportedLock";
 import { isSharedWalletCredits402 } from "@omniroute/open-sse/services/accountFallback/sharedWalletCredits.ts";
 import { isModelScopedAccessDenial } from "@omniroute/open-sse/services/accountFallback/modelScopedAccessDenial.ts";
+import { isModelUnsupported401 } from "@omniroute/open-sse/services/accountFallback/perModelFailureScope.ts";
 import { postOutputFailureReachesLockout } from "@omniroute/open-sse/services/accountFallback/postOutputFailureStreak.ts";
 import { isOpencodeFreeTierRefusalForProvider } from "@omniroute/open-sse/executors/opencodeGeoBlock.ts";
 import { isOpencodeFreeTierSkipped } from "@omniroute/open-sse/services/opencodeFreeTierSkip.ts";
@@ -2929,7 +2930,7 @@ export async function markAccountUnavailable(
       isModelScopedFailure(status, isNvidiaModelGone, fallbackResult, errorText, model)
     ) {
       const reason =
-        status === 404 || isNvidiaModelGone
+        status === 404 || isNvidiaModelGone || isModelUnsupported401(status, errorText)
           ? "not_found"
           : isQuotaExhaustedSignal(fallbackResult)
             ? "quota_exhausted"
@@ -2982,7 +2983,7 @@ export async function markAccountUnavailable(
         model,
         reason,
         status,
-        status === 404 || isNvidiaModelGone
+        status === 404 || isNvidiaModelGone || isModelUnsupported401(status, errorText)
           ? (effectiveProviderProfile?.baseCooldownMs ?? COOLDOWN_MS.notFoundLocal)
           : (claudeQuotaScope.cooldownMs ??
               antigravityFamilyInferredBaseCooldownMs ??
