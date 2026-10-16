@@ -116,6 +116,7 @@ import {
   parkWaitMs,
   readPoolStrainMarker,
   runParkAndReplay,
+  setAsideParkWaitMs,
 } from "./opencodeParkResume.ts";
 
 /**
@@ -1027,7 +1028,8 @@ export class OpencodeExecutor extends BaseExecutor {
             }
             if (!parked && isOpencodeParkAndResumeEnabled()) {
               const marker = await readPoolStrainMarker();
-              if (burstStreak >= BURST_PARK_THRESHOLD || marker.fresh) {
+              const setAsideWaitMs = setAsideParkWaitMs(accounts.map((a) => keyOfMember(a)));
+              if (burstStreak >= BURST_PARK_THRESHOLD || marker.fresh || setAsideWaitMs !== null) {
                 parked = true;
                 log?.warn?.(
                   "OPENCODE",
@@ -1045,7 +1047,10 @@ export class OpencodeExecutor extends BaseExecutor {
                     replayKeyOfMember: keyOfMember,
                   },
                   input,
-                  parkWaitMs(marker.fresh ? marker.ttlLeftMs : null),
+                  Math.min(
+                    setAsideWaitMs ?? Number.POSITIVE_INFINITY,
+                    parkWaitMs(marker.fresh ? marker.ttlLeftMs : null)
+                  ),
                   result,
                   log,
                   cid
