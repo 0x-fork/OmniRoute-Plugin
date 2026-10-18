@@ -1114,6 +1114,18 @@ export const FEATURE_FLAG_DEFINITIONS: FeatureFlagDefinition[] = [
     warningLevel: "caution",
   },
   {
+    key: "AUTO_REQUEST_RESOLVED_CAPABILITIES",
+    label: "Auto Requests: Resolved Capability Weights",
+    description:
+      "Let auto/* requests (resolveModelOrError and the auto-routing wrapper) build the candidate pool with resolved model capabilities (vision, reasoning, thinking) and observed quality scores, read in one bulk pass like the /v1/models catalog. Off by default: request-time snapshot weights stay exactly as before (capabilities resolve on demand and do not feed the weights). On: those signals feed the snapshot weights, so candidate weights, and therefore selection, can change.",
+    descriptionI18nKey: "featureFlagAutoRequestResolvedCapabilitiesDescription",
+    category: "runtime",
+    defaultValue: "false",
+    type: "boolean",
+    requiresRestart: false,
+    warningLevel: "caution",
+  },
+  {
     key: "CREDENTIAL_HEALTH_RETEST_AUTO_DISABLED",
     label: "Credential Health: Retest Auto-Disabled Connections",
     description:
