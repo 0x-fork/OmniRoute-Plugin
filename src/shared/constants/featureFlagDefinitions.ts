@@ -373,6 +373,42 @@ export const FEATURE_FLAG_DEFINITIONS: FeatureFlagDefinition[] = [
     warningLevel: "caution",
   },
   {
+    key: "OPENCODE_ZEN_EGRESS_IP_LOCK_ENABLED",
+    label: "OpenCode Zen Egress-IP Lockout",
+    description:
+      "Add OpenCode Zen (opencode-zen) to the default egress-IP lockout family, so a 429 on one Zen connection also cools every sibling Zen connection that shares its egress IP. Off by default: Zen is keyed and each connection cools down on its own, exactly as before. An explicit OMNIROUTE_EGRESS_IP_LOCK_PROVIDERS value always wins over this flag.",
+    descriptionI18nKey: "featureFlagOpencodeZenEgressIpLockEnabledDescription",
+    category: "network",
+    defaultValue: "false",
+    type: "boolean",
+    requiresRestart: false,
+    warningLevel: "caution",
+  },
+  {
+    key: "OPENCODE_FULL_TEXT_ERROR_RULES_ENABLED",
+    label: "OpenCode Full-Text Error Rules",
+    description:
+      'Let the built-in OpenCode error rules (opencode-zen, opencode-go, opencode-cli) match on the full upstream error text, so body markers such as organization_quota_exceeded or "monthly usage limit reached" classify a 429 as quota exhausted with a connection-scoped lock. Off by default: those rules only see the structured error code and such a 429 stays a short rate limit, exactly as before.',
+    descriptionI18nKey: "featureFlagOpencodeFullTextErrorRulesEnabledDescription",
+    category: "network",
+    defaultValue: "false",
+    type: "boolean",
+    requiresRestart: false,
+    warningLevel: "caution",
+  },
+  {
+    key: "CLOUDFLARE_AI_FULL_TEXT_ERROR_RULES_ENABLED",
+    label: "Cloudflare Workers AI Full-Text Error Rules",
+    description:
+      'Let the built-in Cloudflare Workers AI error rule match on the full upstream error text, so the 429 "daily free allocation" body is classified as quota exhausted instead of a short rate limit. Off by default: the rule only sees the structured error code, exactly as before.',
+    descriptionI18nKey: "featureFlagCloudflareAiFullTextErrorRulesEnabledDescription",
+    category: "network",
+    defaultValue: "false",
+    type: "boolean",
+    requiresRestart: false,
+    warningLevel: "caution",
+  },
+  {
     key: "MITM_DISABLE_TLS_VERIFY",
     label: "Disable TLS Verify (MITM)",
     description: "Disable TLS certificate verification for MITM proxy",
