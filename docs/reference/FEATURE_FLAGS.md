@@ -46,7 +46,7 @@ A boolean flag is considered **enabled** when its effective value is `"true"`,
 
 ## Flag Catalog
 
-95 flags across 6 categories. **Default** is the definition default — the value
+96 flags across 6 categories. **Default** is the definition default — the value
 used when neither a DB override nor an environment variable is present.
 
 ### Security (10)
@@ -163,7 +163,7 @@ used when neither a DB override nor an environment variable is present.
 | `OMNIROUTE_AUTO_SYNC_CODEX_PROFILES`  | boolean | `false` |         | After a provider model sync, automatically (re)write ~/.codex/*.config.toml profile files from the live catalog. Never changes the active/default Codex config. Off by default.                          |
 | `OMNIROUTE_AUTO_SYNC_CLAUDE_PROFILES` | boolean | `false` |         | After a provider model sync, automatically (re)write ~/.claude/profiles/<name>/settings.json Claude Code profiles from the live catalog. Never changes the active/default Claude config. Off by default. |
 
-### Health (6)
+### Health (7)
 
 | Key                                       | Type    | Default | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | ----------------------------------------- | ------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -172,6 +172,8 @@ used when neither a DB override nor an environment variable is present.
 | `SKILLS_SANDBOX_NETWORK_ENABLED`          | boolean | `false` | Enable network access in the skills sandbox environment.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | `PROXY_HEALTH_BLOCKED_RESETS_STREAK`      | boolean | `false` | In the proxy health sweep, a probe the target refused (401/403/429) resets the proxy's consecutive-failure streak. Off by default: a refusal stays neutral (#10654). A 5xx stays inconclusive either way; a refusal never removes, disables or re-activates a proxy.                                                                                                                                                                                                                                                                                             |
 | `DB_HEALTHCHECK_STARTUP_DEFERRED_ENABLED` | boolean | `false` | Run the startup DB integrity/health check after the server starts accepting requests (via `setImmediate`) instead of blocking startup until it completes (#13717). Off by default: startup blocks exactly like before this PR.                                                                                                                                                                                                                                                                                                                                   |
+| `CREDENTIAL_HEALTH_RETEST_AUTO_DISABLED`  | boolean | `false` | Let the credential health sweep retest connections the gateway switched off by itself (marked `autoDisabledAt`; at most once per 6 h each and 5 per sweep) and switch one back on when its retest passes (#16190). Off by default: such connections stay off until an operator acts, exactly like before. Operator-disabled connections (`operatorDisabledAt`) and connections switched off after a permanent ban (`banDisabledAt`) are never retested.                                                                                                          |
+| ----------------------------------------- | ------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `CREDENTIAL_GATE_AUTH_DIAGNOSES_ONLY`     | boolean | `false` | Narrow the combo credential gate so a cached failed credential probe blocks a connection only when its diagnosis proves bad credentials (`upstream_auth_error`, `auth_missing`, `token_expired`, `token_refresh_failed`, `reauth_required`, `account_deactivated`, `auth_required`). Inconclusive failures (timeouts, rate limits, outages, unsupported probes and untyped scheduler errors) are then treated as unknown and the connection keeps receiving traffic. Off by default: any cached probe error blocks the connection for the cache TTL (5 minutes). |
 
 > [!NOTE]
@@ -235,7 +237,7 @@ Returns every flag with its effective value, source, and a summary.
       "requiresRestart": false,
       "warningLevel": "caution",
     },
-    // ... all 95 flags
+    // ... all 96 flags
   ],
   "summary": {
     "total": 56,

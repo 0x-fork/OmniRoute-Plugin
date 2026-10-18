@@ -57,9 +57,10 @@ const {
 // (#13505, default off) to 85; KIRO_TOOL_CALL_REPAIR_ENABLED (one-shot Kiro
 // tool_call wrapper repair, default on) to 86; CLAUDE_OAUTH_SUMMARIZED_THINKING_UNREDACTED
 // (#17003, lets Claude OAuth drop the redact-thinking beta for summarized thinking,
-// default off) to 87.
+// default off) to 87; CREDENTIAL_HEALTH_RETEST_AUTO_DISABLED (#16190, retest of
+// gateway-disabled connections, default off) to 88.
+const EXPECTED_FEATURE_FLAG_COUNT = 96;
 // CREDENTIAL_GATE_AUTH_DIAGNOSES_ONLY (#16599, default off) to 88.
-const EXPECTED_FEATURE_FLAG_COUNT = 95;
 // default off) to 87; STREAM_LATE_OUTPUT_PROBE_ENABLED
 // (#16927 late-output stream probe, default off) to 88.
 // LMARENA_SYNTHESIZED_CX_ENABLED (#16895, default off) to 88.

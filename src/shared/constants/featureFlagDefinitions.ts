@@ -1114,6 +1114,18 @@ export const FEATURE_FLAG_DEFINITIONS: FeatureFlagDefinition[] = [
     warningLevel: "caution",
   },
   {
+    key: "CREDENTIAL_HEALTH_RETEST_AUTO_DISABLED",
+    label: "Credential Health: Retest Auto-Disabled Connections",
+    description:
+      "Let the credential health sweep retest connections the gateway switched off by itself (marked autoDisabledAt; at most once per 6 h each and 5 per sweep) and switch a connection back on when its retest passes (#16190). Off by default: switched-off connections stay off until an operator re-enables or re-tests them, exactly like before. Operator-disabled connections and connections switched off after a permanent ban are never retested.",
+    descriptionI18nKey: "featureFlagCredentialHealthRetestAutoDisabledDescription",
+    category: "health",
+    defaultValue: "false",
+    type: "boolean",
+    requiresRestart: false,
+    warningLevel: "caution",
+  },
+  {
     key: "CREDENTIAL_GATE_AUTH_DIAGNOSES_ONLY",
     label: "Credential Gate: Auth Diagnoses Only",
     description:
