@@ -524,9 +524,14 @@ export async function executeTargetAttempt(
 
       // Reset cooldown on success
       if (provider && provider !== "unknown") {
-        recordProviderSuccess(provider, effectiveConnectionId || undefined, {
-          providerProbeSettled: isProviderProbeResponse(result),
-        });
+        recordProviderSuccess(
+          provider,
+          effectiveConnectionId || undefined,
+          {
+            providerProbeSettled: isProviderProbeResponse(result),
+          },
+          deps.log
+        );
       }
       if (
         getStrategyTraits(deps.strategy).stickyPin === "weighted" &&
