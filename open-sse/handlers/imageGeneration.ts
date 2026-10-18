@@ -72,6 +72,7 @@ import { handleAiHordeImageGeneration } from "./imageGeneration/providers/aihord
 import * as codexImages from "./imageGeneration/providers/codexImages.ts";
 import { handleZenmuxImageGeneration } from "./imageGeneration/providers/zenmux.ts";
 import { handleMuseImageGeneration } from "./imageGeneration/providers/museImage.ts";
+import { handleGeminiAiImageGeneration } from "./imageGeneration/providers/geminiAiStudio.ts";
 import { handleBlackForestLabsImageGeneration } from "./imageGeneration/providers/blackForestLabs.ts";
 import {
   fanOutSingleImageCalls,
@@ -581,6 +582,26 @@ export async function handleImageGeneration({
 
   if (providerConfig.format === "gemini-image") {
     return handleGeminiImageGeneration({ model, providerConfig, body, credentials, log });
+  }
+
+  if (providerConfig.format === "gemini-ai-image") {
+    return handleGeminiAiImageGeneration({
+      model,
+      providerConfig,
+      body,
+      credentials,
+      aspectRatio: normalizeImageAspectRatio(body.aspect_ratio, body.size),
+      signal,
+      log,
+      deps: {
+        saveCallLog,
+        saveErrorResult: saveImageErrorResult,
+        sanitizeProviderError: sanitizeImageProviderError,
+        fetchWithTimeout,
+        isTimeoutError: (err) => err instanceof FetchTimeoutError,
+        timeoutMs: getConfiguredTimeout(),
+      },
+    });
   }
 
   if (providerConfig.format === "imagen3") {
