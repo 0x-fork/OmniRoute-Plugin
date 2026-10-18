@@ -57,9 +57,11 @@ const {
 // (#13505, default off) to 85; KIRO_TOOL_CALL_REPAIR_ENABLED (one-shot Kiro
 // tool_call wrapper repair, default on) to 86; CLAUDE_OAUTH_SUMMARIZED_THINKING_UNREDACTED
 // (#17003, lets Claude OAuth drop the redact-thinking beta for summarized thinking,
+// default off) to 87.
+// MODELS_DEV_EFFORT_TIERS_ENABLED (#15944, default off) takes it to 88.
+const EXPECTED_FEATURE_FLAG_COUNT = 98;
 // default off) to 87; AUTO_REQUEST_RESOLVED_CAPABILITIES (#16419, resolved-capability
 // scoring inputs on the auto/* request path, default off) to 88.
-const EXPECTED_FEATURE_FLAG_COUNT = 97;
 // default off) to 87; CREDENTIAL_HEALTH_RETEST_AUTO_DISABLED (#16190, retest of
 // gateway-disabled connections, default off) to 88.
 // CREDENTIAL_GATE_AUTH_DIAGNOSES_ONLY (#16599, default off) to 88.
