@@ -29,6 +29,22 @@ function makeContainer(): HTMLElement {
   return container;
 }
 
+// The Sidebar renders inside the kit SidebarProvider + kit <Sidebar> (as DashboardShell does). The
+// kit is imported after vi.resetModules() together with the Sidebar so both share one context.
+async function loadSidebar() {
+  const { SidebarProvider, Sidebar: KitSidebar } = await import("@omniroute/ui-kit");
+  const { default: Sidebar } = await import("@/shared/components/Sidebar");
+  return function Harness() {
+    return (
+      <SidebarProvider>
+        <KitSidebar collapsible="icon">
+          <Sidebar />
+        </KitSidebar>
+      </SidebarProvider>
+    );
+  };
+}
+
 function jsonResponse(body: unknown) {
   return { ok: true, status: 200, json: async () => body } as Response;
 }
@@ -63,7 +79,7 @@ describe("Sidebar search/filter (#4013)", () => {
   it("renders a search input at the top of the expanded sidebar", async () => {
     // First import in this file pays the one-time cost of compiling Sidebar's
     // large transitive dependency graph (sidebarVisibility sections, icons, etc).
-    const { default: Sidebar } = await import("@/shared/components/Sidebar");
+    const Sidebar = await loadSidebar();
     const container = makeContainer();
     root = createRoot(container);
     await act(async () => {
@@ -72,10 +88,10 @@ describe("Sidebar search/filter (#4013)", () => {
 
     const input = container.querySelector('input[type="search"]');
     expect(input).toBeTruthy();
-  }, 20000);
+  }, 120_000);
 
   it("filters visible nav items down to those matching the typed query", async () => {
-    const { default: Sidebar } = await import("@/shared/components/Sidebar");
+    const Sidebar = await loadSidebar();
     const container = makeContainer();
     root = createRoot(container);
     await act(async () => {
@@ -88,10 +104,7 @@ describe("Sidebar search/filter (#4013)", () => {
     const input = container.querySelector('input[type="search"]') as HTMLInputElement;
     expect(input).toBeTruthy();
 
-    const nativeSetter = Object.getOwnPropertyDescriptor(
-      HTMLInputElement.prototype,
-      "value"
-    )!.set!;
+    const nativeSetter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")!.set!;
 
     await act(async () => {
       nativeSetter.call(input, "zzz-no-such-nav-item-zzz");

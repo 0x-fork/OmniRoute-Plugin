@@ -5,6 +5,9 @@ import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 process.env.NEXT_PUBLIC_OMNIROUTE_E2E_MODE = "1";
+// Cold module transform of the Sidebar + kit tree is slow on a loaded box (same budget as
+// sidebar-hierarchy-a11y-12869).
+vi.setConfig({ testTimeout: 120_000 });
 
 vi.mock("next-intl", () => ({
   useTranslations: () => {
@@ -20,6 +23,21 @@ vi.mock("next/navigation", () => ({
 
 function jsonResponse(body: unknown) {
   return { ok: true, status: 200, json: async () => body } as Response;
+}
+
+// The Sidebar renders inside the kit SidebarProvider + kit <Sidebar> (as DashboardShell does).
+async function loadSidebar() {
+  const { SidebarProvider, Sidebar: KitSidebar } = await import("@omniroute/ui-kit");
+  const { default: Sidebar } = await import("@/shared/components/Sidebar");
+  return function Harness() {
+    return (
+      <SidebarProvider>
+        <KitSidebar collapsible="icon">
+          <Sidebar />
+        </KitSidebar>
+      </SidebarProvider>
+    );
+  };
 }
 
 async function flushSettingsFetch() {
@@ -57,7 +75,7 @@ describe("G17 Radar Admin owner-only sidebar link", () => {
       "fetch",
       vi.fn(async () => jsonResponse({ radarEnabled: true }))
     );
-    const { default: Sidebar } = await import("@/shared/components/Sidebar");
+    const Sidebar = await loadSidebar();
 
     root = createRoot(container);
     await act(async () => {
@@ -79,7 +97,7 @@ describe("G17 Radar Admin owner-only sidebar link", () => {
         })
       )
     );
-    const { default: Sidebar } = await import("@/shared/components/Sidebar");
+    const Sidebar = await loadSidebar();
 
     root = createRoot(container);
     await act(async () => {
@@ -107,7 +125,7 @@ describe("G17 Radar Admin owner-only sidebar link", () => {
         })
       )
     );
-    const { default: Sidebar } = await import("@/shared/components/Sidebar");
+    const Sidebar = await loadSidebar();
 
     root = createRoot(container);
     await act(async () => {
