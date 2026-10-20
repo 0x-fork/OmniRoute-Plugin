@@ -62,4 +62,28 @@ describe("Tooltip adapters → kit Tooltip (Radix)", () => {
     await act(async () => {});
     expect((await screen.findByRole("tooltip")).textContent).toContain("More about this");
   });
+
+  it("wraps a disabled trigger in a focusable span so hover and focus still open the tooltip", async () => {
+    render(
+      <Tooltip content="Why disabled" delayMs={0}>
+        <button type="button" disabled>
+          Import
+        </button>
+      </Tooltip>
+    );
+    const button = screen.getByRole("button", { name: "Import" });
+    const wrapper = button.parentElement!;
+    expect(wrapper.tagName).toBe("SPAN");
+    expect(wrapper.getAttribute("tabindex")).toBe("0");
+    expect(wrapper.className).toContain("inline-flex");
+    expect(wrapper.getAttribute("data-slot")).toBe("tooltip-trigger");
+    fireEvent.pointerMove(wrapper, { pointerType: "mouse" });
+    await act(async () => {});
+    expect((await screen.findByRole("tooltip")).textContent).toContain("Why disabled");
+    fireEvent.keyDown(wrapper, { key: "Escape" });
+    await act(async () => {});
+    fireEvent.focus(wrapper);
+    await act(async () => {});
+    expect((await screen.findByRole("tooltip")).textContent).toContain("Why disabled");
+  });
 });
