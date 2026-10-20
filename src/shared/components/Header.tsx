@@ -208,6 +208,7 @@ export default function Header({ onOpenCommandPalette }: HeaderProps) {
     isElectron &&
     typeof window !== "undefined" &&
     (window as any).electronAPI?.platform === "darwin";
+  const safeTop = isMacElectron ? "var(--desktop-safe-top)" : "var(--ios-safe-top, 0px)";
 
   const handleLogout = async () => {
     try {
@@ -222,14 +223,12 @@ export default function Header({ onOpenCommandPalette }: HeaderProps) {
   };
 
   return (
+    // No explicit role="banner": the kit shell mounts this inside SidebarInset's <main>, and a
+    // banner landmark must stay top-level. The kit header has a fixed height, so the safe-area
+    // inset (macOS Electron title bar / iOS standalone notch) is added to it, not carved out of it.
     <header
-      role="banner"
       className="ci-sidebar-shell-header sticky top-0 z-10 bg-bg"
-      style={{
-        paddingTop: isMacElectron
-          ? "calc(0.75rem + var(--desktop-safe-top))"
-          : "var(--ios-safe-top, 0px)",
-      }}
+      style={{ paddingTop: safeTop, height: `calc(4rem + var(--ci-border-default) + ${safeTop})` }}
     >
       <SidebarTrigger aria-label={triggerLabel}>
         <Icon name="menu" size={18} />

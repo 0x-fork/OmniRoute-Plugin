@@ -9,6 +9,11 @@ vi.mock("next/navigation", () => ({
   usePathname: () => "/dashboard/providers",
   useRouter: () => ({ push: vi.fn(), refresh: vi.fn() }),
 }));
+let isElectron = false;
+vi.mock("@/shared/hooks/useElectron", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/shared/hooks/useElectron")>()),
+  useIsElectron: () => isElectron,
+}));
 vi.mock("@/shared/components/LanguageSelector", () => ({
   default: () => <div data-testid="lang" />,
 }));
@@ -16,7 +21,11 @@ vi.mock("@/shared/components/LanguageSelector", () => ({
 const { default: Header } = await import("@/shared/components/Header");
 const { default: ThemeToggle } = await import("@/shared/components/ThemeToggle");
 
-afterEach(() => cleanup());
+afterEach(() => {
+  cleanup();
+  isElectron = false;
+  delete (window as unknown as { electronAPI?: unknown }).electronAPI;
+});
 
 describe("Header on the kit shell", () => {
   it(
@@ -29,17 +38,52 @@ describe("Header on the kit shell", () => {
           <Header onOpenCommandPalette={open} />
         </SidebarProvider>
       );
-      const header = screen.getByRole("banner");
-      expect(header.className).toContain("ci-sidebar-shell-header");
+      const header = document.querySelector<HTMLElement>("header.ci-sidebar-shell-header")!;
+      expect(header).not.toBeNull();
+      // F renders the header inside the kit inset's <main>: it must not claim the page banner
+      expect(header.getAttribute("role")).toBeNull();
       expect(screen.getByRole("button", { name: "Collapse sidebar" })).not.toBeNull();
       expect(screen.getByRole("heading", { level: 1 }).textContent).toMatch(/Providers/);
       expect(screen.getByRole("navigation", { name: "Keak products" })).not.toBeNull();
-      fireEvent.click(screen.getAllByRole("button", { name: "Open quick navigation" })[0]);
+      const quickNav = screen.getAllByRole("button", { name: "Open quick navigation" });
+      expect(quickNav).toHaveLength(2); // desktop outline + mobile icon (jsdom ignores md:hidden)
+      fireEvent.click(quickNav[0]);
       expect(open).toHaveBeenCalledTimes(1);
       expect(screen.getByRole("button", { name: "Logout" }).className).toContain(
         "ci-button--ghost"
       );
       expect(header.querySelector(".material-symbols-outlined")).toBeNull();
+    }
+  );
+
+  it(
+    "grows the kit header by the safe-area inset instead of squeezing its controls",
+    { timeout: 20_000 },
+    () => {
+      const { unmount } = render(
+        <SidebarProvider>
+          <Header />
+        </SidebarProvider>
+      );
+      let style = document.querySelector("header")!.getAttribute("style") ?? "";
+      expect(style).toContain("padding-top: var(--ios-safe-top, 0px)");
+      expect(style).toContain(
+        "height: calc(4rem + var(--ci-border-default) + var(--ios-safe-top, 0px))"
+      );
+      unmount();
+
+      isElectron = true;
+      (window as unknown as { electronAPI?: unknown }).electronAPI = { platform: "darwin" };
+      render(
+        <SidebarProvider>
+          <Header />
+        </SidebarProvider>
+      );
+      style = document.querySelector("header")!.getAttribute("style") ?? "";
+      expect(style).toContain("padding-top: var(--desktop-safe-top)");
+      expect(style).toContain(
+        "height: calc(4rem + var(--ci-border-default) + var(--desktop-safe-top))"
+      );
     }
   );
 

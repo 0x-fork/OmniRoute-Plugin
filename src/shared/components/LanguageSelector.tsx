@@ -11,7 +11,7 @@ import {
 } from "@omniroute/ui-kit/dropdown-menu";
 import { LANGUAGES } from "@/i18n/config";
 import type { Locale } from "@/i18n/config";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { persistLocale } from "@/shared/lib/persistLocale";
 import Button from "./Button";
 import Icon from "./Icon";
@@ -45,7 +45,10 @@ export default function LanguageSelector() {
   const locale = useLocale();
   const router = useRouter();
 
+  const t = useTranslations("header");
   const currentLang = LANGUAGES.find((l) => l.code === locale) || LANGUAGES[0];
+  // WCAG 2.5.3: the accessible name starts from the purpose and contains the visible label.
+  const triggerLabel = `${t("language")}: ${currentLang.label} — ${currentLang.name}`;
 
   const handleSelect = (code: Locale) => {
     if (code === locale) return;
@@ -56,7 +59,7 @@ export default function LanguageSelector() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" aria-label={currentLang.name} title={currentLang.name}>
+        <Button variant="ghost" size="sm" aria-label={triggerLabel} title={triggerLabel}>
           <CountryFlag emoji={currentLang.flag} alt="" />
           <span className="hidden text-xs sm:inline">{currentLang.label}</span>
           <Icon name="expand_more" size={14} />

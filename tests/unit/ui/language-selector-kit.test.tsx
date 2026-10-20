@@ -41,7 +41,8 @@ describe("LanguageSelector on the kit DropdownMenu", () => {
     { timeout: 20_000 },
     async () => {
       render(<LanguageSelector />);
-      const trigger = screen.getByRole("button", { name: "English" });
+      // WCAG 2.5.3 label-in-name: the name carries the visible label ("EN") and the purpose
+      const trigger = screen.getByRole("button", { name: "Language: EN — English" });
       expect(trigger.className).toContain("ci-button--ghost");
       expect(trigger.querySelector(".material-symbols-outlined")).toBeNull();
       fireEvent.keyDown(trigger, { key: "Enter" });

@@ -45,6 +45,11 @@ describe("CommandPalette on the kit Dialog", () => {
       expect(document.activeElement).toBe(input);
       // our own clear button replaces the native search cancel (×), which would double it
       expect(input.className).toContain("[&::-webkit-search-cancel-button]:appearance-none");
+      // with an icon the border/ring live on the kit .ci-input-shell, so that is what gets flattened
+      const field = input.closest(".ci-input-shell")!.parentElement!;
+      expect(field.className).toContain("[&_.ci-input-shell]:border-0");
+      expect(field.className).toContain("[&_.ci-input-shell]:shadow-none");
+      expect(input.className).not.toContain("border-0");
       fireEvent.change(input, { target: { value: "Providers" } });
       const options = await screen.findAllByRole("option");
       expect(screen.getByRole("listbox")).not.toBeNull();
