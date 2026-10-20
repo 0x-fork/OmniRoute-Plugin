@@ -35,6 +35,8 @@ describe("EmptyState / Loading adapters", () => {
   it("EmptyState with an emoji icon keeps the emoji and falls back to the translated title", () => {
     const { container } = render(<EmptyState icon="📭" />);
     expect(container.textContent).toContain("📭");
+    // The emoji must fit the kit's 2.5rem icon tile.
+    expect(screen.getByText("📭").className).toContain("text-2xl");
     expect(screen.getByRole("heading").textContent!.length).toBeGreaterThan(0);
   });
 

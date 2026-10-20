@@ -48,7 +48,7 @@ export default function EmptyState({
         usesMaterialSymbol ? (
           <Icon name={icon} size={40} />
         ) : (
-          <span aria-hidden="true" className="text-5xl leading-none">
+          <span aria-hidden="true" className="text-2xl leading-none">
             {icon}
           </span>
         )

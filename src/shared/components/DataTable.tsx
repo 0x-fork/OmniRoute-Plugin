@@ -98,7 +98,12 @@ export default function DataTable({
         // The wrapper is the scroll container (both axes) so the header can stick to it.
         // Opaque surface so the page background never bleeds through the table.
         <div style={{ maxHeight, overflow: "auto", background: "var(--color-surface)" }}>
-          <Table persistentScrollbars={false} containerClassName="!overflow-visible">
+          {/* min-w-0: narrow tables keep their auto width (the kit floors .ci-table at 40rem). */}
+          <Table
+            className="min-w-0"
+            persistentScrollbars={false}
+            containerClassName="!overflow-visible"
+          >
             <TableHeader>
               <TableRow>
                 {columns.map((col) => (

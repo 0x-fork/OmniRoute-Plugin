@@ -33,6 +33,8 @@ describe("DataTable family adapters", () => {
       />
     );
     expect(screen.getByRole("table").className).toContain("ci-table");
+    // Narrow tables keep their auto width (overrides the kit's 40rem floor).
+    expect(screen.getByRole("table").className).toContain("min-w-0");
     expect(screen.getAllByRole("columnheader").map((h) => h.textContent)).toEqual([
       "Name",
       "Status",
