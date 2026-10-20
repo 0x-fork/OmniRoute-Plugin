@@ -6,7 +6,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -63,8 +62,8 @@ const SIZES = {
   full: "max-w-4xl",
 } as const;
 
-// Initial focus, the focus trap, Escape, body scroll lock and the aria-labelledby/
-// aria-describedby wiring are Radix's (via the kit Dialog). Focus restoration is ours:
+// Initial focus, the focus trap, Escape, body scroll lock and the aria-labelledby
+// wiring are Radix's (via the kit Dialog). Focus restoration is ours:
 // Radix's modal content restores focus to its own DialogTrigger, which a controlled
 // `isOpen` never uses, so we remember the opener when the dialog takes focus and put
 // focus back on it when the dialog closes (nothing happens if it left the DOM).
@@ -85,7 +84,9 @@ export default function Modal({
   const t = useTranslations("common");
   const openerRef = useRef<HTMLElement | null>(null);
   const inlineMaxWidth = maxWidth && /\d/.test(maxWidth) ? maxWidth : undefined;
-  const fallbackTitle = t("dialogTitleFallback");
+  // Resolved only when a string title is missing, so a locale catalog that has not
+  // received `common.dialogTitleFallback` yet is never asked for it needlessly.
+  const fallbackTitle = () => t("dialogTitleFallback");
 
   return (
     <Dialog
@@ -97,6 +98,9 @@ export default function Modal({
       <DialogContent
         showCloseButton={false}
         aria-modal="true"
+        // No generated description: repeating the title as one made screen readers announce
+        // it twice. An explicit undefined is Radix's documented opt-out of the warning.
+        aria-describedby={undefined}
         className={cn("w-full", SIZES[size], className)}
         style={inlineMaxWidth ? { maxWidth: inlineMaxWidth } : undefined}
         onOpenAutoFocus={() => {
@@ -128,7 +132,7 @@ export default function Modal({
           <DialogTitle
             className={cn("truncate min-w-0", !title && "ci-sr-only", compactHeader && "text-sm")}
           >
-            {title ?? fallbackTitle}
+            {title || fallbackTitle()}
           </DialogTitle>
           {showCloseButton && (
             <DialogClose asChild>
@@ -139,9 +143,6 @@ export default function Modal({
             </DialogClose>
           )}
         </DialogHeader>
-        <DialogDescription className="ci-sr-only">
-          {typeof title === "string" ? title : fallbackTitle}
-        </DialogDescription>
         <div
           data-slot="modal-body"
           className={bodyClassName ?? "p-6 max-h-[calc(80vh-140px)] overflow-y-auto"}
