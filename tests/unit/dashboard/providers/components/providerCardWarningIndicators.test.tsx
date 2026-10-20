@@ -14,6 +14,9 @@ import { act } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import ProviderCard from "../../../../../src/app/(dashboard)/dashboard/providers/components/ProviderCard";
 
+// The shared Modal is a kit Dialog (Radix) since KEA-7886: its content is portaled to
+// document.body, so queries start there (the container is a child of body).
+
 vi.mock("@/shared/components/ProviderTestSlideOver", () => ({ default: () => null }));
 vi.mock("@/shared/components/ProviderIcon", () => ({ default: () => null }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: () => {} }) }));
@@ -56,11 +59,11 @@ describe("ProviderCard — #10261 warning indicator consistency", () => {
     const { container: el } = renderCard();
     const riskEl = el.querySelector('[aria-label*="click for details"]');
     expect(riskEl).toBeTruthy();
-    expect(el.querySelector('[role="dialog"]')).toBeFalsy();
+    expect(document.body.querySelector('[role="dialog"]')).toBeFalsy();
     act(() => {
       riskEl!.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
-    const dialog = el.querySelector('[role="dialog"]');
+    const dialog = document.body.querySelector('[role="dialog"]');
     expect(dialog).toBeTruthy();
     // The dialog must not leak raw credential values.
     expect(dialog!.textContent || "").not.toMatch(/sk-[a-zA-Z0-9]/);
@@ -82,7 +85,7 @@ describe("ProviderCard — #10261 warning indicator consistency", () => {
         new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true })
       );
     });
-    expect(el.querySelector('[role="dialog"]')).toBeTruthy();
+    expect(document.body.querySelector('[role="dialog"]')).toBeTruthy();
   });
 
   it("warning-count badge exposes sanitized reasons and a distinct click/keyboard affordance", () => {

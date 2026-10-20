@@ -27,8 +27,10 @@ function src(rel: string) {
 
 // ─── DashboardLayout.tsx ──────────────────────────────────────────────────────
 
+// The hand-rolled mobile drawer lives on in the legacy shell (UI_KIT_SHELL=false); the kit shell's
+// drawer is the kit Sidebar's own Sheet, anchored by `side` (asserted in the Sidebar block below).
 describe("DashboardLayout — mobile sidebar drawer uses logical classes", () => {
-  const code = src("src/shared/components/layouts/DashboardLayout.tsx");
+  const code = src("src/shared/components/layouts/legacy/DashboardLayoutLegacy.tsx");
 
   it("uses start-0 (not bare left-0) for the mobile sidebar drawer", () => {
     // The drawer must anchor to the inline-start edge so it flips in RTL.
@@ -96,6 +98,28 @@ describe("Sidebar — collapse toggle button uses logical margin", () => {
 
   it("does not use bare ml-auto in the collapse-toggle className", () => {
     expect(code).not.toContain("ml-auto");
+  });
+});
+
+describe("Kit shell — the sidebar side follows the document direction", () => {
+  it("kit shell passes the RTL-aware side to the Sidebar", () => {
+    expect(src("src/shared/components/layouts/DashboardShell.tsx")).toContain(
+      "side={useSidebarSide()}"
+    );
+  });
+
+  it("cancels the kit's order:2 for side=right under RTL so the aside stays on the inline end", () => {
+    // `.ci-sidebar[data-side="right"] { order: 2 }` is physical: in an RTL flex row it would lay
+    // the aside out after the inset, i.e. on the visual LEFT. The utility layer wins over the
+    // kit's components layer, so `rtl:order-none` keeps the aside first = rightmost.
+    // Layout-level proof: tests/e2e/sidebar-rtl.spec.ts.
+    expect(src("src/shared/components/layouts/DashboardShell.tsx")).toContain("rtl:order-none");
+  });
+
+  it("useSidebarSide reads dir=rtl from <html> and anchors the sidebar right", () => {
+    const sidebar = src("src/shared/components/Sidebar.tsx");
+    expect(sidebar).toContain("export function useSidebarSide()");
+    expect(sidebar).toContain('document.documentElement.dir === "rtl" ? "right" : "left"');
   });
 });
 

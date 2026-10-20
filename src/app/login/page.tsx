@@ -160,7 +160,7 @@ export default function LoginPage() {
         >
           <div className="text-center mb-10">
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/10 mb-6">
-              <Icon name="rocket_launch" size={40} className="text-primary" />
+              <Icon name="rocket_launch" size={40} className="text-text-muted" />
             </div>
             <h1 className="ci-heading text-3xl">{t("welcome")}</h1>
             <p className="text-text-muted mt-2">{t("configureInstance")}</p>
@@ -352,7 +352,7 @@ export default function LoginPage() {
                     className="flex items-start gap-4 p-4 rounded-xl bg-surface/50 border border-border"
                   >
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <Icon name={item.icon} size={20} className="text-primary" />
+                      <Icon name={item.icon} size={20} className="text-text-muted" />
                     </div>
                     <div>
                       <h3 className="font-medium text-text-main">{item.title}</h3>

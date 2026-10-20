@@ -59,7 +59,7 @@ export default function ErrorPageScaffold({
           >
             {suggestions.map((item) => (
               <li key={item} className="flex items-start gap-2">
-                <Icon name="check_circle" size={16} className="text-primary mt-0.5" />
+                <Icon name="check_circle" size={16} className="text-text-muted mt-0.5" />
                 <span>{item}</span>
               </li>
             ))}

@@ -12,6 +12,12 @@ import { fileURLToPath } from "node:url";
 // the theme tokens in src/app/globals.css (resolved through the CI UI Kit token chain in
 // packages/ui-kit/src/ci-tokens.css) and the Tailwind classes in Sidebar.tsx, so the contract
 // is checked on every unit run instead of only in the Playwright lane.
+//
+// Since the kit shell (KEA-7886, trilha F) the rows are kit `SidebarMenuButton`s inside the kit
+// `<aside class="ci-sidebar">`: the item label carries no colour class and inherits the kit's
+// `.ci-sidebar__menu-button` ink, the subtitle keeps `text-text-muted`, and the real background is
+// the kit sidebar's (`.ci-sidebar` background). Both the legacy `--color-sidebar` and the kit
+// sidebar background are checked; the active row (accent ink on the accent fill) too.
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const read = (relative: string) => fs.readFileSync(path.join(root, relative), "utf8");
@@ -29,6 +35,17 @@ function classOn(lineMarker: string): { token: string; alpha: number } {
 }
 
 const kitTokens = read("packages/ui-kit/src/ci-tokens.css");
+const kitCss = read("packages/ui-kit/src/ci-ui.css");
+
+// `<prop>: var(--token)` inside the first `<selector> {` rule of the kit stylesheet.
+function kitRuleVar(selector: string, prop: string): string {
+  const start = kitCss.indexOf(`${selector} {`);
+  assert(start >= 0, `kit stylesheet has no "${selector} {" rule`);
+  const body = kitCss.slice(start, kitCss.indexOf("}", start));
+  const match = new RegExp(`(?:^|[\\s;{])${prop}:\\s*var\\((--[\\w-]+)\\)`).exec(body);
+  assert(match, `"${selector}" sets no ${prop}: var(--…)`);
+  return match[1];
+}
 
 function cssBlock(source: string, selector: string): Record<string, string> {
   const start = source.indexOf(selector);
@@ -50,6 +67,9 @@ function resolveHex(name: string, scopes: Record<string, string>[]): string {
   return value.toLowerCase();
 }
 
+const kitMenuInk = kitRuleVar(".ci-sidebar__menu-button", "color");
+const kitSidebarBg = kitRuleVar(".ci-sidebar", "background");
+
 function themeTokens(theme: "light" | "dark"): Record<string, string> {
   const light = [
     cssBlock(globals, ":root {\n  --desktop-safe-top"),
@@ -60,10 +80,15 @@ function themeTokens(theme: "light" | "dark"): Record<string, string> {
       ? [cssBlock(globals, ".dark {"), cssBlock(kitTokens, ':root[data-theme="dark"]'), ...light]
       : light;
   return Object.fromEntries(
-    ["--color-sidebar", "--color-text-main", "--color-text-muted"].map((t) => [
-      t,
-      resolveHex(t, scopes),
-    ])
+    [
+      "--color-sidebar",
+      "--color-text-main",
+      "--color-text-muted",
+      kitMenuInk,
+      kitSidebarBg,
+      "--ci-color-accent",
+      "--ci-color-accent-foreground",
+    ].map((t) => [t, resolveHex(t, scopes)])
   );
 }
 
@@ -86,21 +111,39 @@ function contrast(fg: string, alpha: number, bg: string): number {
 }
 
 const themes = { light: themeTokens("light"), dark: themeTokens("dark") };
-const inactiveItem = classOn("hover:bg-surface/50 hover:text-text-main");
-const subtitle = classOn("{item.subtitle}</span>");
+// The item label must not override the kit ink (an override would escape this check and the
+// kit's hover/active colours).
+const labelLine = sidebarSource.split("\n").find((line) => line.includes('"truncate text-sm"'));
+assert(labelLine, 'Sidebar.tsx no longer contains the item label marker "truncate text-sm"');
+test("the item label inherits the kit menu-button ink (no text-text-* override)", () => {
+  assert.doesNotMatch(labelLine, TEXT_CLASS, labelLine.trim());
+});
+const inactiveItem = { token: kitMenuInk, alpha: 1 };
+const subtitle = classOn('"truncate text-[10px] text-text-muted"');
 
 for (const [theme, palette] of Object.entries(themes)) {
   test(`nested sidebar item text meets WCAG AA on the ${theme} sidebar background`, () => {
-    for (const [what, cls] of [
-      ["inactive item label", inactiveItem],
-      ["item subtitle", subtitle],
-    ] as const) {
-      const ratio = contrast(palette[cls.token], cls.alpha, palette["--color-sidebar"]);
-      assert(
-        ratio >= 4.5,
-        `${what} (${cls.token} at ${Math.round(cls.alpha * 100)}%) is ${ratio.toFixed(2)}:1 on ` +
-          `${palette["--color-sidebar"]} in ${theme}; WCAG 2 AA needs 4.5:1`
-      );
+    for (const background of ["--color-sidebar", kitSidebarBg]) {
+      for (const [what, cls] of [
+        ["inactive item label", inactiveItem],
+        ["item subtitle", subtitle],
+      ] as const) {
+        const ratio = contrast(palette[cls.token], cls.alpha, palette[background]);
+        assert(
+          ratio >= 4.5,
+          `${what} (${cls.token} at ${Math.round(cls.alpha * 100)}%) is ${ratio.toFixed(2)}:1 on ` +
+            `${background} ${palette[background]} in ${theme}; WCAG 2 AA needs 4.5:1`
+        );
+      }
     }
+  });
+
+  test(`the active row (accent ink on the accent fill) meets WCAG AA in ${theme}`, () => {
+    const ratio = contrast(
+      palette["--ci-color-accent-foreground"],
+      1,
+      palette["--ci-color-accent"]
+    );
+    assert(ratio >= 4.5, `active row is ${ratio.toFixed(2)}:1 in ${theme}`);
   });
 }

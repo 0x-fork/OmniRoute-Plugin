@@ -21,10 +21,12 @@ lastUpdated: 2026-10-20
   `border-border`, `text-success`, `bg-success-bg`, `bg-chart-1`…) or kit classes — never a hex value
   (`tests/unit/design-kit-bridge.test.ts` enforces the bridge).
 - **Themes.** `<html className="ci-theme">` (`src/app/layout.tsx`) opts the document into the kit theme.
-  `src/store/themeStore.ts` (and the inline bootstrap script in `src/app/layout.tsx`, which runs before
-  hydration) applies the chosen theme to `<html>`. The kit's dark token set is keyed on
-  `data-theme="dark"` (`packages/ui-kit/src/ci-tokens.css`); OmniRoute's own dark overrides (the `.dark`
-  block in `globals.css`) and the Tailwind `dark:` variant key on the `.dark` class.
+  `applyTheme()` in `src/store/themeStore.ts` (mirrored by the inline bootstrap script in
+  `src/app/layout.tsx`, which runs before hydration) sets `data-theme="dark"|"light"` and toggles the
+  `.dark` class on `<html>` together. The kit's dark token set is keyed on `data-theme="dark"`
+  (`packages/ui-kit/src/ci-tokens.css`); OmniRoute's own dark overrides (the `.dark` block in
+  `globals.css`) and the legacy Tailwind `dark:` utilities key on the `.dark` class. There are no
+  accent color presets: the accent always comes from the kit.
 - **Components.** `src/shared/components/*` keep the OmniRoute component API. `Button variant="primary"`
   paints with the bridged accent (`--grad-brand` → `--ci-color-accent`) and the kit's accent ink
   (`text-accent-foreground`); the `.ci-button--warning` and `.ci-badge[data-tone]` rules at the end of
@@ -41,8 +43,8 @@ lastUpdated: 2026-10-20
   white-label operators, their own `name`/`logoSrc`. Product-switcher destinations live in
   `src/shared/constants/keakProducts.ts` (`KEAK_PRODUCT_LINKS`, `KEAK_ACTIVE_PRODUCT`). The standalone
   screens — `src/app/login/page.tsx`, `src/app/status/page.tsx`, `src/app/maintenance/page.tsx`,
-  `src/app/offline/page.tsx` and `src/shared/components/ErrorPageScaffold.tsx` — show the lockup;
-  `tests/unit/brand-pages-static.test.ts` guards it.
+  `src/app/offline/page.tsx`, `src/app/not-found.tsx` and `src/shared/components/ErrorPageScaffold.tsx`
+  — show the lockup; `tests/unit/brand-pages-static.test.ts` guards it.
 - **Shell.** The kit ships `SidebarProvider`/`Sidebar`/`SidebarInset` (`packages/ui-kit/src/sidebar.tsx`);
   OmniRoute's navigation logic lives in `src/shared/components/Sidebar.tsx`.
 
@@ -54,7 +56,8 @@ lastUpdated: 2026-10-20
    `LAYER_COLORS` (`src/app/(dashboard)/dashboard/compression/studio/nodes/EngineNode.tsx`).
 2. Never patch `packages/ui-kit/src` by hand: sync with `scripts/dev/sync-ui-kit.sh <commit>`; the
    pre-commit gate `npm run check:ui-kit-snapshot` (`.husky/pre-commit`) fails on any byte that
-   differs from the pinned upstream commit.
+   differs from the pinned upstream commit (it skips with a warning when the upstream clone,
+   `UI_KIT_CLONE` or `_references/cheaper-inference-ui-kit`, is absent).
 3. Kit text defaults are English (`label = "Loading"`, `loadingLabel = "Loading table"`…) — pass translated
    strings from `useTranslations(...)` whenever a kit component renders text.
 4. Tailwind utilities win over kit component classes (the kit declares

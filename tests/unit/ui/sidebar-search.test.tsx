@@ -7,6 +7,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 // Skip CloudSyncStatus entirely (it polls /api/sync/cloud + uses next/navigation's
 // useRouter, which we don't otherwise need to mock for this component).
 process.env.NEXT_PUBLIC_OMNIROUTE_E2E_MODE = "1";
+// Render budget, not an import budget. Measured in review: the kit Sidebar mounts about 1.3–2×
+// slower than the legacy one (SidebarMenuButton asChild wrapping, a Radix tooltip per rail item);
+// under 5 s at host load 10–16, 9–16 s for the slowest cases at load 25–48. 30 s is headroom for
+// that load, not a mask for an eager-render bug.
+vi.setConfig({ testTimeout: 30_000 });
 
 vi.mock("next-intl", () => ({
   useTranslations: () => {
@@ -27,6 +32,22 @@ function makeContainer(): HTMLElement {
   document.body.appendChild(container);
   cleanupCallbacks.push(() => container.remove());
   return container;
+}
+
+// The Sidebar renders inside the kit SidebarProvider + kit <Sidebar> (as DashboardShell does). The
+// kit is imported after vi.resetModules() together with the Sidebar so both share one context.
+async function loadSidebar() {
+  const { SidebarProvider, Sidebar: KitSidebar } = await import("@omniroute/ui-kit/sidebar");
+  const { default: Sidebar } = await import("@/shared/components/Sidebar");
+  return function Harness() {
+    return (
+      <SidebarProvider>
+        <KitSidebar collapsible="icon">
+          <Sidebar />
+        </KitSidebar>
+      </SidebarProvider>
+    );
+  };
 }
 
 function jsonResponse(body: unknown) {
@@ -63,7 +84,7 @@ describe("Sidebar search/filter (#4013)", () => {
   it("renders a search input at the top of the expanded sidebar", async () => {
     // First import in this file pays the one-time cost of compiling Sidebar's
     // large transitive dependency graph (sidebarVisibility sections, icons, etc).
-    const { default: Sidebar } = await import("@/shared/components/Sidebar");
+    const Sidebar = await loadSidebar();
     const container = makeContainer();
     root = createRoot(container);
     await act(async () => {
@@ -72,10 +93,10 @@ describe("Sidebar search/filter (#4013)", () => {
 
     const input = container.querySelector('input[type="search"]');
     expect(input).toBeTruthy();
-  }, 20000);
+  });
 
   it("filters visible nav items down to those matching the typed query", async () => {
-    const { default: Sidebar } = await import("@/shared/components/Sidebar");
+    const Sidebar = await loadSidebar();
     const container = makeContainer();
     root = createRoot(container);
     await act(async () => {
@@ -88,10 +109,7 @@ describe("Sidebar search/filter (#4013)", () => {
     const input = container.querySelector('input[type="search"]') as HTMLInputElement;
     expect(input).toBeTruthy();
 
-    const nativeSetter = Object.getOwnPropertyDescriptor(
-      HTMLInputElement.prototype,
-      "value"
-    )!.set!;
+    const nativeSetter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")!.set!;
 
     await act(async () => {
       nativeSetter.call(input, "zzz-no-such-nav-item-zzz");

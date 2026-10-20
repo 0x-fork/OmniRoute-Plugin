@@ -233,19 +233,31 @@ test("flow surfaces still express state with --orch-status-* tokens, not fixed h
 // ── Guards carried verbatim in spirit from design-grid-background.test.ts (383c5dc5d479) that
 // stay true after the bridge; the grid/14px/gradient/STATUS_HEX ones were obsolete by design.
 test("DashboardLayout content shell is fluid up to ~4K before centering", () => {
-  const dashboardLayout = read("src/shared/components/layouts/DashboardLayout.tsx");
-  assert.ok(
-    dashboardLayout.includes("max-w-[3840px] mx-auto"),
-    "content wrapper caps at 3840px (4K) and centers only beyond that"
-  );
-  assert.ok(!dashboardLayout.includes("max-w-7xl"), "the old 1280px max-w-7xl cap is gone");
+  // DashboardLayout.tsx is the UI_KIT_SHELL selector since trilha F: the content wrapper lives in
+  // the kit shell (DashboardShell) and in the legacy shell kept behind the flag.
+  for (const file of [
+    "src/shared/components/layouts/DashboardShell.tsx",
+    "src/shared/components/layouts/legacy/DashboardLayoutLegacy.tsx",
+  ]) {
+    const dashboardLayout = read(file);
+    assert.ok(
+      dashboardLayout.includes("max-w-[3840px] mx-auto"),
+      `${file}: content wrapper caps at 3840px (4K) and centers only beyond that`
+    );
+    assert.ok(
+      !dashboardLayout.includes("max-w-7xl"),
+      `${file}: the old 1280px max-w-7xl cap is gone`
+    );
+  }
 });
 
 test("DataTable is theme-aware via --table-* tokens, no color literal, no dead fallbacks", () => {
   const dt = read("src/shared/components/DataTable.tsx");
   assert.ok(dt.includes("var(--table-header-bg)"), "header uses the token");
-  assert.ok(dt.includes("var(--table-row-zebra)"), "zebra uses the token");
-  assert.ok(dt.includes("var(--color-border)"), "header border uses the brand token");
+  // KEA-7886: rows, borders, hover and selection come from the kit table (ci-ui.css tokens);
+  // the selected row is the kit's data-state="selected" instead of a zebra/selected inline mix.
+  assert.ok(dt.includes('from "@omniroute/ui-kit/table"'), "rows render through the kit table");
+  assert.ok(dt.includes('data-state={selected ? "selected" : undefined}'), "kit row selection");
   assert.ok(!/rgba\(|#[0-9a-fA-F]{3,6}/.test(dt), "DataTable hardcodes no color literal");
   assert.ok(
     !dt.includes("--text-secondary") && !dt.includes("--bg-table-header"),

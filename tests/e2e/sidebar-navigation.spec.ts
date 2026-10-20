@@ -13,7 +13,8 @@ for (const theme of ["light", "dark"] as const) {
     await gotoDashboardRoute(page, "/home");
     await settingsLoaded;
     await expect(page.getByRole("heading", { name: "Quick Start", exact: true })).toBeVisible();
-    const sidebar = page.locator(".dashboard-sidebar-desktop aside");
+    // Kit shell: the kit <Sidebar> renders the <aside data-slot="sidebar">.
+    const sidebar = page.locator('aside[data-slot="sidebar"]');
     await expect(sidebar.locator('a[aria-current="page"]')).toHaveAttribute("href", "/home");
     const section = sidebar.getByRole("button", { name: "OmniProxy", exact: true });
     if ((await section.getAttribute("aria-expanded")) === "false") await section.click();
@@ -53,7 +54,8 @@ for (const theme of ["light", "dark"] as const) {
       await page.addInitScript((value) => localStorage.setItem("theme", value), theme);
       await gotoDashboardRoute(page, "/home");
       await page.getByRole("button", { name: "Open menu" }).click();
-      const sidebar = page.locator("aside").last();
+      // Below the breakpoint the kit <Sidebar> is a Sheet holding the same aside.
+      const sidebar = page.locator('aside[data-slot="sidebar"]');
       await expect(sidebar).toBeInViewport();
       await expect
         .poll(() => sidebar.evaluate((element) => element.scrollWidth <= element.clientWidth))
