@@ -107,7 +107,12 @@ export default function Modal({
         // No generated description: repeating the title as one made screen readers announce
         // it twice. An explicit undefined is Radix's documented opt-out of the warning.
         aria-describedby={undefined}
-        className={cn("w-full", SIZES[size], className)}
+        // Box model (KEA-7886): the root keeps the kit's `calc(100vw - 3rem)` width (mobile
+        // gutter, so no `w-full`) and does not pad (`p-0`) — header, body and footer pad
+        // themselves as the legacy Modal did. Its cap sits above the default body cap, so the
+        // body is the only scroll owner; `TALL_MODAL_PROPS` swaps in `max-h-[90vh]` (twMerge)
+        // and a plain body, making the root the single scroll owner (#6265).
+        className={cn("p-0 max-h-[calc(100vh-3rem)]", SIZES[size], className)}
         style={inlineMaxWidth ? { maxWidth: inlineMaxWidth } : undefined}
         onOpenAutoFocus={() => {
           const active = document.activeElement;
@@ -129,7 +134,7 @@ export default function Modal({
         <DialogHeader
           className={cn(
             "flex items-center justify-between gap-3",
-            compactHeader && "px-4 py-2.5",
+            compactHeader ? "px-4 py-2.5" : "px-6 pt-6",
             // No visible title and no close button: keep the (sr-only) title for the
             // accessible name without reserving header space.
             !title && !showCloseButton && "ci-sr-only"
@@ -155,7 +160,7 @@ export default function Modal({
         >
           {children}
         </div>
-        {footer && <DialogFooter>{footer}</DialogFooter>}
+        {footer && <DialogFooter className="mt-0 px-6 pb-6">{footer}</DialogFooter>}
       </DialogContent>
     </Dialog>
   );

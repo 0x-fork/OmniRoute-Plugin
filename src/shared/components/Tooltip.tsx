@@ -45,7 +45,18 @@ export default function Tooltip({
 }: TooltipProps) {
   if (content == null || content === "") return <>{children}</>;
   // A non-element child (text, numbers) gets a focusable span so keyboard users reach it.
-  const trigger = isValidElement(children) ? children : <span tabIndex={0}>{children}</span>;
+  // So does a disabled control: browsers deliver no pointer/focus events to it, so the
+  // tooltip explaining why it is disabled would never open (Radix's documented pattern).
+  const isDisabledElement =
+    isValidElement<{ disabled?: unknown }>(children) && Boolean(children.props.disabled);
+  const trigger =
+    isValidElement(children) && !isDisabledElement ? (
+      children
+    ) : (
+      <span tabIndex={0} className={isDisabledElement ? "inline-flex" : undefined}>
+        {children}
+      </span>
+    );
   return (
     <KitTooltip delayDuration={delayMs} className={className}>
       <TooltipTrigger asChild>{trigger}</TooltipTrigger>
