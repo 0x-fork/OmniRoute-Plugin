@@ -119,7 +119,12 @@ test("focus ring lives in @layer base so kit controls keep their own focus style
     css,
     /@layer base \{[\s\S]*?:focus-visible \{\s*outline: 2px solid var\(--ci-color-focus-ring\);\s*outline-offset: 2px;/
   );
-  assert.doesNotMatch(css, /:focus-visible \{\s*outline: none;\s*box-shadow: var\(--focus-ring\)/);
+  // the generic rule (bare `:focus-visible`, not `.focus-ring:focus-visible`) no longer pairs
+  // `outline: none` with a box-shadow
+  assert.doesNotMatch(
+    css,
+    /\n\s*:focus-visible \{\s*outline: none;\s*box-shadow: var\(--focus-ring\)/
+  );
   assert.match(
     css,
     /\.focus-ring:focus-visible \{\s*outline: none;\s*box-shadow: var\(--focus-ring\);/
