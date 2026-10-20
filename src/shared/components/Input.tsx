@@ -108,11 +108,25 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     />
   );
 
+  // The kit Field's asterisk is plain text inside the <label>, so it would become part of the
+  // input's accessible name ("Email*"). Render the same `.ci-field__required` marker ourselves,
+  // aria-hidden like the legacy one; the native `required` attribute carries the semantics.
+  const fieldLabel =
+    label != null ? (
+      <>
+        {label}
+        {required && (
+          <span className="ci-field__required" aria-hidden="true">
+            *
+          </span>
+        )}
+      </>
+    ) : undefined;
+
   return (
     <Field
       htmlFor={inputId}
-      label={label}
-      required={required}
+      label={fieldLabel}
       hint={hint && !error ? <span id={hintId}>{hint}</span> : undefined}
       error={error ? <span id={errorId}>{error}</span> : undefined}
       className={cn("gap-1.5", className)}

@@ -54,6 +54,16 @@ describe("Input adapter → kit Field + Input", () => {
     expect(container.querySelector(".ci-field__required")).not.toBeNull();
   });
 
+  it("keeps the required marker out of the accessible name (screen readers hear the label)", () => {
+    const { getByRole, container } = render(<Input id="e" label="Email" type="email" required />);
+    const input = getByRole("textbox", { name: "Email" }) as HTMLInputElement;
+    expect(input.id).toBe("e");
+    expect(input.required).toBe(true);
+    const marker = container.querySelector(".ci-field__required");
+    expect(marker?.textContent).toBe("*");
+    expect(marker?.getAttribute("aria-hidden")).toBe("true");
+  });
+
   it("forwards a ref to the native <input> (CommandPalette focuses it)", () => {
     const ref = React.createRef<HTMLInputElement>();
     render(<Input id="q" aria-label="Query" ref={ref} />);
