@@ -2,6 +2,9 @@
 import React, { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+// The shared Select renders the kit (Radix) Select for `options` since KEA-7886: no DOM
+// <select>/<option>; the helpers read the menu items (data-value) and the controlled value.
+import { kitSelectOptions, kitSelectTriggers } from "../../helpers/kitSelect";
 
 import ModalityBridgeVideoTab from "@/app/(dashboard)/dashboard/settings/components/modalityBridge/ModalityBridgeVideoTab";
 
@@ -124,11 +127,12 @@ describe("ModalityBridgeVideoTab", () => {
   it("shows ready runtime versions, video stats, and only vision-capable models", async () => {
     const element = await render();
     await waitFor(() => element.textContent?.includes("6.1.1") ?? false, "runtime status");
-    await waitFor(
-      () => Array.from(element.querySelectorAll("option")).some((option) => option.value),
-      "model options"
-    );
-    const options = Array.from(element.querySelectorAll("option")).map((option) => option.value);
+    // the model picker is disabled until its catalog has loaded
+    await waitFor(() => {
+      const trigger = kitSelectTriggers(element)[0] as HTMLButtonElement | undefined;
+      return !!trigger && !trigger.disabled;
+    }, "model options");
+    const options = kitSelectOptions(kitSelectTriggers(element)[0]).map((option) => option.value);
     expect(options).toContain("openai/gpt-4o-mini");
     expect(options).not.toContain("example/text-only");
     expect(element.textContent).toContain("4 requestlogger.attempts");

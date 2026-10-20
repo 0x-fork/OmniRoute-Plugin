@@ -4,6 +4,9 @@ import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { NextIntlClientProvider } from "next-intl";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+// The shared Select renders the kit (Radix) Select for `options` since KEA-7886: no DOM
+// <select>/<option>; the helpers read the menu items (data-value) and the controlled value.
+import { kitSelectOptions, kitSelectTriggers, kitSelectValue } from "../../../helpers/kitSelect";
 
 const cleanupCallbacks: Array<() => void> = [];
 
@@ -150,14 +153,14 @@ describe("KiroAuthModal", () => {
         apiKeyButton?.click();
       });
 
-      const regionSelect = container.querySelector("select") as HTMLSelectElement;
+      const regionSelect = kitSelectTriggers(container)[0];
       expect(regionSelect).toBeTruthy();
-      expect(Array.from(regionSelect.options).map((option) => option.value)).toEqual([
+      expect(kitSelectOptions(regionSelect).map((option) => option.value)).toEqual([
         "auto",
         "us-east-1",
         "eu-central-1",
       ]);
-      expect(regionSelect.value).toBe("auto");
+      expect(kitSelectValue(regionSelect)).toBe("auto");
 
       const apiKeyInput = container.querySelector("input") as HTMLInputElement;
       await act(async () => {

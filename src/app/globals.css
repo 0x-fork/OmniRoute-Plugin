@@ -943,3 +943,36 @@ html[dir="rtl"] :where(.material-symbols-outlined, .traffic-lights, .react-flow)
     border-color: transparent;
   }
 }
+
+/* === OmniRoute kit extensions: trilha C === */
+@layer components {
+  /* Native <select> fallback for callers that pass <option> children (Select adapter). */
+  .ci-select-native {
+    width: 100%;
+    height: var(--ci-control-height-lg);
+    /* logical: the chevron room follows the inline end, so RTL locales mirror it */
+    padding-block: 0;
+    padding-inline: 0.75rem 2rem;
+    border: var(--ci-border-default) solid var(--ci-field-border);
+    border-radius: var(--ci-radius-control);
+    background: var(--ci-field-bg);
+    color: var(--ci-field-fg);
+    font: inherit;
+    font-size: var(--ci-font-size-sm);
+  }
+  .ci-select-native--sm {
+    height: var(--ci-control-height-md);
+    font-size: var(--ci-font-size-sm);
+  }
+  .ci-select-native--error {
+    border-color: var(--ci-color-danger);
+  }
+  .ci-select-native:focus-visible {
+    outline: 2px solid var(--ci-color-focus-ring);
+    outline-offset: 1px;
+  }
+  .ci-select-native:disabled {
+    opacity: 0.48;
+    cursor: not-allowed;
+  }
+}

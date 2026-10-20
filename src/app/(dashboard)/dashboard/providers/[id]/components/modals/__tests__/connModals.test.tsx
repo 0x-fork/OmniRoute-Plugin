@@ -432,10 +432,15 @@ describe("conn-modals (Phase 1c extraction)", () => {
       />
     );
 
-    const regionSelect = Array.from(c.querySelectorAll("select")).find((select) =>
-      Array.from(select.options).some((option) => option.value === "china-beijing")
+    // The region picker is the kit (Radix) Select since KEA-7886: a combobox trigger
+    // labelled by the field, showing the selected option's label ("… (Beijing)").
+    const regionLabel = Array.from(c.querySelectorAll("label")).find((label) =>
+      label.textContent?.includes("apiRegionLabel")
     );
-    expect(regionSelect?.value).toBe("china-beijing");
+    const regionSelect = regionLabel ? document.getElementById(regionLabel.htmlFor) : null;
+    expect(regionSelect?.getAttribute("role")).toBe("combobox");
+    expect(regionSelect?.textContent).toContain("(Beijing)");
+    expect(regionSelect?.textContent).not.toContain("(Singapore)");
   });
 
   it("EditConnectionModal renders without ReferenceError for oauth connection", () => {

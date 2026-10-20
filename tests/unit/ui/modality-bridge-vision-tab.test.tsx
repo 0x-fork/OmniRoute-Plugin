@@ -2,6 +2,9 @@
 import React, { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+// The shared Select renders the kit (Radix) Select for `options` since KEA-7886: no DOM
+// <select>/<option>; the helpers read the menu items (data-value) and the controlled value.
+import { kitSelectOptions } from "../../helpers/kitSelect";
 
 import ModalityBridgeVisionTab from "@/app/(dashboard)/dashboard/settings/components/modalityBridge/ModalityBridgeVisionTab";
 
@@ -142,8 +145,10 @@ describe("ModalityBridgeVisionTab", () => {
     const modelLabel = Array.from(el.querySelectorAll("label")).find((label) =>
       label.textContent?.includes("modalityBridgeVisionModel")
     );
-    const modelSelect = modelLabel?.parentElement?.querySelector("select") ?? null;
-    const autoOption = modelSelect?.querySelector('option[value=""]') as HTMLOptionElement | null;
+    const modelSelect =
+      modelLabel?.parentElement?.querySelector<HTMLElement>("[data-slot=select-trigger]") ?? null;
+    expect(modelSelect).toBeTruthy();
+    const autoOption = kitSelectOptions(modelSelect!).find((option) => option.value === "");
     expect(autoOption).toBeTruthy();
     expect(autoOption?.disabled).toBe(false);
   });
@@ -304,8 +309,9 @@ describe("ModalityBridgeVisionTab", () => {
       label.textContent?.includes("modalityBridgeVisionModel")
     );
     const modelSelect =
-      (modelLabel?.parentElement?.querySelector("select") as HTMLSelectElement | null) ?? null;
-    const optionValues = Array.from(modelSelect?.options ?? [])
+      modelLabel?.parentElement?.querySelector<HTMLElement>("[data-slot=select-trigger]") ?? null;
+    expect(modelSelect).toBeTruthy();
+    const optionValues = kitSelectOptions(modelSelect!)
       .map((o) => o.value)
       .filter(Boolean);
     expect(optionValues).toContain("openai/gpt-4o-mini");
