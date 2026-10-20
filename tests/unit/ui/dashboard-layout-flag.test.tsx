@@ -70,19 +70,29 @@ describe("DashboardLayout shell switch (UI_KIT_SHELL)", () => {
       expect(skips).toHaveLength(1);
       expect(skips[0].closest("aside")).toBeNull();
       expect(skips[0].className).toContain("focus:text-accent-foreground");
-      // First focusable of the shell: it precedes the sidebar (Sheet or rail) in document order.
-      const sidebarSlot = document.querySelector(
-        "[data-slot=sidebar], [data-slot=sidebar-trigger]"
+      // The skip link is the first focusable element of the shell (the Sheet is closed here).
+      const focusables = document.querySelectorAll(
+        'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
       );
-      if (sidebarSlot) {
-        expect(
-          skips[0].compareDocumentPosition(sidebarSlot) & Node.DOCUMENT_POSITION_FOLLOWING
-        ).toBeTruthy();
-      }
+      expect(focusables.length).toBeGreaterThan(0);
+      expect(focusables[0]).toBe(skips[0]);
       expect(container.querySelector("#main-content")).not.toBeNull();
     } finally {
       window.matchMedia = original;
     }
+  });
+
+  it("on desktop the skip link precedes the kit sidebar in document order", () => {
+    render(
+      <DashboardLayout shell="kit">
+        <p>page</p>
+      </DashboardLayout>
+    );
+    const skip = document.querySelector('a[href="#main-content"]');
+    const aside = document.querySelector("aside[data-slot=sidebar]");
+    expect(skip).not.toBeNull();
+    expect(aside).not.toBeNull();
+    expect(skip!.compareDocumentPosition(aside!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
   it("shell=legacy renders the untouched legacy shell and nothing from the kit (kill switch)", () => {

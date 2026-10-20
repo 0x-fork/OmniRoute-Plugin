@@ -695,7 +695,9 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
         {/* Search at the top of the content (spec §3.7), sticky: SidebarContent is the scroll
             container, so the box stays in view while the 100+ items scroll under it. */}
         {!collapsed && (
-          <div className="sticky top-0 z-10 bg-[var(--ci-color-background)] pb-1">
+          // -top-2 / -mt-2 pt-2 cover the content's 8 px top padding, so scrolled rows do not
+          // peek through a strip above the box.
+          <div className="sticky -top-2 z-10 -mt-2 bg-[var(--ci-color-background)] pt-2 pb-1">
             <Input
               type="search"
               value={searchQuery}
@@ -708,7 +710,11 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
             />
           </div>
         )}
-        <nav aria-label={t("mainNavigation")} className="flex flex-col gap-3">
+        {/* scroll-mt-14 (≈ the sticky search box) keeps a focused row clear of it on Shift+Tab. */}
+        <nav
+          aria-label={t("mainNavigation")}
+          className="flex flex-col gap-3 [&_a]:scroll-mt-14 [&_button]:scroll-mt-14"
+        >
           {isSearching && displaySections.length === 0 && (
             <p className="px-2 py-3 text-xs text-text-muted">{tc("noResults")}</p>
           )}

@@ -6,9 +6,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Sidebar as KitSidebar, SidebarProvider } from "@omniroute/ui-kit/sidebar";
 
 process.env.NEXT_PUBLIC_OMNIROUTE_E2E_MODE = "1";
-// Not an import budget (the kit comes from the sidebar subpath; import is ~3% of the run): these
-// cases resolve accessible names over the whole ~120-control sidebar (getByRole/findByRole) and
-// drive it with user-event, measured at 5–8.4 s per case on a loaded host (load 30–42).
+// Render budget, not an import budget. Measured in review: the kit Sidebar mounts about 1.3–2×
+// slower than the legacy one (SidebarMenuButton asChild wrapping, a Radix tooltip per rail item);
+// under 5 s at host load 10–16, 9–16 s for the slowest cases at load 25–48. 30 s is headroom for
+// that load, not a mask for an eager-render bug.
 vi.setConfig({ testTimeout: 30_000 });
 const nav = vi.hoisted(() => ({ pathname: "/home" }));
 vi.mock("next/navigation", () => ({ usePathname: () => nav.pathname }));
@@ -82,8 +83,17 @@ describe("Sidebar rendered with the kit Sidebar family", () => {
     expect(search.closest("[data-slot=sidebar-header]")).toBeNull();
     // First in the content, before the navigation landmark, and kept in view while it scrolls.
     expect(content!.firstElementChild!.contains(search)).toBe(true);
-    expect(content!.firstElementChild!.className).toContain("sticky");
+    const sticky = content!.firstElementChild!.className;
+    expect(sticky).toContain("sticky");
+    // The content has 8 px top padding: offset the sticky box up by it (-top-2) and grow it back
+    // (-mt-2 pt-2) so scrolled rows cannot peek through a strip above the search.
+    expect(sticky).toMatch(/(^|\s)-top-2(\s|$)/);
+    expect(sticky).toMatch(/(^|\s)-mt-2(\s|$)/);
+    expect(sticky).toMatch(/(^|\s)pt-2(\s|$)/);
     expect(content!.contains(navEl)).toBe(true);
+    // Shift+Tab onto a row under the sticky box scrolls it clear of the box (WCAG 2.4.11).
+    expect(navEl.className).toContain("[&_a]:scroll-mt-14");
+    expect(navEl.className).toContain("[&_button]:scroll-mt-14");
   });
 
   it("gives the footer actions full-width rows so their labels never truncate", async () => {

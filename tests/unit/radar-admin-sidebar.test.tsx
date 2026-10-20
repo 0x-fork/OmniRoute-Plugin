@@ -5,9 +5,10 @@ import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 process.env.NEXT_PUBLIC_OMNIROUTE_E2E_MODE = "1";
-// Render budget, not an import budget (the kit comes from the sidebar subpath; import is ~5% of
-// the run): mounting the ~120-control kit sidebar measured 6–16 s per case on a loaded host
-// (load 25–43), above vitest's 5 s default.
+// Render budget, not an import budget. Measured in review: the kit Sidebar mounts about 1.3–2×
+// slower than the legacy one (SidebarMenuButton asChild wrapping, a Radix tooltip per rail item);
+// under 5 s at host load 10–16, 9–16 s for the slowest cases at load 25–48. 30 s is headroom for
+// that load, not a mask for an eager-render bug.
 vi.setConfig({ testTimeout: 30_000 });
 
 vi.mock("next-intl", () => ({
