@@ -7,6 +7,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 // Skip CloudSyncStatus entirely (it polls /api/sync/cloud + uses next/navigation's
 // useRouter, which we don't otherwise need to mock for this component).
 process.env.NEXT_PUBLIC_OMNIROUTE_E2E_MODE = "1";
+// Render budget (not import: the kit comes from the sidebar subpath): mounting and filtering the
+// ~120-control kit sidebar measured up to 11.5 s per case on a loaded host (load 33–41).
+vi.setConfig({ testTimeout: 30_000 });
 
 vi.mock("next-intl", () => ({
   useTranslations: () => {
@@ -32,7 +35,7 @@ function makeContainer(): HTMLElement {
 // The Sidebar renders inside the kit SidebarProvider + kit <Sidebar> (as DashboardShell does). The
 // kit is imported after vi.resetModules() together with the Sidebar so both share one context.
 async function loadSidebar() {
-  const { SidebarProvider, Sidebar: KitSidebar } = await import("@omniroute/ui-kit");
+  const { SidebarProvider, Sidebar: KitSidebar } = await import("@omniroute/ui-kit/sidebar");
   const { default: Sidebar } = await import("@/shared/components/Sidebar");
   return function Harness() {
     return (
@@ -88,7 +91,7 @@ describe("Sidebar search/filter (#4013)", () => {
 
     const input = container.querySelector('input[type="search"]');
     expect(input).toBeTruthy();
-  }, 120_000);
+  });
 
   it("filters visible nav items down to those matching the typed query", async () => {
     const Sidebar = await loadSidebar();
