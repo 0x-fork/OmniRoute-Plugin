@@ -1,6 +1,8 @@
 "use client";
 
-import { ProductIcon, ProductLockup } from "@omniroute/ui-kit";
+// Deep import of the brand module only: the package barrel pulls all 73 kit files (Radix,
+// charts…) into every importer of the logo — Sidebar, landing, login, error pages.
+import { ProductIcon, ProductLockup } from "@omniroute/ui-kit/keak-brand";
 import { cn } from "@/shared/utils/cn";
 
 type OmniRouteLogoProps = { size?: number; className?: string };
