@@ -52,7 +52,7 @@ for (const theme of ["light", "dark"] as const) {
       await page.emulateMedia({ colorScheme: theme });
       await page.addInitScript((value) => localStorage.setItem("theme", value), theme);
       await gotoDashboardRoute(page, "/home");
-      await page.getByRole("button", { name: "menu", exact: true }).click();
+      await page.getByRole("button", { name: "Open menu" }).click();
       const sidebar = page.locator("aside").last();
       await expect(sidebar).toBeInViewport();
       await expect
