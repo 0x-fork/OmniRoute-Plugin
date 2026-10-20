@@ -134,8 +134,13 @@ describe("Sidebar rendered with the kit Sidebar family", () => {
     expect(document.querySelector("aside[data-slot=sidebar]")!.getAttribute("data-side")).toBe(
       "right"
     );
-    // The rail stays inside the aside on the content-facing edge (left under RTL).
-    expect(document.querySelector("[data-slot=sidebar-rail]")!.className).toContain("left-0");
+    // The rail keeps the physical `right-0` in both directions: globals.css mirrors physical
+    // utilities under html[dir=rtl] (`.right-0` → `right: auto; inset-inline-end: 0`), which puts it
+    // on the aside's left = content edge. A conditional `left-0` would be mirrored to the OUTER edge
+    // (measured in Chromium; layout proof in tests/e2e/sidebar-rtl.spec.ts).
+    const railClass = document.querySelector("[data-slot=sidebar-rail]")!.className;
+    expect(railClass).toContain("right-0");
+    expect(railClass).not.toContain("left-0");
   });
 
   it("keeps the rail inside the aside on the right edge in LTR (no horizontal overflow)", async () => {

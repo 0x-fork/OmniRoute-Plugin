@@ -18,24 +18,33 @@ test("desktop sidebar stays on the right under dir=rtl, rail on the content edge
   });
   await expect(sidebar).toHaveAttribute("data-side", "right");
 
-  const layout = await page.evaluate(() => {
-    const aside = document.querySelector('aside[data-slot="sidebar"]') as HTMLElement;
-    const main = document.querySelector("main#main-content") as HTMLElement;
-    const rail = aside.querySelector('[data-slot="sidebar-rail"]') as HTMLElement;
-    const a = aside.getBoundingClientRect();
-    const m = main.getBoundingClientRect();
-    const r = rail.getBoundingClientRect();
-    return {
-      viewport: document.documentElement.clientWidth,
-      asideLeft: a.left,
-      asideRight: a.right,
-      mainRight: m.right,
-      railLeft: r.left,
-      railRight: r.right,
-      order: getComputedStyle(aside).order,
-      fits: aside.scrollWidth <= aside.clientWidth,
-    };
-  });
+  const measure = () =>
+    page.evaluate(() => {
+      const aside = document.querySelector('aside[data-slot="sidebar"]') as HTMLElement;
+      const main = document.querySelector("main#main-content") as HTMLElement;
+      const rail = aside.querySelector('[data-slot="sidebar-rail"]') as HTMLElement;
+      const a = aside.getBoundingClientRect();
+      const m = main.getBoundingClientRect();
+      const r = rail.getBoundingClientRect();
+      return {
+        viewport: document.documentElement.clientWidth,
+        asideLeft: a.left,
+        asideRight: a.right,
+        mainRight: m.right,
+        railLeft: r.left,
+        railRight: r.right,
+        order: getComputedStyle(aside).order,
+        fits: aside.scrollWidth <= aside.clientWidth,
+      };
+    });
+  // The kit animates width/transform on the side switch: wait for the row to settle.
+  await expect
+    .poll(async () => {
+      const l = await measure();
+      return l.order === "0" && l.mainRight <= l.asideLeft + 1;
+    })
+    .toBe(true);
+  const layout = await measure();
 
   expect(layout.order).toBe("0");
   // Aside flush with the right edge of the viewport; the content to its left.

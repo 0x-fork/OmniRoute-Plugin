@@ -149,7 +149,6 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
   const t = useTranslations("sidebar");
   const tc = useTranslations("common");
   const { state: sidebarState, isMobile } = useSidebar();
-  const sidebarSide = useSidebarSide();
   const collapsed = sidebarState === "collapsed" && !isMobile;
   const triggerLabel = isMobile
     ? tc("close")
@@ -832,10 +831,11 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
       </SidebarFooter>
 
       {/* The kit rail straddles the outer edge (right: -0.25rem), which overflows the clipped aside
-          (scrollWidth > clientWidth): keep it inside, on the edge that faces the content — the
-          right edge in LTR, the left edge under dir=rtl (where DashboardShell keeps the aside on
-          the inline end with `rtl:order-none`). */}
-      <SidebarRail className={sidebarSide === "right" ? "left-0 right-auto" : "right-0"} />
+          (scrollWidth > clientWidth): keep it inside, on the edge that faces the content. `right-0`
+          is that edge in LTR; under dir=rtl globals.css mirrors it to `inset-inline-end: 0` (the
+          aside's left = content edge, the aside itself kept on the right by DashboardShell's
+          `rtl:order-none`). */}
+      <SidebarRail className="right-0" />
 
       <ConfirmModal
         isOpen={showShutdownModal}
