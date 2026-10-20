@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Spinner } from "@/shared/components/Loading";
+import { OmniRouteLockup } from "@/shared/components/OmniRouteLogo";
 
 interface HealthPayload {
   status?: string;
@@ -77,12 +78,15 @@ export default function StatusPage() {
       <section className="max-w-4xl mx-auto space-y-6">
         <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">{t("status.title")}</h1>
+            <div className="mb-4">
+              <OmniRouteLockup />
+            </div>
+            <h1 className="ci-heading text-3xl">{t("status.title")}</h1>
             <p className="text-text-muted mt-1">{t("status.description")}</p>
           </div>
           <button
             onClick={() => void loadHealth()}
-            className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-semibold bg-gradient-to-br from-primary to-primary-hover text-white transition-all duration-200 motion-reduce:transition-none"
+            className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-semibold bg-primary text-accent-foreground hover:bg-primary-hover transition-all duration-200 motion-reduce:transition-none"
           >
             {tc("refresh")}
           </button>
