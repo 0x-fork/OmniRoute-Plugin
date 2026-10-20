@@ -51,9 +51,11 @@ describe("DataTable loading state accessibility", () => {
     const status = container.querySelector<HTMLDivElement>('[role="status"]')!;
 
     expect(status).not.toBeNull();
-    // KEA-7886: the kit BrandLoader is the status region; role="status" is an implicit
-    // aria-live="polite" region, so the explicit attribute is no longer needed.
-    expect(status.getAttribute("role")).toBe("status");
+    // KEA-7886: the kit BrandLoader is the status region (role="status" is an implicit
+    // aria-live="polite" region). It must carry the loading label and stay exposed to
+    // assistive technology even though the retained rows beside it are aria-hidden.
+    expect(status.getAttribute("aria-label")).toBe("loading");
+    expect(status.closest('[aria-hidden="true"]')).toBeNull();
     expect(status.getAttribute("aria-busy")).toBe("true");
   });
 
