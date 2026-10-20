@@ -28,6 +28,25 @@ async function waitFor(predicate: () => boolean, label: string): Promise<void> {
   }
 }
 
+// Re-query the model picker each time: it re-mounts when its catalog finishes loading, and it
+// is disabled (menu cannot open) while loading.
+function modelPicker(el: HTMLElement): HTMLButtonElement | null {
+  const modelLabel = Array.from(el.querySelectorAll("label")).find((label) =>
+    label.textContent?.includes("modalityBridgeVisionModel")
+  );
+  return (
+    modelLabel?.parentElement?.querySelector<HTMLButtonElement>("[data-slot=select-trigger]") ??
+    null
+  );
+}
+async function loadedModelOptions(el: HTMLElement) {
+  await waitFor(() => {
+    const picker = modelPicker(el);
+    return !!picker && !picker.disabled && kitSelectOptions(picker).length > 1;
+  }, "model picker options");
+  return kitSelectOptions(modelPicker(el)!);
+}
+
 describe("ModalityBridgeVisionTab", () => {
   let fetchMock: ReturnType<typeof vi.fn>;
 
@@ -142,13 +161,8 @@ describe("ModalityBridgeVisionTab", () => {
   it("reads the legacy model as fallback when the new key is absent", async () => {
     const el = await render();
     expect(el.innerHTML).toContain("legacy/model");
-    const modelLabel = Array.from(el.querySelectorAll("label")).find((label) =>
-      label.textContent?.includes("modalityBridgeVisionModel")
-    );
-    const modelSelect =
-      modelLabel?.parentElement?.querySelector<HTMLElement>("[data-slot=select-trigger]") ?? null;
-    expect(modelSelect).toBeTruthy();
-    const autoOption = kitSelectOptions(modelSelect!).find((option) => option.value === "");
+    expect(modelPicker(el)).toBeTruthy();
+    const autoOption = (await loadedModelOptions(el)).find((option) => option.value === "");
     expect(autoOption).toBeTruthy();
     expect(autoOption?.disabled).toBe(false);
   });
@@ -305,15 +319,8 @@ describe("ModalityBridgeVisionTab", () => {
     );
 
     // The filtered <select> must list vision-capable models only (empty placeholder excluded).
-    const modelLabel = Array.from(el.querySelectorAll("label")).find((label) =>
-      label.textContent?.includes("modalityBridgeVisionModel")
-    );
-    const modelSelect =
-      modelLabel?.parentElement?.querySelector<HTMLElement>("[data-slot=select-trigger]") ?? null;
-    expect(modelSelect).toBeTruthy();
-    const optionValues = kitSelectOptions(modelSelect!)
-      .map((o) => o.value)
-      .filter(Boolean);
+    expect(modelPicker(el)).toBeTruthy();
+    const optionValues = (await loadedModelOptions(el)).map((o) => o.value).filter(Boolean);
     expect(optionValues).toContain("openai/gpt-4o-mini");
     expect(optionValues).toContain("openai/gpt-4o");
     expect(optionValues).not.toContain("cmd/gpt-5.3-codex");

@@ -74,7 +74,7 @@ function findStoreToggleLabel(): Element | null {
 
 function findStoreToggleSwitch(): Element | null {
   const label = findStoreToggleLabel();
-  return label?.closest("div")?.parentElement?.querySelector('button[role="switch"]') ?? null;
+  return label?.closest("div")?.parentElement?.querySelector('[role="switch"]') ?? null;
 }
 
 describe("EditConnectionModal — OpenAI Responses store toggle provider gating", () => {
