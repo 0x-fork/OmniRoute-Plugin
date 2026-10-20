@@ -149,28 +149,36 @@ describe("LanguageSelector — dropdown anchors to inline-end", () => {
 });
 
 // ─── Select.tsx ───────────────────────────────────────────────────────────────
+// The Select adapter (KEA-7886) dropped its own absolutely-positioned chevron: the kit
+// (Radix) Select draws its chevron inside the trigger's flex row, and the native
+// `<option>`-children fallback uses the browser arrow with room reserved by
+// `.ci-select-native` in globals.css. The RTL contract moves with it: no physical
+// classes in the adapter, and the fallback reserves the chevron room on the inline end.
 
-describe("Select — chevron icon uses logical inset classes", () => {
+describe("Select — chevron room uses logical insets", () => {
   const code = src("src/shared/components/Select.tsx");
+  const css = src("src/app/globals.css");
+  const nativeRule = css.slice(css.indexOf(".ci-select-native {"));
+  const nativeBlock = nativeRule.slice(0, nativeRule.indexOf("}"));
 
-  it("uses end-0 (not right-0) for the chevron wrapper", () => {
-    expect(code).toContain("end-0");
+  it("the native fallback rule exists in globals.css", () => {
+    expect(nativeBlock).toContain(".ci-select-native {");
   });
 
   it("does not use bare right-0 for the chevron wrapper", () => {
     expect(code).not.toContain("right-0");
   });
 
-  it("uses pe-3 (not pr-3) for chevron wrapper padding", () => {
-    expect(code).toContain("pe-3");
+  it("reserves the chevron room with logical padding-inline (start end)", () => {
+    expect(nativeBlock).toMatch(/padding-inline:\s*[^;\s]+\s+[^;\s]+;/);
   });
 
   it("does not use bare pr-3 for chevron wrapper padding", () => {
     expect(code).not.toContain("pr-3");
   });
 
-  it("uses pe-10 (not pr-10) for the select element right-pad (space for chevron)", () => {
-    expect(code).toContain("pe-10");
+  it("does not use physical padding (padding / padding-left / padding-right) for the native select", () => {
+    expect(nativeBlock).not.toMatch(/(^|[\s;{])padding(-left|-right)?\s*:/);
   });
 
   it("does not use bare pr-10 for the select element", () => {

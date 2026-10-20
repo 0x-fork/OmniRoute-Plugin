@@ -193,7 +193,10 @@ describe("EndpointPageClient", () => {
     expect(enable).toBeDefined();
     act(() => enable!.click());
     expect(document.body.textContent).toContain("OAuth access/refresh tokens");
-    const consent = document.querySelector<HTMLInputElement>("input[type=checkbox]")!;
+    const consent = document.querySelector<HTMLInputElement>(
+      // Toggles are kit switches (input[type=checkbox][role=switch]) since KEA-7886
+      "input[type=checkbox]:not([role=switch])"
+    )!;
     expect(consent.checked).toBe(false);
     const submit = Array.from(document.querySelectorAll("button")).find(
       (b) => b.getAttribute("class")?.includes("w-full") && b.textContent?.includes("enable")

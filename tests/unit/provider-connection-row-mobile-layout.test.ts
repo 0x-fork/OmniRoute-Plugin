@@ -130,9 +130,31 @@ test("custom model add and edit forms share the two-column phone grid", () => {
 });
 
 test("toggle thumb is vertically centred in its track", () => {
+  // KEA-7886: Toggle renders the kit Switch, whose thumb is absolutely positioned in the track,
+  // so "centred" is geometry: top === (track height - 2 × 1px border - thumb height) / 2, for
+  // the kit default and for the `.ci-switch--compact` extension in globals.css.
   const toggle = read("src/shared/components/Toggle.tsx");
-  assert.match(toggle, /"relative inline-flex shrink-0 cursor-pointer items-center rounded-full"/);
+  assert.match(toggle, /from "@omniroute\/ui-kit\/switch"/);
   assert.doesNotMatch(toggle, /"mt-0\.5"/);
+  const rem = (css: string, selector: string, prop: string) => {
+    const at = css.indexOf(`${selector} {`);
+    assert.ok(at > -1, `${selector} rule exists`);
+    const rule = css.slice(at, css.indexOf("}", at));
+    const m = rule.match(new RegExp(`(?:^|[\\s;{])${prop}:\\s*([\\d.]+)rem`));
+    assert.ok(m, `${selector} sets ${prop} in rem`);
+    return Number(m![1]) * 16;
+  };
+  const centred = (css: string, track: string, thumb: string) =>
+    assert.equal(
+      rem(css, thumb, "top"),
+      (rem(css, track, "height") - 2 - rem(css, thumb, "height")) / 2
+    );
+  centred(read("packages/ui-kit/src/ci-ui.css"), "  .ci-switch__track", "  .ci-switch__thumb");
+  centred(
+    read("src/app/globals.css"),
+    ".ci-switch--compact .ci-switch__track",
+    ".ci-switch--compact .ci-switch__thumb"
+  );
 });
 
 test("provider models use the symmetric AutoGrid", () => {

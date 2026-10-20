@@ -943,3 +943,69 @@ html[dir="rtl"] :where(.material-symbols-outlined, .traffic-lights, .react-flow)
     border-color: transparent;
   }
 }
+
+/* === OmniRoute kit extensions: trilha C === */
+@layer components {
+  /* Native <select> fallback for callers that pass <option> children (Select adapter). */
+  .ci-select-native {
+    width: 100%;
+    height: var(--ci-control-height-lg);
+    /* logical: the chevron room follows the inline end, so RTL locales mirror it */
+    padding-block: 0;
+    padding-inline: 0.75rem 2rem;
+    border: var(--ci-border-default) solid var(--ci-field-border);
+    border-radius: var(--ci-radius-control);
+    background: var(--ci-field-bg);
+    color: var(--ci-field-fg);
+    font: inherit;
+    font-size: var(--ci-font-size-sm);
+  }
+  .ci-select-native--sm {
+    height: var(--ci-control-height-md);
+    font-size: var(--ci-font-size-sm);
+  }
+  .ci-select-native--error {
+    border-color: var(--ci-color-danger);
+  }
+  .ci-select-native:focus-visible {
+    outline: 2px solid var(--ci-color-focus-ring);
+    outline-offset: 1px;
+  }
+  .ci-select-native:disabled {
+    opacity: 0.48;
+    cursor: not-allowed;
+  }
+
+  /* Toggle size="xs"|"sm" (Toggle adapter): a smaller kit switch. The class sits on the kit
+     root — the <label> row, or the bare control when there is no label. Track 2.25×1.25rem,
+     thumb 0.875rem; travel = 2.25 − 0.875 − 2×0.125 − 2px border ≈ 1rem. */
+  .ci-switch--compact .ci-switch__track {
+    width: 2.25rem;
+    height: 1.25rem;
+  }
+  .ci-switch--compact .ci-switch__thumb {
+    top: 0.125rem;
+    left: 0.125rem;
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+  .ci-switch--compact .ci-switch__input:checked + .ci-switch__track .ci-switch__thumb {
+    transform: translateX(1rem);
+  }
+
+  /* Kit Switch hit target (Toggle adapter): the kit keeps the native input as a 1px box under
+     the track, so a switch without a <label> row (Toggle with only ariaLabel) could not be
+     clicked at all, and the track intercepted pointer hit-tests (Playwright clicks). Stretch the
+     transparent input over the control so the visible track is the input. */
+  .ci-switch__control > .ci-switch__input {
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    cursor: pointer;
+  }
+  .ci-switch__control > .ci-switch__input:disabled {
+    cursor: not-allowed;
+  }
+}

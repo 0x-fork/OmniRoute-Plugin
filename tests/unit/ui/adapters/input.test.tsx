@@ -19,7 +19,7 @@ describe("Input adapter → kit Field + Input", () => {
   });
 
   it("error wins over hint, marks aria-invalid and uses the kit error styling", () => {
-    const { getByLabelText, getByText, queryByText } = render(
+    const { getByLabelText, getByRole, getByText, queryByText } = render(
       <Input id="k" label="Key" hint="h" error="Required" />
     );
     const input = getByLabelText("Key");
@@ -28,7 +28,7 @@ describe("Input adapter → kit Field + Input", () => {
     expect(input.className).toContain("ci-input--error");
     expect(getByText("Required").id).toBe("k-error");
     // legacy parity: the error message is announced (role="alert" on the legacy <p>)
-    expect(getByText("Required").getAttribute("role")).toBe("alert");
+    expect(getByRole("alert").textContent).toBe("Required");
     expect(queryByText("h")).toBeNull();
   });
 
@@ -71,5 +71,10 @@ describe("Input adapter → kit Field + Input", () => {
     render(<Input id="q" aria-label="Query" ref={ref} />);
     expect(ref.current).toBeInstanceOf(HTMLInputElement);
     expect(ref.current?.id).toBe("q");
+  });
+
+  it("an empty-string label renders no <label> element", () => {
+    const { container } = render(<Input label="" aria-label="Q" />);
+    expect(container.querySelector("label")).toBeNull();
   });
 });

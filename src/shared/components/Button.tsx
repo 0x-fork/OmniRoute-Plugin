@@ -63,21 +63,25 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   },
   ref
 ) {
-  const kit = VARIANT_TO_KIT[variant];
+  // Unknown variant/size strings (untyped JS callers, stale data) fall back to the defaults
+  // instead of throwing on `undefined.variant`.
+  const kit = VARIANT_TO_KIT[variant] ?? VARIANT_TO_KIT.primary;
+  const kitSize = SIZE_TO_KIT[size] ?? SIZE_TO_KIT.md;
+  const iconSize = ICON_SIZE[size] ?? ICON_SIZE.md;
   return (
     <KitButton
       ref={ref}
       type={type}
       variant={kit.variant}
-      size={SIZE_TO_KIT[size]}
+      size={kitSize}
       loading={loading}
       disabled={disabled || loading}
       className={cn(kit.className, fullWidth && "w-full", className)}
       {...props}
     >
-      {!loading && icon ? <Icon name={icon} size={ICON_SIZE[size]} /> : null}
+      {!loading && icon ? <Icon name={icon} size={iconSize} /> : null}
       {children}
-      {!loading && iconRight ? <Icon name={iconRight} size={ICON_SIZE[size]} /> : null}
+      {!loading && iconRight ? <Icon name={iconRight} size={iconSize} /> : null}
     </KitButton>
   );
 });

@@ -2,7 +2,6 @@
 
 import { forwardRef } from "react";
 import { Textarea as KitTextarea } from "@omniroute/ui-kit/textarea";
-import { cn } from "@/shared/utils/cn";
 
 interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   error?: boolean;
@@ -21,7 +20,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textare
       ref={ref}
       error={error}
       aria-invalid={error || undefined}
-      className={cn(className)}
+      className={className}
       {...props}
     />
   );

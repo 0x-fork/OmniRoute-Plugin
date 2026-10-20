@@ -2,6 +2,9 @@
 import React, { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+// The shared Select renders the kit (Radix) Select for `options` since KEA-7886: no DOM
+// <select>/<option>; the helpers read the menu items (data-value) and the controlled value.
+import { kitSelectOptions, kitSelectTriggers } from "../../helpers/kitSelect";
 
 import ModalityBridgeAudioTab from "@/app/(dashboard)/dashboard/settings/components/modalityBridge/ModalityBridgeAudioTab";
 
@@ -106,14 +109,12 @@ describe("ModalityBridgeAudioTab", () => {
     expect(fetchMock).toHaveBeenCalledWith("/api/models/catalog", {
       signal: expect.any(AbortSignal),
     });
-    await waitFor(
-      () =>
-        Array.from(el.querySelectorAll("option")).some(
-          (option) => option.value === "deepgram/nova-3"
-        ),
-      "STT models"
-    );
-    const optionValues = Array.from(el.querySelectorAll("option")).map((option) => option.value);
+    // the model picker is disabled until its catalog has loaded
+    await waitFor(() => {
+      const trigger = kitSelectTriggers(el)[0] as HTMLButtonElement | undefined;
+      return !!trigger && !trigger.disabled;
+    }, "STT models");
+    const optionValues = kitSelectOptions(kitSelectTriggers(el)[0]).map((option) => option.value);
     expect(optionValues).toContain("");
     expect(optionValues).toContain("deepgram/nova-3");
     expect(optionValues).not.toContain("deepgram/aura");
