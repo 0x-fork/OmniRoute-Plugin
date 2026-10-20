@@ -197,6 +197,17 @@ test("no class literal pairs a solid bg-accent/bg-primary with text-white (lime 
   );
 });
 
+test("STATUS_HEX mirrors the kit status palette (ReactFlow/SVG need hex)", async () => {
+  const { STATUS_HEX } = await import("../../src/shared/constants/statusColors.ts");
+  const { ciTokens } = await import("../../packages/ui-kit/src/tokens.ts");
+  assert.equal(STATUS_HEX.success, ciTokens.color.status.success);
+  assert.equal(STATUS_HEX.warning, ciTokens.color.status.warning);
+  assert.equal(STATUS_HEX.error, ciTokens.color.status.danger);
+  assert.equal(STATUS_HEX.muted, ciTokens.color.neutral[500]);
+  assert.equal(STATUS_HEX.approval, ciTokens.color.chart[3]);
+  assert.doesNotMatch(read("src/shared/constants/statusColors.ts"), /#[0-9a-fA-F]{6}/);
+});
+
 test("<html> opts into the kit theme surface", () => {
   assert.match(read("src/app/layout.tsx"), /<html[^>]*className="ci-theme"/);
 });

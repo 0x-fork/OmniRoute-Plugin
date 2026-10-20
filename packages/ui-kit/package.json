@@ -12,7 +12,8 @@
     ".": "./src/index.ts",
     "./styles.css": "./src/ci-ui.css",
     "./tokens.css": "./src/ci-tokens.css",
-    "./brand": "./src/keak-brand.tsx"
+    "./brand": "./src/keak-brand.tsx",
+    "./tokens": "./src/tokens.ts"
   },
   "peerDependencies": {
     "lucide-react": ">=0.400.0 <2",
