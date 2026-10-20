@@ -2,7 +2,7 @@
 import React from "react";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { SidebarProvider } from "@omniroute/ui-kit";
+import { SidebarProvider } from "@omniroute/ui-kit/sidebar";
 
 process.env.NEXT_PUBLIC_OMNIROUTE_E2E_MODE = "1";
 vi.mock("next/navigation", () => ({

@@ -2,7 +2,8 @@
 
 import { useSyncExternalStore } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { ProductSwitcher, SidebarTrigger, useSidebar } from "@omniroute/ui-kit";
+import { ProductSwitcher } from "@omniroute/ui-kit/keak-brand";
+import { SidebarTrigger, useSidebar } from "@omniroute/ui-kit/sidebar";
 
 const subscribePlatform = () => () => {};
 const getPlatformIsMac = () => {

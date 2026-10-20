@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 
 import Link from "next/link";
-import { Separator } from "@omniroute/ui-kit";
+import { Separator } from "@omniroute/ui-kit/separator";
 import { APP_CONFIG } from "@/shared/constants/appConfig";
 
 type FooterLink = { key: string; href: string; external?: boolean };

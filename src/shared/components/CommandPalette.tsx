@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { Dialog, DialogContent, DialogTitle } from "@omniroute/ui-kit";
+import { Dialog, DialogContent, DialogTitle } from "@omniroute/ui-kit/dialog";
 import {
   SIDEBAR_SECTIONS,
   HIDDEN_SIDEBAR_ITEMS_SETTING_KEY,

@@ -8,7 +8,7 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
-} from "@omniroute/ui-kit";
+} from "@omniroute/ui-kit/dropdown-menu";
 import { LANGUAGES } from "@/i18n/config";
 import type { Locale } from "@/i18n/config";
 import { useLocale } from "next-intl";
