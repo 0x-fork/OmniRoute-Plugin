@@ -64,7 +64,8 @@ describe("DistributeProxiesButton", () => {
   async function confirmDistribution(container: HTMLElement) {
     const trigger = container.querySelector("button") as HTMLButtonElement;
     await act(async () => trigger.click());
-    const confirm = Array.from(container.querySelectorAll("button")).find(
+    // The confirm dialog is a kit Dialog (Radix) since KEA-7886, portaled to document.body.
+    const confirm = Array.from(document.body.querySelectorAll("button")).find(
       (button) => button.textContent?.trim() === "Distribute proxies"
     );
     expect(confirm).toBeTruthy();

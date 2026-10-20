@@ -1,5 +1,8 @@
 "use client";
 
+import Icon from "@/shared/components/Icon";
+import { OmniRouteLockup } from "@/shared/components/OmniRouteLogo";
+
 import { useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
@@ -24,10 +27,11 @@ export default function OfflinePage() {
   return (
     <main className="min-h-screen text-text-main flex items-center justify-center p-6">
       <section className="w-full max-w-xl rounded-2xl border border-border bg-surface p-8 shadow-soft text-center">
-        <span className="material-symbols-outlined text-5xl text-primary mb-3" aria-hidden="true">
-          wifi_off
-        </span>
-        <h1 className="text-2xl font-semibold">{t("offline.title")}</h1>
+        <div className="mb-4 flex justify-center">
+          <OmniRouteLockup />
+        </div>
+        <Icon name="wifi_off" size={48} className="mx-auto mb-3 text-text-muted" />
+        <h1 className="ci-heading text-2xl">{t("offline.title")}</h1>
         <p className="mt-3 text-text-muted leading-relaxed">{t("offline.description")}</p>
 
         <div
@@ -38,9 +42,7 @@ export default function OfflinePage() {
           }`}
           aria-live="polite"
         >
-          <span className="material-symbols-outlined text-base" aria-hidden="true">
-            {isOnline ? "wifi" : "wifi_off"}
-          </span>
+          <Icon name={isOnline ? "wifi" : "wifi_off"} size={16} />
           <span>
             {isOnline ? t("offline.connectionRestored") : t("offline.offlineModeDetected")}
           </span>
@@ -49,7 +51,7 @@ export default function OfflinePage() {
         <div className="mt-8 flex flex-col sm:flex-row gap-3">
           <button
             onClick={() => window.location.reload()}
-            className="inline-flex items-center justify-center px-6 py-3 rounded-lg text-white text-sm font-semibold bg-gradient-to-br from-primary to-primary-hover hover:shadow-elevated transition-all duration-200 motion-reduce:transition-none"
+            className="inline-flex items-center justify-center px-6 py-3 rounded-lg text-sm font-semibold bg-primary text-accent-foreground hover:bg-primary-hover hover:shadow-elevated transition-all duration-200 motion-reduce:transition-none"
           >
             {t("offline.retryConnection")}
           </button>
