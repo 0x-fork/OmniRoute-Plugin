@@ -43,6 +43,8 @@ describe("CommandPalette on the kit Dialog", () => {
       expect(dialog.querySelector(".material-symbols-outlined")).toBeNull();
       const input = screen.getByRole("searchbox");
       expect(document.activeElement).toBe(input);
+      // our own clear button replaces the native search cancel (×), which would double it
+      expect(input.className).toContain("[&::-webkit-search-cancel-button]:appearance-none");
       fireEvent.change(input, { target: { value: "Providers" } });
       const options = await screen.findAllByRole("option");
       expect(screen.getByRole("listbox")).not.toBeNull();
