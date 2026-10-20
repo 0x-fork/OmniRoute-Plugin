@@ -9,9 +9,10 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", ".
 const BASE_PATH = "/omni";
 // Same resolution as scripts/build/build-next-isolated.mjs and next.config.mjs.
 const DIST = path.resolve(ROOT, process.env.NEXT_DIST_DIR || ".build/next");
-// A root-absolute /brand/ reference in markup, JS or CSS: `"/brand/`, `'/brand/` or `url(/brand/`.
-// Under basePath the asset lives at /omni/brand/…, so any of these is a broken link.
-const ABSOLUTE_BRAND = /["'(]\/brand\//;
+// A root-absolute /brand/ reference in markup, JS or CSS: `"/brand/`, `'/brand/`, a template
+// literal starting with /brand/, or `url(/brand/`. Under basePath the asset lives at
+// /omni/brand/…, so any of these is a broken link.
+const ABSOLUTE_BRAND = /["'`(]\/brand\//;
 
 // Pure-Node scan instead of `grep -rl`: grep exits 1 when nothing matches, which makes
 // execFileSync throw on exactly the passing case.
