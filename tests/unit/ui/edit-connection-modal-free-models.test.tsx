@@ -3,6 +3,9 @@ import React, { act } from "react";
 import { createRoot } from "react-dom/client";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
+// The shared Modal is a kit Dialog (Radix) since KEA-7886: its content is portaled to
+// document.body, so queries start there (the container is a child of body).
+
 vi.mock("next/navigation", () => ({
   useParams: () => ({ id: "openrouter" }),
   useRouter: () => ({ push: vi.fn(), replace: vi.fn() }),
@@ -34,7 +37,8 @@ function render(props: Record<string, unknown>) {
     );
   });
   containers.push({ root, el });
-  return el;
+  // Queries go through document.body: the dialog is portaled there (KEA-7886).
+  return document.body;
 }
 
 async function waitFor(fn: () => boolean, timeoutMs = 2000) {
