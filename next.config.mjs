@@ -233,6 +233,7 @@ const nextConfig = {
       "lobehub/icons",
       "@lobehub/icons",
       "lucide-react",
+      "@omniroute/ui-kit",
       "date-fns",
       "lodash",
       "lodash-es",
@@ -350,7 +351,13 @@ const nextConfig = {
     "util",
     "process",
   ],
-  transpilePackages: ["@omniroute/open-sse", "@lobehub/icons", "fumadocs-ui", "fumadocs-core"],
+  transpilePackages: [
+    "@omniroute/open-sse",
+    "@lobehub/icons",
+    "fumadocs-ui",
+    "fumadocs-core",
+    "@omniroute/ui-kit",
+  ],
   allowedDevOrigins: ["localhost", "127.0.0.1", "192.168.0.250"],
   typescript: {
     // TODO: Re-enable after fixing all sub-component useTranslations scope issues
