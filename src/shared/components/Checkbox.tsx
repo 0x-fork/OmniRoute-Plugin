@@ -10,6 +10,8 @@ interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>
 /**
  * Checkbox — adapter over the kit Checkbox (a real <input type="checkbox"> behind a styled
  * box). Optional `label` renders the kit's clickable row; without it, just the control.
+ * `className` lands on the kit label row (or on the control when there is no label), not on
+ * the native <input> as in the legacy Checkbox.
  */
 const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
   { label, className, ...props },

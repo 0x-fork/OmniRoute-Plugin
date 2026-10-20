@@ -76,4 +76,30 @@ describe("Button adapter → kit Button", () => {
     fireEvent.click(btn);
     expect(onClick).toHaveBeenCalledTimes(1);
   });
+
+  it("maps the icon sizes onto the kit icon buttons", () => {
+    const { getByRole, rerender } = render(
+      <Button size="icon" icon="search" aria-label="Search" />
+    );
+    expect(getByRole("button", { name: "Search" }).className).toContain("ci-button--size-icon");
+    rerender(<Button size="icon-sm" icon="search" aria-label="Search" />);
+    expect(getByRole("button", { name: "Search" }).className).toContain("ci-button--size-icon-sm");
+  });
+
+  it("an explicit type overrides the default type=button", () => {
+    const { getByRole } = render(<Button type="submit">Send</Button>);
+    expect(getByRole("button", { name: "Send" }).getAttribute("type")).toBe("submit");
+  });
+
+  it("an unknown variant or size falls back to primary / md instead of throwing", () => {
+    const { getByRole } = render(
+      <Button variant={"bogus" as never} size={"huge" as never} icon="search">
+        Safe
+      </Button>
+    );
+    const btn = getByRole("button", { name: "Safe" });
+    expect(btn.className).toContain("ci-button--default");
+    expect(btn.className).toContain("ci-button--size-default");
+    expect(btn.querySelector("svg.oi-icon")?.getAttribute("width")).toBe("16");
+  });
 });
