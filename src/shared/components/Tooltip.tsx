@@ -11,7 +11,7 @@
  */
 
 import { isValidElement, type ReactNode } from "react";
-import { Tooltip as KitTooltip, TooltipContent, TooltipTrigger } from "@omniroute/ui-kit";
+import { Tooltip as KitTooltip, TooltipContent, TooltipTrigger } from "@omniroute/ui-kit/tooltip";
 import { cn } from "@/shared/utils/cn";
 
 interface TooltipProps {

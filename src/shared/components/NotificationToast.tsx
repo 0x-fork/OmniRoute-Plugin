@@ -13,7 +13,7 @@
 
 import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
-import { Toaster, dismissToast, toast } from "@omniroute/ui-kit";
+import { Toaster, dismissToast, toast } from "@omniroute/ui-kit/toast";
 import { useNotificationStore } from "@/store/notificationStore";
 
 /**

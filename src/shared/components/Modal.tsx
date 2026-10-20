@@ -9,7 +9,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@omniroute/ui-kit";
+} from "@omniroute/ui-kit/dialog";
 import { cn } from "@/shared/utils/cn";
 import Button, { type ButtonVariant } from "./Button";
 import Icon from "./Icon";

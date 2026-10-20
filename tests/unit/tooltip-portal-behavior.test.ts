@@ -30,7 +30,7 @@ const kitSrc = fs.readFileSync(KIT_TOOLTIP_SRC, "utf8");
 
 test("#2352 Tooltip renders through the kit TooltipContent, which portals unconditionally", () => {
   assert.ok(
-    /import \{[^}]*\bTooltipContent\b[^}]*\} from "@omniroute\/ui-kit"/.test(src),
+    /import \{[^}]*\bTooltipContent\b[^}]*\} from "@omniroute\/ui-kit\/tooltip"/.test(src),
     "Tooltip must render its content through the kit TooltipContent"
   );
   assert.ok(
