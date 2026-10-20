@@ -207,6 +207,11 @@ export function isArenaEloSyncEnabled(): boolean {
   return isFeatureFlagEnabled("ARENA_ELO_SYNC_ENABLED");
 }
 
+/** Dashboard shell renderer (KEA-7886): kit shell when true, legacy shell when false. */
+export function isUiKitShellEnabled(): boolean {
+  return isFeatureFlagEnabled("UI_KIT_SHELL");
+}
+
 export function isControlPlaneProxyDirectFallbackEnabled(): boolean {
   try {
     return isFeatureFlagEnabled("OMNIROUTE_CONTROL_PLANE_PROXY_DIRECT_FALLBACK");
