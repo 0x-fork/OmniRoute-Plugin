@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 // Lista os nomes Material Symbols em uso (ligaduras, props icon=/iconRight=/emptyIcon= e
 // `icon: "..."` em constantes) e imprime um esqueleto de ICON_MAP para preencher à mão.
+// Só nomes do vocabulário real (node_modules/material-symbols/index.d.ts) são emitidos — strings
+// de aparência parecida (`true`, `asc`, `amber`, `anthropic`…) nunca entram no mapa.
 //   node scripts/dev/gen-icon-map.mjs           # esqueleto TS com os nomes que faltam no mapa atual
 //   node scripts/dev/gen-icon-map.mjs --names   # só os nomes, um por linha (usado pelo teste de cobertura)
 import fs from "node:fs";
@@ -13,8 +15,57 @@ const PATTERNS = [
   /material-symbols-outlined[^>]*>\s*([a-z][a-z0-9_]+)\s*</g, // <span className="material-symbols-outlined">name</span>
   /\b(?:icon|iconRight|emptyIcon|leadingIcon)=\"([a-z][a-z0-9_]+)\"/g, // prop icon="name"
   /\bicon:\s*\"([a-z][a-z0-9_]+)\"/g, // { icon: "name" } (sidebar sections, tabs)
-  /\?\s*\"([a-z][a-z0-9_]+)\"\s*:\s*\"([a-z][a-z0-9_]+)\"/g, // cond ? "a" : "b" inside an icon slot
 ];
+// Ternários (`cond ? "a" : "b"`) só contam quando estão num slot de ícone: o conteúdo de um span
+// material-symbols-outlined ou a expressão de uma prop icon=/iconRight=/emptyIcon=/leadingIcon={…}.
+const SLOT_PATTERNS = [
+  /material-symbols-outlined[^>]*>([^<]*)</g, // <span className="material-symbols-outlined">{cond ? "a" : "b"}</span>
+  /\b(?:icon|iconRight|emptyIcon|leadingIcon)=\{([^{}]*(?:\{[^{}]*\}[^{}]*)*)\}/g, // icon={cond ? "a" : "b"}
+];
+const TERNARY_RE = /\?\s*\"([a-z][a-z0-9_]+)\"\s*:\s*\"([a-z][a-z0-9_]+)\"/g;
+const VOCABULARY_FILE = "node_modules/material-symbols/index.d.ts";
+// Pre-Symbols ("Material Icons") names that index.d.ts does not declare but the bundled
+// material-symbols-outlined.woff2 still ligates (checked in its GSUB ligature table,
+// material-symbols@0.47.0, 2026-10-19). Only the ones in use are listed; add a name here only
+// after confirming the font renders it — new code should prefer the canonical Symbols name
+// (expand_more → keyboard_arrow_down, push_pin → keep, emoji_events → trophy, …).
+const LEGACY_LIGATURES = [
+  "auto_awesome",
+  "auto_fix_high",
+  "auto_fix_normal",
+  "business",
+  "cloud_queue",
+  "do_not_disturb",
+  "emoji_events",
+  "error_outline",
+  "expand_less",
+  "expand_more",
+  "file_download",
+  "file_upload",
+  "generating_tokens",
+  "insert_drive_file",
+  "push_pin",
+  "restore",
+  "tips_and_updates",
+];
+
+/**
+ * Every ligature name the installed `material-symbols` package declares
+ * (`type MaterialSymbols = ["123", …]` in index.d.ts) plus LEGACY_LIGATURES.
+ */
+export function loadMaterialNames(root = ROOT) {
+  const file = path.join(root, VOCABULARY_FILE);
+  if (!fs.existsSync(file)) {
+    throw new Error(`${VOCABULARY_FILE} not found under ${root} — run npm install first`);
+  }
+  const text = fs.readFileSync(file, "utf8");
+  const start = text.indexOf("type MaterialSymbols = [");
+  const end = text.indexOf("];", start);
+  if (start < 0 || end < 0) throw new Error(`${VOCABULARY_FILE}: MaterialSymbols tuple not found`);
+  const names = new Set([...text.slice(start, end).matchAll(/"([^"]+)"/g)].map((m) => m[1]));
+  for (const n of LEGACY_LIGATURES) names.add(n);
+  return names;
+}
 
 function walk(dir, out = []) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -27,13 +78,20 @@ function walk(dir, out = []) {
 }
 
 export function collectNames(root = ROOT) {
+  const vocabulary = loadMaterialNames(root);
   const names = new Set();
+  const add = (g) => {
+    if (g && vocabulary.has(g)) names.add(g);
+  };
   for (const dir of DIRS)
     for (const file of walk(path.join(root, dir))) {
       const text = fs.readFileSync(file, "utf8");
       if (!/material-symbols-outlined|icon[:=]/.test(text)) continue;
       for (const re of PATTERNS)
-        for (const m of text.matchAll(re)) for (const g of m.slice(1)) if (g) names.add(g);
+        for (const m of text.matchAll(re)) for (const g of m.slice(1)) add(g);
+      for (const re of SLOT_PATTERNS)
+        for (const slot of text.matchAll(re))
+          for (const m of slot[1].matchAll(TERNARY_RE)) for (const g of m.slice(1)) add(g);
     }
   return [...names].sort();
 }

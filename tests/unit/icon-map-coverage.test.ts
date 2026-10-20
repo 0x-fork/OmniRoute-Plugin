@@ -26,3 +26,15 @@ test("every Material Symbols name used in src/ has an entry in ICON_MAP (Lucide 
     `names without an ICON_MAP entry (run: npm run gen:icon-map):\n${missing.join("\n")}`
   );
 });
+
+test("the generator never emits a name outside the Material Symbols vocabulary", async () => {
+  const { collectNames, loadMaterialNames } = await import("../../scripts/dev/gen-icon-map.mjs");
+  const vocabulary = loadMaterialNames(ROOT);
+  assert.ok(
+    vocabulary.size > 3000,
+    `expected the full Material vocabulary, got ${vocabulary.size}`
+  );
+  const names = collectNames(ROOT);
+  assert.ok(!names.includes("true") && !names.includes("anthropic"), "non-icon strings leaked");
+  for (const n of names) assert.ok(vocabulary.has(n), `"${n}" is not a Material Symbols name`);
+});
