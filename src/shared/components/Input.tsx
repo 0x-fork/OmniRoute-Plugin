@@ -128,7 +128,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       htmlFor={inputId}
       label={fieldLabel}
       hint={hint && !error ? <span id={hintId}>{hint}</span> : undefined}
-      error={error ? <span id={errorId}>{error}</span> : undefined}
+      error={
+        error ? (
+          <span id={errorId} role="alert">
+            {error}
+          </span>
+        ) : undefined
+      }
       className={cn("gap-1.5", className)}
     >
       {control}

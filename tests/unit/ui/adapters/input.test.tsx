@@ -27,6 +27,8 @@ describe("Input adapter → kit Field + Input", () => {
     expect(input.getAttribute("aria-describedby")).toBe("k-error");
     expect(input.className).toContain("ci-input--error");
     expect(getByText("Required").id).toBe("k-error");
+    // legacy parity: the error message is announced (role="alert" on the legacy <p>)
+    expect(getByText("Required").getAttribute("role")).toBe("alert");
     expect(queryByText("h")).toBeNull();
   });
 
