@@ -183,7 +183,7 @@ function ScheduleDayPicker({ formState, setScheduleDays }: LimitsSectionProps<"s
               }
               className={`px-2.5 py-1 text-xs font-medium rounded-md transition-all ${
                 selected
-                  ? "bg-primary text-white"
+                  ? "bg-primary text-accent-foreground"
                   : "bg-surface border border-border text-text-muted hover:border-primary/50"
               }`}
             >

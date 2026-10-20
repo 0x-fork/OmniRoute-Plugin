@@ -349,7 +349,7 @@ function AllowedEndpointsSection({
             onClick={() => setAllowAllEndpoints(true)}
             className={`px-2.5 py-1 rounded text-xs font-medium transition-all ${
               formState.allowAllEndpoints
-                ? "bg-primary text-white"
+                ? "bg-primary text-accent-foreground"
                 : "text-text-muted hover:bg-black/5 dark:hover:bg-white/5"
             }`}
           >
@@ -360,7 +360,7 @@ function AllowedEndpointsSection({
             onClick={() => setAllowAllEndpoints(false)}
             className={`px-2.5 py-1 rounded text-xs font-medium transition-all ${
               !formState.allowAllEndpoints
-                ? "bg-primary text-white"
+                ? "bg-primary text-accent-foreground"
                 : "text-text-muted hover:bg-black/5 dark:hover:bg-white/5"
             }`}
           >

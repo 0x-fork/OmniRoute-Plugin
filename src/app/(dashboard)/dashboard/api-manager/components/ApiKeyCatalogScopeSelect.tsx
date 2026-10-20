@@ -42,7 +42,7 @@ export function ApiKeyCatalogScopeSelect({
             onClick={() => onChange(opt.value)}
             className={`flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-semibold transition-colors ${
               value === opt.value
-                ? "bg-primary text-white"
+                ? "bg-primary text-accent-foreground"
                 : "text-text-muted hover:bg-black/5 dark:hover:bg-white/5"
             }`}
           >

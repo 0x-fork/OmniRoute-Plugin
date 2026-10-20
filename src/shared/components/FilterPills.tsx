@@ -45,7 +45,9 @@ export default function FilterPills({
             onClick={() => onChange(opt.value)}
             className={cn(
               "inline-flex grow items-center justify-center gap-1 whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium transition-colors sm:grow-0",
-              active ? "bg-primary text-white" : "bg-muted/60 text-text-muted hover:bg-muted"
+              active
+                ? "bg-primary text-accent-foreground"
+                : "bg-muted/60 text-text-muted hover:bg-muted"
             )}
           >
             {opt.icon && (

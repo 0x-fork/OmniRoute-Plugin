@@ -38,7 +38,7 @@ function ActionButtons({
         </button>
         <button
           type="button"
-          className="rounded-lg bg-primary px-3 py-1.5 text-sm text-white"
+          className="rounded-lg bg-primary px-3 py-1.5 text-sm text-accent-foreground"
           onClick={onSave}
           disabled={saving}
         >

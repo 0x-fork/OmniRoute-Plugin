@@ -381,7 +381,7 @@ export default function ProxyLogger() {
                     ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/40"
                     : f.key === "timeout"
                       ? "bg-amber-500/20 text-amber-400 border-amber-500/40"
-                      : "bg-primary text-white border-primary"
+                      : "bg-primary text-accent-foreground border-primary"
                 : "bg-bg-subtle border-border text-text-muted hover:border-text-muted"
             }`}
           >
@@ -401,7 +401,7 @@ export default function ProxyLogger() {
             onClick={() => setSourceFilter(sourceFilter === f.key ? "all" : f.key)}
             className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border transition-all ${
               sourceFilter === f.key
-                ? "bg-primary text-white border-primary"
+                ? "bg-primary text-accent-foreground border-primary"
                 : "bg-bg-subtle border-border text-text-muted hover:border-text-muted"
             }`}
           >

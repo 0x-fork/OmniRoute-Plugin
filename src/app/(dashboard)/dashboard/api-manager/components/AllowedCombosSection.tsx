@@ -10,7 +10,7 @@ export interface AllowedComboOption {
   models?: unknown[];
 }
 
-const MODE_BUTTON_ACTIVE = "bg-primary text-white";
+const MODE_BUTTON_ACTIVE = "bg-primary text-accent-foreground";
 const MODE_BUTTON_IDLE = "text-text-muted hover:bg-black/5 dark:hover:bg-white/5";
 
 function ComboAccessModeToggle({

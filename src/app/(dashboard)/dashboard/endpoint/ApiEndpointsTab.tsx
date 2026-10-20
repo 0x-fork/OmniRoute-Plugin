@@ -583,7 +583,7 @@ export default function ApiEndpointsTab() {
                                          transition-colors shrink-0
                                 ${
                                   isTrying
-                                    ? "bg-primary text-white"
+                                    ? "bg-primary text-accent-foreground"
                                     : "bg-primary/10 text-primary hover:bg-primary/20"
                                 }`}
                             >
@@ -678,7 +678,7 @@ export default function ApiEndpointsTab() {
                                 onClick={() => executeTryIt(ep)}
                                 disabled={trying}
                                 className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg
-                                           bg-primary text-white hover:bg-primary/90 disabled:opacity-50 transition-colors"
+                                           bg-primary text-accent-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors"
                               >
                                 <span className="material-symbols-outlined text-[14px]">
                                   {trying ? "hourglass_empty" : "send"}

@@ -689,7 +689,7 @@ export default function Sidebar({
               collapsed ? "justify-center" : "flex-1 gap-3"
             )}
           >
-            <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary text-white shadow-sm">
+            <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary text-accent-foreground shadow-sm">
               {customLogo ? (
                 <img src={customLogo} alt="" className="size-6 object-contain" />
               ) : (

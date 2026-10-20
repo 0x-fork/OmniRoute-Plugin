@@ -104,7 +104,7 @@ function StreamDefaultModeSelector({
           onClick={() => setStreamDefaultMode("legacy")}
           className={`inline-flex flex-1 sm:flex-none items-center justify-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold transition-all ${
             formState.streamDefaultMode === "legacy"
-              ? "bg-primary text-white"
+              ? "bg-primary text-accent-foreground"
               : "text-text-muted hover:bg-black/5 dark:hover:bg-white/5"
           }`}
         >
@@ -116,7 +116,7 @@ function StreamDefaultModeSelector({
           onClick={() => setStreamDefaultMode("json")}
           className={`inline-flex flex-1 sm:flex-none items-center justify-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold transition-all ${
             formState.streamDefaultMode === "json"
-              ? "bg-primary text-white"
+              ? "bg-primary text-accent-foreground"
               : "text-text-muted hover:bg-black/5 dark:hover:bg-white/5"
           }`}
         >

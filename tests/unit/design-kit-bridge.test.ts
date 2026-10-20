@@ -151,6 +151,33 @@ test("adapter extension classes exist for the Button warning variant and Badge t
   }
 });
 
+test("no class literal pairs a solid bg-accent/bg-primary with text-white (lime needs dark ink)", () => {
+  // `--color-accent` / `--color-primary` are the kit's lime (#d8ff00): white on it is ~1.1:1.
+  // Solid token = `bg-accent` / `bg-primary` followed by whitespace, a quote or the end —
+  // `bg-accent/10`, `bg-accent-light`, `bg-primary/20` are tints and stay out of scope.
+  const SOLID = /(?<![\w/:-])bg-(?:accent|primary)(?=[\s"'`]|$)/;
+  const WHITE = /(?<![\w/:-])text-white(?=[\s"'`]|$)/;
+  const LITERAL = /"[^"]*"|'[^'\n]*'|`[^`]*`/g;
+  const offenders: string[] = [];
+  const walk = (dir: string) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(full);
+      else if (entry.name.endsWith(".tsx")) {
+        const src = fs.readFileSync(full, "utf8");
+        for (const m of src.matchAll(LITERAL)) {
+          if (SOLID.test(m[0]) && WHITE.test(m[0])) {
+            const line = src.slice(0, m.index).split("\n").length;
+            offenders.push(`${path.relative(ROOT, full)}:${line}`);
+          }
+        }
+      }
+    }
+  };
+  walk(path.join(ROOT, "src"));
+  assert.deepEqual(offenders, [], `solid accent surface with white ink:\n${offenders.join("\n")}`);
+});
+
 test("<html> opts into the kit theme surface", () => {
   assert.match(read("src/app/layout.tsx"), /<html[^>]*className="ci-theme"/);
 });
