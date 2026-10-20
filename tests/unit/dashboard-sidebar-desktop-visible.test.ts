@@ -16,8 +16,10 @@ function readSrc(path: string): string {
 // hidden. The fix moves visibility into an explicit `.dashboard-sidebar-desktop`
 // class backed by a 1024px media query in globals.css.
 
+// The `.dashboard-sidebar-desktop` contract belongs to the legacy shell (UI_KIT_SHELL=false kill
+// switch); the kit shell mounts the sidebar through SidebarProvider/SidebarInset (test below).
 test("DashboardLayout desktop sidebar uses the explicit visibility class, not the hidden/lg:flex cascade", () => {
-  const source = readSrc("src/shared/components/layouts/DashboardLayout.tsx");
+  const source = readSrc("src/shared/components/layouts/legacy/DashboardLayoutLegacy.tsx");
 
   // The desktop sidebar wrapper must reference the dedicated class.
   assert.match(
@@ -61,4 +63,28 @@ test("globals.css defines dashboard-sidebar-desktop hidden by default and flex a
     baseRule,
     "globals.css must hide .dashboard-sidebar-desktop by default (display:none)"
   );
+});
+
+test("the kit shell mounts the sidebar through SidebarProvider/SidebarInset (no hidden/lg:flex cascade)", () => {
+  const shell = readSrc("src/shared/components/layouts/DashboardShell.tsx");
+  assert.match(shell, /<SidebarProvider/);
+  assert.match(shell, /<SidebarInset\s+id="main-content"/);
+  assert.doesNotMatch(shell, /className="hidden[^"]*lg:flex"/);
+});
+
+test("the kit shell and the Sidebar import the kit sidebar subpath, not the 73-file barrel", () => {
+  // The barrel pulls every kit module (Radix, charts…) into each importer; the first Sidebar
+  // render in vitest went from ~43 s (barrel) to a few seconds (subpath) in trilha E's measure.
+  for (const file of [
+    "src/shared/components/Sidebar.tsx",
+    "src/shared/components/layouts/DashboardShell.tsx",
+  ]) {
+    const source = readSrc(file);
+    assert.doesNotMatch(source, /from "@omniroute\/ui-kit"/, `${file} imports the kit barrel`);
+    assert.match(
+      source,
+      /from "@omniroute\/ui-kit\/sidebar"/,
+      `${file} imports the sidebar subpath`
+    );
+  }
 });
