@@ -12,7 +12,7 @@
     ".": "./src/index.ts",
     "./styles.css": "./src/ci-ui.css",
     "./tokens.css": "./src/ci-tokens.css",
-    "./brand": "./src/keak-brand.ts"
+    "./brand": "./src/keak-brand.tsx"
   },
   "peerDependencies": {
     "lucide-react": ">=0.400.0 <2",

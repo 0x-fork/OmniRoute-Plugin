@@ -50,7 +50,16 @@ function main() {
   }
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "ui-kit-snapshot-"));
   try {
-    execFileSync("sh", ["-c", `git -C "${CLONE}" archive ${commit} src | tar -x -C "${tmp}"`]);
+    // Hooks inherit GIT_DIR/GIT_INDEX_FILE from the repo being committed; drop them so the
+    // archive command resolves the clone, not OmniRoute.
+    const cloneEnv = Object.fromEntries(
+      Object.entries(process.env).filter(([k]) => !k.startsWith("GIT_"))
+    );
+    const archive = execFileSync("git", ["-C", CLONE, "archive", commit, "src"], {
+      env: cloneEnv,
+      maxBuffer: 64 * 1024 * 1024,
+    });
+    execFileSync("tar", ["-x", "-C", tmp], { input: archive });
     const expected = new Map();
     for (const f of walk(path.join(tmp, "src"))) {
       const rel = path.relative(path.join(tmp, "src"), f);

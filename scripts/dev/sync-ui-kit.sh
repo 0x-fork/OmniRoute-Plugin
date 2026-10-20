@@ -14,7 +14,7 @@ DEST="$ROOT/packages/ui-kit"
 
 # 1) diff local não documentado?
 if [ -d "$DEST/src" ] && [ -f "$DEST/UPSTREAM.md" ]; then
-  PREV=$(sed -nE 's/^- commit: ([0-9a-f]{40}).*/\1/p' "$DEST/UPSTREAM.md" | head -1)
+  PREV=$(grep -m1 -oE '^- commit: [0-9a-f]{40}' "$DEST/UPSTREAM.md" | cut -d' ' -f3 || true)
   if [ -n "$PREV" ]; then
     TMP=$(mktemp -d); trap 'rm -rf "$TMP"' EXIT
     git -C "$CLONE" archive "$PREV" src | tar -x -C "$TMP"
@@ -34,7 +34,7 @@ git -C "$CLONE" cat-file -e "$COMMIT^{commit}" || { echo "commit $COMMIT não ex
 rm -rf "$DEST/src"; mkdir -p "$DEST"
 git -C "$CLONE" archive "$COMMIT" src | tar -x -C "$DEST"
 find "$DEST/src" \( -name '*.ts' -o -name '*.tsx' \) -exec sed -i -E 's#(from "\.{1,2}/[^"]+)\.js"#\1"#g' {} +
-cp "$CLONE/public/brand/lucide-license.txt" "$DEST/lucide-license.txt"
+git -C "$CLONE" show "$COMMIT:public/brand/lucide-license.txt" > "$DEST/lucide-license.txt"
 VERSION=$(git -C "$CLONE" show "$COMMIT:package.json" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).version))')
 DATE=$(git -C "$CLONE" show -s --format=%cs "$COMMIT")
 

@@ -14,6 +14,11 @@ test("packages/ui-kit is a private, UNLICENSED workspace pinned to an upstream c
   assert.equal(pkg.license, "UNLICENSED");
   assert.equal(pkg.exports["."], "./src/index.ts");
   assert.equal(pkg.exports["./styles.css"], "./src/ci-ui.css");
+  for (const target of Object.values(pkg.exports))
+    assert.ok(
+      fs.existsSync(path.join(ROOT, "packages/ui-kit", target as string)),
+      `export target missing: ${target}`
+    );
   const upstream = read("packages/ui-kit/UPSTREAM.md");
   assert.match(upstream, /commit:\s*[0-9a-f]{40}/);
   assert.match(upstream, /version:\s*0\.0\.48/);
