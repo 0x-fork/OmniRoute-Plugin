@@ -1,12 +1,7 @@
 "use client";
 
 import { Suspense, useEffect, useInsertionEffect, useState } from "react";
-import {
-  Sidebar as KitSidebar,
-  SidebarInset,
-  SidebarProvider,
-  useSidebar,
-} from "@omniroute/ui-kit/sidebar";
+import { Sidebar as KitSidebar, SidebarInset, SidebarProvider } from "@omniroute/ui-kit/sidebar";
 import Sidebar, { useSidebarSide } from "../Sidebar";
 import Header from "../Header";
 import NotificationToast from "../NotificationToast";
@@ -25,19 +20,10 @@ import { useTranslations } from "next-intl";
 const isE2EMode = process.env.NEXT_PUBLIC_OMNIROUTE_E2E_MODE === "1";
 
 /**
- * Below this width the kit Sidebar becomes a Sheet (mobile drawer). 1024px keeps the legacy
- * `lg` contract the Header still follows (its menu button is `lg:hidden`), so no width shows a
- * menu button that opens nothing.
+ * Below this width the kit Sidebar becomes a Sheet (mobile drawer). 1024px keeps the legacy `lg`
+ * drawer breakpoint and matches the Header, whose page title appears from `lg` up.
  */
 const SIDEBAR_MOBILE_BREAKPOINT = 1024;
-
-/** Header inside the SidebarProvider: its mobile menu button opens the kit Sheet. */
-function ShellHeader({ onOpenCommandPalette }: { onOpenCommandPalette: () => void }) {
-  const { setOpenMobile } = useSidebar();
-  return (
-    <Header onMenuClick={() => setOpenMobile(true)} onOpenCommandPalette={onOpenCommandPalette} />
-  );
-}
 
 export default function DashboardShell({
   children,
@@ -117,7 +103,9 @@ export default function DashboardShell({
         id="main-content"
         className="relative flex min-h-0 flex-1 min-w-0 flex-col overflow-hidden"
       >
-        <ShellHeader onOpenCommandPalette={() => setCommandPaletteOpen(true)} />
+        {/* Inside the SidebarProvider: the Header's SidebarTrigger is the shell's single sidebar
+            toggle (collapse on desktop, opens the Sheet on mobile). */}
+        <Header onOpenCommandPalette={() => setCommandPaletteOpen(true)} />
         {!isE2EMode && <MaintenanceBanner />}
         <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden custom-scrollbar p-4 sm:p-6 lg:p-10">
           {/* Fluid up to a 4K cap (3840px), centred beyond it. */}

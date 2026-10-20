@@ -150,11 +150,6 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
   const tc = useTranslations("common");
   const { state: sidebarState, isMobile } = useSidebar();
   const collapsed = sidebarState === "collapsed" && !isMobile;
-  const triggerLabel = isMobile
-    ? tc("close")
-    : collapsed
-      ? t("expandSidebar")
-      : t("collapseSidebar");
   const [showShutdownModal, setShowShutdownModal] = useState(false);
   const [showRestartModal, setShowRestartModal] = useState(false);
   const [isShuttingDown, setIsShuttingDown] = useState(false);
@@ -681,13 +676,17 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
               </>
             )}
           </Link>
-          <SidebarTrigger
-            aria-label={triggerLabel}
-            title={triggerLabel}
-            className={cn("shrink-0", isMacElectron && "ms-auto")}
-          >
-            <Icon name={isMobile ? "close" : collapsed ? "left_panel_open" : "left_panel_close"} />
-          </SidebarTrigger>
+          {/* The shell Header owns the collapse/expand trigger (one per page). Only the mobile
+              drawer needs its own control: the modal Sheet hides the header while it is open. */}
+          {isMobile && (
+            <SidebarTrigger
+              aria-label={tc("close")}
+              title={tc("close")}
+              className={cn("shrink-0", isMacElectron && "ms-auto")}
+            >
+              <Icon name="close" />
+            </SidebarTrigger>
+          )}
         </div>
       </SidebarHeader>
 

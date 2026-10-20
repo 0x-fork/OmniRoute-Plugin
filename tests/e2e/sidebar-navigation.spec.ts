@@ -31,10 +31,12 @@ for (const theme of ["light", "dark"] as const) {
     await expect(sidebar.getByRole("link", { name: "Caveman", exact: true })).toBeVisible();
     await sidebar.getByRole("searchbox").fill("");
     await expect(group).toHaveAttribute("aria-expanded", "false");
-    const collapse = sidebar.getByRole("button", { name: "Collapse sidebar", exact: true });
+    // The shell Header owns the single collapse/expand trigger (trilha G).
+    const shellHeader = page.locator("header.ci-sidebar-shell-header");
+    const collapse = shellHeader.getByRole("button", { name: "Collapse sidebar", exact: true });
     await collapse.click();
     await expect(sidebar.getByRole("link", { name: "Home", exact: true })).toBeVisible();
-    await sidebar.getByRole("button", { name: "Expand sidebar", exact: true }).click();
+    await shellHeader.getByRole("button", { name: "Expand sidebar", exact: true }).click();
     await expect(sidebar.getByRole("searchbox")).toBeVisible();
     await page.evaluate(() => window.history.pushState(null, "", "/dashboard/context/caveman"));
     await expect(sidebar.locator("a[aria-current=page]")).toHaveAttribute(

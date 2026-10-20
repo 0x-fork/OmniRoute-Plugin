@@ -41,7 +41,11 @@ const isE2EMode = process.env.NEXT_PUBLIC_OMNIROUTE_E2E_MODE === "1";
 
 // Map sidebar item id → header description i18n key
 // "omni-skills" is an extended key for the /dashboard/omni-skills route (graceful fallback during deploy)
-const HEADER_DESCRIPTIONS: Partial<Record<HideableSidebarItemId | "omni-skills", string>> = {
+// `proxy` is a live (non-hideable) item id with its own description, so the key type names it;
+// the dead `settings` key (no item has that id) was dropped.
+const HEADER_DESCRIPTIONS: Partial<
+  Record<HideableSidebarItemId | "omni-skills" | "proxy", string>
+> = {
   home: "homeDescription",
   endpoints: "endpointDescription",
   "api-manager": "apiManagerDescription",
@@ -62,7 +66,6 @@ const HEADER_DESCRIPTIONS: Partial<Record<HideableSidebarItemId | "omni-skills",
   skills: "skillsDescription",
   "agent-skills": "agentSkillsDescription",
   "omni-skills": "omniSkillsDescription",
-  settings: "settingsDescription",
   "context-caveman": "contextCavemanDescription",
   "context-rtk": "contextRtkDescription",
   "context-combos": "contextCombosDescription",
@@ -134,11 +137,7 @@ function getSidebarItem(pathname: string): SidebarItemDefinition | undefined {
 }
 
 type HeaderProps = {
-  /** Accepted and ignored — the kit `SidebarTrigger` drives the sidebar. */
-  onMenuClick?: () => void;
   onOpenCommandPalette?: () => void;
-  /** Accepted and ignored — the trigger is always rendered. */
-  showMenuButton?: boolean;
 };
 
 type PageInfo = {
@@ -184,8 +183,8 @@ function usePageInfo(pathname: string | null): PageInfo {
 
 /**
  * Dashboard top bar on the kit shell header (`.ci-sidebar-shell-header`). Renders inside the
- * kit `SidebarProvider`; the `SidebarTrigger` toggles the sidebar itself, so `onMenuClick` and
- * `showMenuButton` are accepted for call-site compatibility and ignored.
+ * kit `SidebarProvider`; its `SidebarTrigger` is the shell's only sidebar toggle (collapse on
+ * desktop, opens the mobile Sheet below the shell's 1024 px breakpoint).
  */
 export default function Header({ onOpenCommandPalette }: HeaderProps) {
   const isMac = useSyncExternalStore(subscribePlatform, getPlatformIsMac, getPlatformIsMacServer);
