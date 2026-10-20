@@ -214,15 +214,17 @@
 }
 
 /* ── Focus Indicators (U-3) ── kept in @layer base so kit components (which style their own
-   :focus-visible in @layer components) win; legacy screens still get this ring. */
+   :focus-visible in @layer components) win; legacy screens still get this ring. The generic
+   rule is an OUTLINE on purpose: a box-shadow here would lose the cascade to any Tailwind
+   `shadow-*` utility (layer utilities) while `outline: none` still applied — no visible focus
+   on every legacy <Button> with shadow-sm. Outline is never clobbered by a utility. */
 :root {
   --focus-ring: 0 0 0 2px var(--ci-color-background), 0 0 0 4px var(--ci-color-focus-ring);
 }
 @layer base {
   :focus-visible {
-    outline: none;
-    box-shadow: var(--focus-ring);
-    border-radius: var(--ci-radius-sm);
+    outline: 2px solid var(--ci-color-focus-ring);
+    outline-offset: 2px;
   }
   .focus-ring:focus-visible {
     outline: none;

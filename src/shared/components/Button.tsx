@@ -6,7 +6,7 @@ const variants = {
   // `--grad-brand` is a flat kit accent since the token bridge (KEA-7886): a color is not a
   // valid background-image, so paint it as background-color with the kit's accent ink.
   primary: "bg-[var(--grad-brand)] text-accent-foreground shadow-sm hover:brightness-105",
-  accent: "bg-accent text-white shadow-sm hover:bg-accent-hover",
+  accent: "bg-accent text-accent-foreground shadow-sm hover:bg-accent-hover",
   secondary:
     "bg-white dark:bg-white/10 border border-black/10 dark:border-white/10 text-text-main hover:bg-black/5 dark:hover:bg-white/5",
   outline: "border border-black/15 dark:border-white/15 text-text-main hover:bg-black/5",

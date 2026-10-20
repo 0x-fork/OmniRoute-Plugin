@@ -113,7 +113,18 @@ test("the graph-paper grid, the coral/indigo palette and the macOS font stack ar
 });
 
 test("focus ring lives in @layer base so kit controls keep their own focus styles", () => {
-  assert.match(css, /@layer base \{[^}]*:focus-visible \{/);
+  // An OUTLINE, not a box-shadow: Tailwind `shadow-*` utilities (layer utilities) would win
+  // the box-shadow cascade over @layer base and leave legacy buttons without any focus cue.
+  assert.match(
+    css,
+    /@layer base \{[\s\S]*?:focus-visible \{\s*outline: 2px solid var\(--ci-color-focus-ring\);\s*outline-offset: 2px;/
+  );
+  assert.doesNotMatch(css, /:focus-visible \{\s*outline: none;\s*box-shadow: var\(--focus-ring\)/);
+  assert.match(
+    css,
+    /\.focus-ring:focus-visible \{\s*outline: none;\s*box-shadow: var\(--focus-ring\);/
+  );
+  assert.match(css, /:focus:not\(:focus-visible\) \{\s*outline: none;/);
   assert.match(
     css,
     /--focus-ring:\s*0 0 0 2px var\(--ci-color-background\), 0 0 0 4px var\(--ci-color-focus-ring\);/
@@ -155,6 +166,86 @@ test("flow surfaces still express state with --orch-status-* tokens, not fixed h
     assert.ok(!src.includes('"#22c55e"'), `${name} hardcodes no success hex`);
   }
   assert.ok(!engine.includes('"#f59e0b"'), "engine hardcodes no warning hex");
+});
+
+// ── Guards carried verbatim in spirit from design-grid-background.test.ts (383c5dc5d479) that
+// stay true after the bridge; the grid/14px/gradient/STATUS_HEX ones were obsolete by design.
+test("DashboardLayout content shell is fluid up to ~4K before centering", () => {
+  const dashboardLayout = read("src/shared/components/layouts/DashboardLayout.tsx");
+  assert.ok(
+    dashboardLayout.includes("max-w-[3840px] mx-auto"),
+    "content wrapper caps at 3840px (4K) and centers only beyond that"
+  );
+  assert.ok(!dashboardLayout.includes("max-w-7xl"), "the old 1280px max-w-7xl cap is gone");
+});
+
+test("DataTable is theme-aware via --table-* tokens, no color literal, no dead fallbacks", () => {
+  const dt = read("src/shared/components/DataTable.tsx");
+  assert.ok(dt.includes("var(--table-header-bg)"), "header uses the token");
+  assert.ok(dt.includes("var(--table-row-zebra)"), "zebra uses the token");
+  assert.ok(dt.includes("var(--color-border)"), "header border uses the brand token");
+  assert.ok(!/rgba\(|#[0-9a-fA-F]{3,6}/.test(dt), "DataTable hardcodes no color literal");
+  assert.ok(
+    !dt.includes("--text-secondary") && !dt.includes("--bg-table-header"),
+    "the dead var fallbacks are gone"
+  );
+});
+
+test("every flow surface expresses state with --orch-status-* tokens; categorical palettes stay", () => {
+  const combo = read("src/app/(dashboard)/dashboard/combos/live/ComboLiveStudio.tsx");
+  const engine = read("src/app/(dashboard)/dashboard/compression/studio/nodes/EngineNode.tsx");
+  const waterfall = read("src/app/(dashboard)/dashboard/compression/studio/WaterfallInspector.tsx");
+  const cockpit = read("src/app/(dashboard)/dashboard/compression/studio/CompressionCockpit.tsx");
+  const io = read("src/app/(dashboard)/dashboard/compression/studio/nodes/IoNode.tsx");
+  const strategy = read("src/app/(dashboard)/dashboard/combos/live/nodes/StrategyNode.tsx");
+
+  // Combo live studio: active/error provider pills + the run outcome tri-state.
+  assert.ok(combo.includes("FLOW_EDGE_COLORS.active"), "combo active pill uses the flow palette");
+  assert.ok(combo.includes("FLOW_EDGE_COLORS.error"), "combo error pill uses the flow palette");
+  assert.ok(combo.includes('"var(--orch-status-success)"'), "combo succeeded = success token");
+  assert.ok(combo.includes('"var(--orch-status-error)"'), "combo exhausted = error token");
+  assert.ok(combo.includes('"var(--orch-status-warning)"'), "combo pending = warning token");
+  assert.ok(!combo.includes('"#ef4444"'), "combo studio hardcodes no error hex");
+  assert.ok(!combo.includes('"#f59e0b"'), "combo studio hardcodes no warning hex");
+
+  // Compression engine node: savings ramp + the running state.
+  assert.ok(engine.includes('"var(--orch-status-success)"'), "engine savings>=30 = success token");
+  assert.ok(
+    engine.includes('"var(--orch-status-warning)"'),
+    "engine savings>=15 / running = warning"
+  );
+  assert.ok(engine.includes('"var(--orch-status-muted)"'), "engine no-savings = muted token");
+  assert.ok(
+    engine.includes("flowColorAlpha("),
+    "engine glow uses color-mix, not a hex alpha suffix"
+  );
+  assert.ok(!engine.includes("#f59e0b40"), "the 8-bit alpha suffix is gone (invalid on a var())");
+
+  // Waterfall inspector: same ramp + the skipped/idle state + the total savings.
+  assert.ok(waterfall.includes('"var(--orch-status-success)"'), "waterfall success token");
+  assert.ok(waterfall.includes('"var(--orch-status-warning)"'), "waterfall warning token");
+  assert.ok(waterfall.includes('"var(--orch-status-muted)"'), "waterfall skipped = muted token");
+  assert.ok(!waterfall.includes('"#22c55e"'), "waterfall hardcodes no success hex");
+  assert.ok(!waterfall.includes('"#6b7280"'), "waterfall hardcodes no muted hex");
+
+  // Cockpit header + IoNode savings readout.
+  assert.ok(cockpit.includes('"var(--orch-status-success)"'), "cockpit savings = success token");
+  assert.ok(!cockpit.includes('"#22c55e"'), "cockpit hardcodes no success hex");
+  assert.ok(io.includes('"var(--orch-status-success)"'), "IoNode savings = success token");
+
+  // Deliberately NOT migrated — categorical/brand palettes, not state.
+  assert.ok(strategy.includes("STRATEGY_COLORS"), "strategy hues stay a categorical palette");
+  assert.ok(engine.includes("LAYER_COLORS"), "layer pills stay a categorical palette");
+  assert.ok(
+    io.includes('isInput ? "#6366f1" : "#22c55e"'),
+    "IoNode keeps its indigo/green input-output identity pair"
+  );
+});
+
+test("@theme inline still exposes bg-surface-2 and rounded-card", () => {
+  const theme = block("@theme inline {");
+  assert.match(theme, /--color-surface-2:\s*var\(--surface-2\);/);
+  assert.match(theme, /--radius-card:\s*var\(--radius\);/);
 });
 
 test("cn() still dedupes via tailwind-merge and DataTable paints an opaque surface", () => {
