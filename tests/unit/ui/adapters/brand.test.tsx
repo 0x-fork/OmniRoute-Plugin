@@ -15,6 +15,10 @@ describe("brand wrappers → kit ProductIcon / ProductLockup", () => {
     expect(svg.classList.contains("ci-keak-product-icon")).toBe(true);
     expect(svg.classList.contains("x")).toBe(true);
     expect(svg.getAttribute("width")).toBe("22");
+    // The kit rule `.ci-keak-product-icon { width: 2em; height: 2em }` (@layer components) beats
+    // SVG presentation attributes in a browser, so the size must also travel as inline style.
+    expect(svg.style.width).toBe("22px");
+    expect(svg.style.height).toBe("22px");
     expect(svg.getAttribute("aria-hidden")).toBe("true");
     expect(container.querySelector("image, [href^='/brand/']")).toBeNull();
   });
@@ -28,5 +32,10 @@ describe("brand wrappers → kit ProductIcon / ProductLockup", () => {
     render(<OmniRouteLockup name="Acme Router" logoSrc="data:image/png;base64,AAAA" />);
     expect(screen.getByRole("img", { name: "Acme Router" })).not.toBeNull();
     expect(screen.getByText("Acme Router")).not.toBeNull();
+  });
+
+  it("OmniRouteLockup never yields an empty accessible name for an empty white-label name", () => {
+    render(<OmniRouteLockup name="" logoSrc="data:image/png;base64,AAAA" />);
+    expect(screen.getByRole("img", { name: "OmniRoute" })).not.toBeNull();
   });
 });

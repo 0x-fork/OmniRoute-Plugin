@@ -1,6 +1,8 @@
 "use client";
 
-import { ProductIcon, ProductLockup } from "@omniroute/ui-kit";
+// Deep import of the brand module only: the package barrel pulls all 73 kit files (Radix,
+// charts…) into every importer of the logo — Sidebar, landing, login, error pages.
+import { ProductIcon, ProductLockup } from "@omniroute/ui-kit/keak-brand";
 import { cn } from "@/shared/utils/cn";
 
 type OmniRouteLogoProps = { size?: number; className?: string };
@@ -13,6 +15,9 @@ export default function OmniRouteLogo({ size = 20, className = "" }: OmniRouteLo
       variant="glyph"
       width={size}
       height={size}
+      // The kit's `.ci-keak-product-icon { width: 2em; height: 2em }` beats SVG presentation
+      // attributes; inline style is what actually sizes the glyph in a browser.
+      style={{ width: size, height: size }}
       aria-hidden="true"
       className={cn(className)}
       suppressHydrationWarning
@@ -32,7 +37,7 @@ export function OmniRouteLockup({ name, logoSrc, className }: OmniRouteLockupPro
     return (
       <span
         role="img"
-        aria-label={name ?? "OmniRoute"}
+        aria-label={name || "OmniRoute"}
         className={cn("inline-flex items-center gap-2", className)}
       >
         {logoSrc ? (
