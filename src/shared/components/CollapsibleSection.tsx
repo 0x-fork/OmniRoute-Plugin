@@ -31,6 +31,7 @@ export default function CollapsibleSection({
   className,
 }: CollapsibleSectionProps) {
   const [value, setValue] = useState(defaultOpen ? ITEM : "");
+  const open = value === ITEM;
   return (
     <Accordion
       type="single"
@@ -41,7 +42,7 @@ export default function CollapsibleSection({
       className={className}
     >
       <AccordionItem value={ITEM}>
-        <AccordionTrigger>
+        <AccordionTrigger className="[&>span:first-child]:min-w-0">
           <span className="flex min-w-0 items-center gap-3 text-start">
             <span className="truncate text-sm font-semibold text-text-main">{title}</span>
             {count != null && <KitBadge variant="secondary">{count}</KitBadge>}
@@ -52,7 +53,9 @@ export default function CollapsibleSection({
             )}
           </span>
         </AccordionTrigger>
-        <AccordionContent>{children}</AccordionContent>
+        {/* Closed content stays mounted (legacy) but is aria-hidden by the kit: keep it out of
+            the tab order too. */}
+        <AccordionContent inert={!open || undefined}>{children}</AccordionContent>
       </AccordionItem>
     </Accordion>
   );

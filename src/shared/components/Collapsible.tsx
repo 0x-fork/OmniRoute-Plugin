@@ -59,8 +59,10 @@ export default function Collapsible({
       className={className}
     >
       <AccordionItem value={ITEM}>
+        {/* The kit renders the trigger inside an <h3> (accordion.tsx), so that is the flex item
+            that must grow; its children wrapper span must shrink for the title to truncate. */}
         <div className="flex items-center gap-2 [&>h3]:min-w-0 [&>h3]:flex-1">
-          <AccordionTrigger className="w-full min-w-0">
+          <AccordionTrigger className="w-full min-w-0 [&>span:first-child]:min-w-0">
             <span className="flex min-w-0 items-center gap-2 text-start">
               {icon && <Icon name={icon} size={18} className="text-text-muted" />}
               <span className="flex min-w-0 flex-col">

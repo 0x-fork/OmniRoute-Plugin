@@ -19,10 +19,12 @@ interface SegmentedControlProps {
   "aria-label"?: string;
 }
 
+// On the triggers: the kit's `.ci-tabs__trigger` sets the `font` shorthand, so a size on the
+// Tabs root would never reach them (utilities win over the kit's components layer).
 const SIZES = {
-  sm: "text-xs",
-  md: "text-sm",
-  lg: "text-base",
+  sm: "h-7 px-2 text-xs",
+  md: "",
+  lg: "h-10 px-4 text-base",
 };
 
 /**
@@ -42,14 +44,20 @@ export default function SegmentedControl({
       variant="capsule"
       value={value}
       onValueChange={(next) => onChange?.(next)}
-      className={cn("max-w-full", SIZES[size], className)}
+      className={cn("max-w-full", className)}
     >
-      <TabsList aria-label={ariaLabel} className="flex-wrap">
+      {/* Phones: full width, segments share the line; from sm up, natural width (legacy). */}
+      <TabsList
+        aria-label={ariaLabel}
+        className="w-full flex-wrap sm:w-auto [&>*]:flex-1 sm:[&>*]:flex-none"
+      >
         {options.map((option) => (
           <TabsTrigger
             key={option.value}
             value={option.value}
-            className="gap-1.5 whitespace-nowrap"
+            // No TabsContent is rendered: drop the kit's aria-controls (it would dangle).
+            aria-controls={undefined}
+            className={cn("gap-1.5 whitespace-nowrap", SIZES[size])}
           >
             {option.icon && <Icon name={option.icon} size={16} />}
             {option.label}
