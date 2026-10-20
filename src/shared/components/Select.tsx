@@ -87,7 +87,9 @@ export default function Select({
     const kitValue = toKitValue(value);
     control = (
       <KitSelect
-        {...(props as Omit<React.ComponentProps<typeof KitSelect>, "options">)}
+        // The remaining <select> attributes (aria-*, data-*, title, focus handlers…) land on the
+        // kit root <div>; the kit lifts aria-label/-labelledby/-describedby onto the trigger.
+        {...(props as unknown as React.HTMLAttributes<HTMLDivElement>)}
         id={selectId}
         name={name}
         disabled={disabled}
