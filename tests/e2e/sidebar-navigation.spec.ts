@@ -31,10 +31,12 @@ for (const theme of ["light", "dark"] as const) {
     await expect(sidebar.getByRole("link", { name: "Caveman", exact: true })).toBeVisible();
     await sidebar.getByRole("searchbox").fill("");
     await expect(group).toHaveAttribute("aria-expanded", "false");
-    const collapse = sidebar.getByRole("button", { name: "Collapse sidebar", exact: true });
+    // The shell Header owns the single collapse/expand trigger (trilha G).
+    const shellHeader = page.locator("header.ci-sidebar-shell-header");
+    const collapse = shellHeader.getByRole("button", { name: "Collapse sidebar", exact: true });
     await collapse.click();
     await expect(sidebar.getByRole("link", { name: "Home", exact: true })).toBeVisible();
-    await sidebar.getByRole("button", { name: "Expand sidebar", exact: true }).click();
+    await shellHeader.getByRole("button", { name: "Expand sidebar", exact: true }).click();
     await expect(sidebar.getByRole("searchbox")).toBeVisible();
     await page.evaluate(() => window.history.pushState(null, "", "/dashboard/context/caveman"));
     await expect(sidebar.locator("a[aria-current=page]")).toHaveAttribute(
@@ -53,8 +55,7 @@ for (const theme of ["light", "dark"] as const) {
       await page.emulateMedia({ colorScheme: theme });
       await page.addInitScript((value) => localStorage.setItem("theme", value), theme);
       await gotoDashboardRoute(page, "/home");
-      // Pre-G Header: its mobile menu button opens the kit Sheet (track G renames it "Open menu").
-      await page.getByRole("button", { name: "menu", exact: true }).click();
+      await page.getByRole("button", { name: "Open menu" }).click();
       // Below the breakpoint the kit <Sidebar> is a Sheet holding the same aside.
       const sidebar = page.locator('aside[data-slot="sidebar"]');
       await expect(sidebar).toBeInViewport();

@@ -11,7 +11,7 @@
  * layout engine — axe's `color-contrast` rule is therefore disabled), nor the visual direction.
  */
 import React from "react";
-import { act, cleanup, render, waitFor, within } from "@testing-library/react";
+import { act, cleanup, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // axe-core is the engine behind the declared devDependency @axe-core/playwright (same version).
 import axe from "axe-core";
@@ -69,6 +69,12 @@ function emulateMobile() {
   })) as unknown as typeof window.matchMedia;
 }
 
+// Stand-in for the shell Header's SidebarTrigger, the shell's only collapse/expand control.
+function ShellTrigger({ kit }: Pick<Loaded, "kit">) {
+  const { open } = kit.useSidebar();
+  return <kit.SidebarTrigger aria-label={open ? "Collapse sidebar" : "Expand sidebar"} />;
+}
+
 function Harness({
   Sidebar,
   kit,
@@ -92,6 +98,9 @@ function Harness({
       <KitSidebar collapsible="icon">
         <Sidebar />
       </KitSidebar>
+      <main data-slot="sidebar-inset">
+        <ShellTrigger kit={kit} />
+      </main>
     </SidebarProvider>
   );
 }
@@ -246,8 +255,10 @@ describe("Sidebar hierarchy, keyboard navigation and ARIA contract (#12869)", ()
     const { container } = await mount(<Harness {...loaded} />);
     const aside = sidebarElement(container);
 
-    await user.click(within(aside).getByRole("button", { name: "Collapse sidebar" }));
-    const expand = within(aside).getByRole("button", { name: "Expand sidebar" });
+    // The collapse/expand toggle is the shell Header's (stand-in in the harness), not the aside's.
+    expect(within(aside).queryByRole("button", { name: /^(Collapse|Expand) sidebar$/ })).toBeNull();
+    await user.click(screen.getByRole("button", { name: "Collapse sidebar" }));
+    const expand = screen.getByRole("button", { name: "Expand sidebar" });
     expect(expand.getAttribute("aria-expanded")).toBe("false");
     expect(within(aside).getByRole("link", { name: "Home" })).toBeTruthy();
     expect(within(aside).queryByRole("searchbox")).toBeNull();
@@ -258,13 +269,13 @@ describe("Sidebar hierarchy, keyboard navigation and ARIA contract (#12869)", ()
     await user.click(expand);
     expect(within(aside).getByRole("searchbox")).toBeTruthy();
     expect(
-      within(aside).getByRole("button", { name: "Collapse sidebar" }).getAttribute("aria-expanded")
+      screen.getByRole("button", { name: "Collapse sidebar" }).getAttribute("aria-expanded")
     ).toBe("true");
   });
 
   // The skip link moved to DashboardShell, before the sidebar (it must exist even when the sidebar
   // is a closed mobile Sheet); its first-in-DOM position is asserted in dashboard-layout-flag.
-  it("keeps a natural Tab order: brand, collapse toggle, search, then navigation", async () => {
+  it("keeps a natural Tab order: brand, search, then navigation", async () => {
     const user = userEvent.setup();
     const loaded = await loadSidebar();
     const { container } = await mount(<Harness {...loaded} />);
@@ -277,7 +288,7 @@ describe("Sidebar hierarchy, keyboard navigation and ARIA contract (#12869)", ()
     ).toHaveLength(0);
 
     const stops: string[] = [];
-    for (let index = 0; index < 4; index += 1) {
+    for (let index = 0; index < 3; index += 1) {
       await user.tab();
       const active = document.activeElement as HTMLElement;
       stops.push(
@@ -287,13 +298,9 @@ describe("Sidebar hierarchy, keyboard navigation and ARIA contract (#12869)", ()
           active.tagName
       );
     }
-    expect(stops, `tab stops: ${JSON.stringify(stops)}`).toEqual([
-      "OmniRoute",
-      "Collapse sidebar",
-      "Search",
-      "Home",
-    ]);
-    // The fourth stop is the first item of the navigation landmark.
+    // The collapse toggle left the aside for the shell Header (trilha G), so it is no stop here.
+    expect(stops, `tab stops: ${JSON.stringify(stops)}`).toEqual(["OmniRoute", "Search", "Home"]);
+    // The third stop is the first item of the navigation landmark.
     expect(aside.querySelector("nav")!.contains(document.activeElement)).toBe(true);
   });
 

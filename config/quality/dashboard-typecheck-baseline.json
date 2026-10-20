@@ -184,9 +184,6 @@
   "src/mitm/inspector/sseMerger.ts": {
     "TS2352": 2
   },
-  "src/shared/components/Header.tsx": {
-    "TS2353": 2
-  },
   "src/shared/components/OAuthModal.tsx": {
     "TS2769": 4,
     "TS2345": 4

@@ -3,7 +3,12 @@ import React from "react";
 import { cleanup, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { Sidebar as KitSidebar, SidebarProvider } from "@omniroute/ui-kit/sidebar";
+import {
+  Sidebar as KitSidebar,
+  SidebarProvider,
+  SidebarTrigger,
+  useSidebar,
+} from "@omniroute/ui-kit/sidebar";
 
 process.env.NEXT_PUBLIC_OMNIROUTE_E2E_MODE = "1";
 // Render budget, not an import budget. Measured in review: the kit Sidebar mounts about 1.3–2×
@@ -25,6 +30,12 @@ const { default: Sidebar, useSidebarSide } = await import("@/shared/components/S
 const jsonResponse = (body: unknown) =>
   ({ ok: true, status: 200, json: async () => body }) as Response;
 
+// Stand-in for the shell Header's SidebarTrigger, the shell's only collapse/expand control.
+function ShellTrigger() {
+  const { open } = useSidebar();
+  return <SidebarTrigger aria-label={open ? "Collapse sidebar" : "Expand sidebar"} />;
+}
+
 function Harness({ defaultOpen = true }: { defaultOpen?: boolean }) {
   const side = useSidebarSide();
   return (
@@ -32,7 +43,9 @@ function Harness({ defaultOpen = true }: { defaultOpen?: boolean }) {
       <KitSidebar collapsible="icon" side={side}>
         <Sidebar />
       </KitSidebar>
-      <main data-slot="sidebar-inset" />
+      <main data-slot="sidebar-inset">
+        <ShellTrigger />
+      </main>
     </SidebarProvider>
   );
 }
@@ -105,6 +118,13 @@ describe("Sidebar rendered with the kit Sidebar family", () => {
       expect(button.querySelector(".truncate")).toBeNull();
       expect(button.className).toContain("w-full");
     }
+  });
+
+  it("the sidebar renders no collapse toggle of its own on desktop (the shell Header owns it)", async () => {
+    render(<Harness />);
+    await screen.findByRole("navigation", { name: "Main navigation" });
+    const aside = document.querySelector<HTMLElement>("aside[data-slot=sidebar]")!;
+    expect(aside.querySelector("[data-slot=sidebar-trigger]")).toBeNull();
   });
 
   it("collapsing via the trigger hides labels and keeps links reachable with tooltips", async () => {

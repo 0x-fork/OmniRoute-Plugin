@@ -128,8 +128,11 @@ describe("Kit shell — the sidebar side follows the document direction", () => 
 describe("LanguageSelector — dropdown anchors to inline-end", () => {
   const code = src("src/shared/components/LanguageSelector.tsx");
 
-  it("uses end-0 (not right-0) for the dropdown panel", () => {
-    expect(code).toContain("end-0");
+  it('anchors the kit DropdownMenuContent to the inline end (align="end")', () => {
+    // KEA-7886: the hand-rolled absolute panel (`end-0`) became the kit DropdownMenu; its
+    // floating-ui positioning resolves align="end" against the element's direction, so it
+    // mirrors under dir=rtl without a physical offset class.
+    expect(code).toContain('align="end"');
   });
 
   it("does not use bare right-0 for the dropdown panel", () => {
