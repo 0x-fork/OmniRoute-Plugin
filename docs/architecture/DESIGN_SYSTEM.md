@@ -43,8 +43,8 @@ lastUpdated: 2026-10-20
   white-label operators, their own `name`/`logoSrc`. Product-switcher destinations live in
   `src/shared/constants/keakProducts.ts` (`KEAK_PRODUCT_LINKS`, `KEAK_ACTIVE_PRODUCT`). The standalone
   screens — `src/app/login/page.tsx`, `src/app/status/page.tsx`, `src/app/maintenance/page.tsx`,
-  `src/app/offline/page.tsx` and `src/shared/components/ErrorPageScaffold.tsx` — show the lockup;
-  `tests/unit/brand-pages-static.test.ts` guards it.
+  `src/app/offline/page.tsx`, `src/app/not-found.tsx` and `src/shared/components/ErrorPageScaffold.tsx`
+  — show the lockup; `tests/unit/brand-pages-static.test.ts` guards it.
 - **Shell.** The kit ships `SidebarProvider`/`Sidebar`/`SidebarInset` (`packages/ui-kit/src/sidebar.tsx`);
   OmniRoute's navigation logic lives in `src/shared/components/Sidebar.tsx`.
 

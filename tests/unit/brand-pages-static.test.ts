@@ -14,6 +14,7 @@ test("standalone pages use the Keak lockup instead of the gradient hub glyph", (
     "src/app/status/page.tsx",
     "src/app/maintenance/page.tsx",
     "src/app/offline/page.tsx",
+    "src/app/not-found.tsx",
   ]) {
     const src = read(p);
     assert.ok(src.includes("OmniRouteLockup"), `${p} renders OmniRouteLockup`);
