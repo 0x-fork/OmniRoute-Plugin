@@ -46,6 +46,45 @@ describe("DashboardLayout shell switch (UI_KIT_SHELL)", () => {
     expect(container.querySelector(".dashboard-sidebar-desktop")).toBeNull();
   });
 
+  it("renders one skip link to #main-content outside the sidebar, also below the mobile breakpoint", () => {
+    // Below 1024 px the kit <Sidebar> exists only inside the (closed) Sheet, so a skip link
+    // rendered by Sidebar.tsx would be absent; the shell renders it before the sidebar.
+    const original = window.matchMedia;
+    window.matchMedia = ((query: string) => ({
+      matches: true,
+      media: query,
+      onchange: null,
+      addListener: () => {},
+      removeListener: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      dispatchEvent: () => false,
+    })) as unknown as typeof window.matchMedia;
+    try {
+      const { container } = render(
+        <DashboardLayout shell="kit">
+          <p>page</p>
+        </DashboardLayout>
+      );
+      const skips = document.querySelectorAll('a[href="#main-content"]');
+      expect(skips).toHaveLength(1);
+      expect(skips[0].closest("aside")).toBeNull();
+      expect(skips[0].className).toContain("focus:text-accent-foreground");
+      // First focusable of the shell: it precedes the sidebar (Sheet or rail) in document order.
+      const sidebarSlot = document.querySelector(
+        "[data-slot=sidebar], [data-slot=sidebar-trigger]"
+      );
+      if (sidebarSlot) {
+        expect(
+          skips[0].compareDocumentPosition(sidebarSlot) & Node.DOCUMENT_POSITION_FOLLOWING
+        ).toBeTruthy();
+      }
+      expect(container.querySelector("#main-content")).not.toBeNull();
+    } finally {
+      window.matchMedia = original;
+    }
+  });
+
   it("shell=legacy renders the untouched legacy shell and nothing from the kit (kill switch)", () => {
     const { container, getAllByTestId, getByTestId, queryByTestId } = render(
       <DashboardLayout shell="legacy">

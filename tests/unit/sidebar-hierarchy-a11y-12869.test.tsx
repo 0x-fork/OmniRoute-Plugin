@@ -42,13 +42,13 @@ vi.mock("next/navigation", () => ({
 
 type Loaded = {
   Sidebar: React.ComponentType<any>;
-  kit: typeof import("@omniroute/ui-kit");
+  kit: typeof import("@omniroute/ui-kit/sidebar");
 };
 
 // The kit is imported after vi.resetModules() together with the Sidebar so both share one
 // SidebarContext instance.
 async function loadSidebar(): Promise<Loaded> {
-  const kit = await import("@omniroute/ui-kit");
+  const kit = await import("@omniroute/ui-kit/sidebar");
   const { default: Sidebar } = await import("@/shared/components/Sidebar");
   return { Sidebar, kit };
 }
@@ -262,7 +262,9 @@ describe("Sidebar hierarchy, keyboard navigation and ARIA contract (#12869)", ()
     ).toBe("true");
   });
 
-  it("keeps a natural Tab order: skip link, brand, collapse toggle, search, then navigation", async () => {
+  // The skip link moved to DashboardShell, before the sidebar (it must exist even when the sidebar
+  // is a closed mobile Sheet); its first-in-DOM position is asserted in dashboard-layout-flag.
+  it("keeps a natural Tab order: brand, collapse toggle, search, then navigation", async () => {
     const user = userEvent.setup();
     const loaded = await loadSidebar();
     const { container } = await mount(<Harness {...loaded} />);
@@ -275,7 +277,7 @@ describe("Sidebar hierarchy, keyboard navigation and ARIA contract (#12869)", ()
     ).toHaveLength(0);
 
     const stops: string[] = [];
-    for (let index = 0; index < 5; index += 1) {
+    for (let index = 0; index < 4; index += 1) {
       await user.tab();
       const active = document.activeElement as HTMLElement;
       stops.push(
@@ -286,13 +288,12 @@ describe("Sidebar hierarchy, keyboard navigation and ARIA contract (#12869)", ()
       );
     }
     expect(stops, `tab stops: ${JSON.stringify(stops)}`).toEqual([
-      "Skip to content",
       "OmniRoute",
       "Collapse sidebar",
       "Search",
       "Home",
     ]);
-    // The fifth stop is the first item of the navigation landmark.
+    // The fourth stop is the first item of the navigation landmark.
     expect(aside.querySelector("nav")!.contains(document.activeElement)).toBe(true);
   });
 

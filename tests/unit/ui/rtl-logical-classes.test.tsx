@@ -108,6 +108,14 @@ describe("Kit shell — the sidebar side follows the document direction", () => 
     );
   });
 
+  it("cancels the kit's order:2 for side=right under RTL so the aside stays on the inline end", () => {
+    // `.ci-sidebar[data-side="right"] { order: 2 }` is physical: in an RTL flex row it would lay
+    // the aside out after the inset, i.e. on the visual LEFT. The utility layer wins over the
+    // kit's components layer, so `rtl:order-none` keeps the aside first = rightmost.
+    // Layout-level proof: tests/e2e/sidebar-rtl.spec.ts.
+    expect(src("src/shared/components/layouts/DashboardShell.tsx")).toContain("rtl:order-none");
+  });
+
   it("useSidebarSide reads dir=rtl from <html> and anchors the sidebar right", () => {
     const sidebar = src("src/shared/components/Sidebar.tsx");
     expect(sidebar).toContain("export function useSidebarSide()");

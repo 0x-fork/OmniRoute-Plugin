@@ -26,7 +26,7 @@ import {
   SidebarSeparator,
   SidebarTrigger,
   useSidebar,
-} from "@omniroute/ui-kit";
+} from "@omniroute/ui-kit/sidebar";
 import OmniRouteLogo, { OmniRouteLockup } from "./OmniRouteLogo";
 import Icon from "./Icon";
 import Button from "./Button";
@@ -650,13 +650,8 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
 
   return (
     <>
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-3 focus:bg-primary focus:text-accent-foreground focus:rounded-md focus:m-2"
-      >
-        {t("skipToContent")}
-      </a>
-
+      {/* The skip link lives in DashboardShell, before the sidebar: below the mobile breakpoint
+          this aside exists only inside the closed Sheet. */}
       <SidebarHeader>
         <div className={cn("flex items-center gap-2", collapsed && "flex-col")}>
           <Link
@@ -695,21 +690,25 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
             <Icon name={isMobile ? "close" : collapsed ? "left_panel_open" : "left_panel_close"} />
           </SidebarTrigger>
         </div>
-        {!collapsed && (
-          <Input
-            type="search"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={tc("search")}
-            aria-label={tc("search")}
-            icon="search"
-            className="gap-0"
-            inputClassName="min-h-10 py-2 text-sm"
-          />
-        )}
       </SidebarHeader>
 
       <SidebarContent className="custom-scrollbar">
+        {/* Search at the top of the content (spec §3.7), sticky: SidebarContent is the scroll
+            container, so the box stays in view while the 100+ items scroll under it. */}
+        {!collapsed && (
+          <div className="sticky top-0 z-10 bg-[var(--ci-color-background)] pb-1">
+            <Input
+              type="search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={tc("search")}
+              aria-label={tc("search")}
+              icon="search"
+              className="gap-0"
+              inputClassName="min-h-10 py-2 text-sm"
+            />
+          </div>
+        )}
         <nav aria-label={t("mainNavigation")} className="flex flex-col gap-3">
           {isSearching && displaySections.length === 0 && (
             <p className="px-2 py-3 text-xs text-text-muted">{tc("noResults")}</p>
@@ -804,7 +803,9 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
         }}
       >
         {!isE2EMode && <CloudSyncStatus collapsed={collapsed} />}
-        <div className={cn("flex gap-2", collapsed && "flex-col")}>
+        {/* One full-width row per action: side by side, "Shutdown" truncated at the 16 rem width
+            (and longer locales truncate both). */}
+        <div className="flex flex-col gap-1">
           <Button
             variant="ghost"
             size="sm"
@@ -812,9 +813,9 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
             onClick={() => setShowRestartModal(true)}
             title={t("restart")}
             aria-label={t("restart")}
-            className={cn("min-w-0", collapsed ? "w-full px-0" : "flex-1")}
+            className={cn("w-full", collapsed ? "px-0" : "justify-start")}
           >
-            {!collapsed && <span className="truncate">{t("restart")}</span>}
+            {!collapsed && t("restart")}
           </Button>
           <Button
             variant="ghost"
@@ -823,16 +824,17 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
             onClick={() => setShowShutdownModal(true)}
             title={t("shutdown")}
             aria-label={t("shutdown")}
-            className={cn("min-w-0 hover:text-error", collapsed ? "w-full px-0" : "flex-1")}
+            className={cn("w-full hover:text-error", collapsed ? "px-0" : "justify-start")}
           >
-            {!collapsed && <span className="truncate">{t("shutdown")}</span>}
+            {!collapsed && t("shutdown")}
           </Button>
         </div>
       </SidebarFooter>
 
       {/* The kit rail straddles the outer edge (right: -0.25rem), which overflows the clipped aside
-          (scrollWidth > clientWidth) and sits on the wrong edge under dir=rtl: keep it inside, on
-          the edge that faces the content. */}
+          (scrollWidth > clientWidth): keep it inside, on the edge that faces the content — the
+          right edge in LTR, the left edge under dir=rtl (where DashboardShell keeps the aside on
+          the inline end with `rtl:order-none`). */}
       <SidebarRail className={sidebarSide === "right" ? "left-0 right-auto" : "right-0"} />
 
       <ConfirmModal

@@ -4,9 +4,10 @@ import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 process.env.NEXT_PUBLIC_OMNIROUTE_E2E_MODE = "1";
-// Cold module transform of the Sidebar + kit tree is slow on a loaded box; behavior, not speed, is
-// tested (same budget as sidebar-hierarchy-a11y-12869).
-vi.setConfig({ testTimeout: 120_000 });
+// Render budget, not an import budget (the kit comes from the sidebar subpath; import is ~5% of
+// the run): mounting the ~120-control kit sidebar measured 6–16 s per case on a loaded host
+// (load 25–43), above vitest's 5 s default.
+vi.setConfig({ testTimeout: 30_000 });
 
 vi.mock("next-intl", () => ({
   useTranslations: () => {
@@ -41,7 +42,7 @@ function makeContainer(): HTMLElement {
 // collapsed state comes from the provider. The kit is imported after vi.resetModules() together
 // with the Sidebar so both share one SidebarContext instance.
 async function loadHarness() {
-  const { SidebarProvider, Sidebar: KitSidebar } = await import("@omniroute/ui-kit");
+  const { SidebarProvider, Sidebar: KitSidebar } = await import("@omniroute/ui-kit/sidebar");
   const { default: Sidebar } = await import("@/shared/components/Sidebar");
   return function Harness({ collapsed = false }: { collapsed?: boolean }) {
     return (

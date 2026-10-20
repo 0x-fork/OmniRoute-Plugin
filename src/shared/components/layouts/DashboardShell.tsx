@@ -6,7 +6,7 @@ import {
   SidebarInset,
   SidebarProvider,
   useSidebar,
-} from "@omniroute/ui-kit";
+} from "@omniroute/ui-kit/sidebar";
 import Sidebar, { useSidebarSide } from "../Sidebar";
 import Header from "../Header";
 import NotificationToast from "../NotificationToast";
@@ -94,7 +94,18 @@ export default function DashboardShell({
       <Suspense fallback={null}>
         <NavigationProgress />
       </Suspense>
+      {/* Skip link before the sidebar: below the mobile breakpoint the sidebar is only a closed
+          Sheet, so a link inside it would not exist. */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-3 focus:bg-primary focus:text-accent-foreground focus:rounded-md focus:m-2"
+      >
+        {t("skipToContent")}
+      </a>
+      {/* `rtl:order-none` cancels the kit's physical `[data-side="right"] { order: 2 }`, which in
+          an RTL flex row would lay the aside out on the visual left (tests/e2e/sidebar-rtl.spec.ts). */}
       <KitSidebar
+        className="rtl:order-none"
         collapsible="icon"
         side={useSidebarSide()}
         mobileLabel={t("mainNavigation")}

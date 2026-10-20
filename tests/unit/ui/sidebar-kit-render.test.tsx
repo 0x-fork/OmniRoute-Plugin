@@ -3,11 +3,13 @@ import React from "react";
 import { cleanup, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { Sidebar as KitSidebar, SidebarProvider } from "@omniroute/ui-kit";
+import { Sidebar as KitSidebar, SidebarProvider } from "@omniroute/ui-kit/sidebar";
 
 process.env.NEXT_PUBLIC_OMNIROUTE_E2E_MODE = "1";
-// Cold module transform of the Sidebar tree is slow on a loaded box; behavior, not speed, is tested.
-vi.setConfig({ testTimeout: 120_000 });
+// Not an import budget (the kit comes from the sidebar subpath; import is ~3% of the run): these
+// cases resolve accessible names over the whole ~120-control sidebar (getByRole/findByRole) and
+// drive it with user-event, measured at 5–8.4 s per case on a loaded host (load 30–42).
+vi.setConfig({ testTimeout: 30_000 });
 const nav = vi.hoisted(() => ({ pathname: "/home" }));
 vi.mock("next/navigation", () => ({ usePathname: () => nav.pathname }));
 vi.mock("next/link", () => ({
@@ -69,6 +71,30 @@ describe("Sidebar rendered with the kit Sidebar family", () => {
     expect(screen.getByRole("img", { name: "Keak OmniRoute" })).not.toBeNull();
     expect(navEl.querySelector(".material-symbols-outlined")).toBeNull();
     expect(navEl.querySelectorAll("svg.oi-icon").length).toBeGreaterThan(5);
+  });
+
+  it("puts the search at the top of SidebarContent, sticky above the scrolling nav (spec §3.7)", async () => {
+    render(<Harness />);
+    const navEl = await screen.findByRole("navigation", { name: "Main navigation" });
+    const search = screen.getByRole("searchbox");
+    const content = search.closest("[data-slot=sidebar-content]");
+    expect(content).not.toBeNull();
+    expect(search.closest("[data-slot=sidebar-header]")).toBeNull();
+    // First in the content, before the navigation landmark, and kept in view while it scrolls.
+    expect(content!.firstElementChild!.contains(search)).toBe(true);
+    expect(content!.firstElementChild!.className).toContain("sticky");
+    expect(content!.contains(navEl)).toBe(true);
+  });
+
+  it("gives the footer actions full-width rows so their labels never truncate", async () => {
+    render(<Harness />);
+    await screen.findByRole("navigation", { name: "Main navigation" });
+    for (const name of ["Restart", "Shutdown"]) {
+      const button = screen.getByRole("button", { name });
+      expect(button.textContent).toContain(name);
+      expect(button.querySelector(".truncate")).toBeNull();
+      expect(button.className).toContain("w-full");
+    }
   });
 
   it("collapsing via the trigger hides labels and keeps links reachable with tooltips", async () => {
