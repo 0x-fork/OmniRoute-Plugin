@@ -200,9 +200,6 @@
   "src/shared/components/analytics/rechartsDonuts.tsx": {
     "TS2739": 3
   },
-  "src/shared/components/layouts/legacy/HeaderLegacy.tsx": {
-    "TS2353": 1
-  },
   "src/shared/hooks/useElectron.ts": {
     "TS2339": 23
   },
