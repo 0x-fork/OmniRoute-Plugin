@@ -17,7 +17,12 @@ test("standalone pages use the Keak lockup instead of the gradient hub glyph", (
     "src/app/not-found.tsx",
   ]) {
     const src = read(p);
-    assert.ok(src.includes("OmniRouteLockup"), `${p} renders OmniRouteLockup`);
+    // Exactly one rendered lockup per page: an unused import alone must not pass.
+    assert.equal(
+      src.match(/<OmniRouteLockup\b/g)?.length ?? 0,
+      1,
+      `${p} renders OmniRouteLockup once`
+    );
     assert.ok(!src.includes("material-symbols-outlined"), `${p} has no Material span left`);
     assert.ok(!/from-primary to-primary-hover/.test(src), `${p} dropped the coral gradient`);
   }
