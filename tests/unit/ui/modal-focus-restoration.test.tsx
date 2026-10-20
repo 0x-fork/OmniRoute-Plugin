@@ -102,10 +102,11 @@ describe("shared Modal focus restoration", () => {
     expect(document.activeElement).toBe(trigger);
   });
 
-  it("does not land focus on an opener that was removed while the dialog was open", async () => {
+  it("does not try to focus an opener that was removed while the dialog was open", async () => {
     const trigger = document.createElement("button");
     document.body.appendChild(trigger);
     trigger.focus();
+    const focusSpy = vi.spyOn(trigger, "focus");
 
     const container = document.createElement("div");
     document.body.appendChild(container);
@@ -127,6 +128,7 @@ describe("shared Modal focus restoration", () => {
     };
 
     act(renderModal);
+    focusSpy.mockClear();
     trigger.remove();
 
     expect(() => {
@@ -137,6 +139,7 @@ describe("shared Modal focus restoration", () => {
     await flush();
 
     expect(getDialog()).toBeNull();
+    expect(focusSpy).not.toHaveBeenCalled();
     // Focusing a detached element is a no-op: focus must not end up on the removed opener.
     expect(document.activeElement).not.toBe(trigger);
     expect(document.activeElement).toBe(document.body);
