@@ -41,6 +41,22 @@ import {
   type SidebarItemOrder,
 } from "@/shared/constants/sidebarVisibility";
 
+function subscribeDir(callback: () => void) {
+  if (typeof document === "undefined") return () => {};
+  const observer = new MutationObserver(callback);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["dir"] });
+  return () => observer.disconnect();
+}
+
+/** Kit Sidebar side: right-anchored under dir="rtl" (ar, fa, he, ur), left otherwise. */
+export function useSidebarSide(): "left" | "right" {
+  return useSyncExternalStore(
+    subscribeDir,
+    () => (document.documentElement.dir === "rtl" ? "right" : "left"),
+    () => "left"
+  );
+}
+
 const isE2EMode = process.env.NEXT_PUBLIC_OMNIROUTE_E2E_MODE === "1";
 const DEFAULT_EXPANDED: SidebarSectionId = "omni-proxy";
 const EXPANDED_SECTIONS_KEY = "sidebar-expanded-sections";

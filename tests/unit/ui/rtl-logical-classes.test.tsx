@@ -27,20 +27,22 @@ function src(rel: string) {
 
 // ─── DashboardLayout.tsx ──────────────────────────────────────────────────────
 
+// The hand-rolled mobile drawer lives on in the legacy shell (UI_KIT_SHELL=false); the kit shell's
+// drawer is the kit Sidebar's own Sheet, anchored by `side` (asserted in the Sidebar block below).
 describe("DashboardLayout — mobile sidebar drawer uses logical classes", () => {
-  const code = src("src/shared/components/layouts/DashboardLayout.tsx");
+  const code = src("src/shared/components/layouts/legacy/DashboardLayoutLegacy.tsx");
 
-  it('uses start-0 (not bare left-0) for the mobile sidebar drawer', () => {
+  it("uses start-0 (not bare left-0) for the mobile sidebar drawer", () => {
     // The drawer must anchor to the inline-start edge so it flips in RTL.
     expect(code).toContain("start-0");
   });
 
-  it('does not use bare left-0 for the mobile sidebar drawer', () => {
+  it("does not use bare left-0 for the mobile sidebar drawer", () => {
     // "inset-y-0 left-0" is the old physical class that breaks RTL.
     expect(code).not.toContain("inset-y-0 left-0");
   });
 
-  it('uses -translate-x-full only when combined with RTL-aware transform or logical alternative', () => {
+  it("uses -translate-x-full only when combined with RTL-aware transform or logical alternative", () => {
     // We keep -translate-x-full/translate-x-0 for slide animation but anchor
     // with start-0 so physical translate still produces correct visual result
     // in both LTR and RTL (the drawer always slides in from its own start edge).
@@ -48,7 +50,7 @@ describe("DashboardLayout — mobile sidebar drawer uses logical classes", () =>
     expect(code).toContain("start-0");
   });
 
-  it('carries the dashboard-sidebar-mobile hook class for explicit RTL anchoring', () => {
+  it("carries the dashboard-sidebar-mobile hook class for explicit RTL anchoring", () => {
     // .dashboard-sidebar-mobile gets explicit right:0/translateX(100%) rules
     // under dir=rtl in globals.css, so the drawer cannot end up parked on the
     // left edge when closed (physical -translate-x-full alone would do that).
@@ -61,12 +63,12 @@ describe("DashboardLayout — mobile sidebar drawer uses logical classes", () =>
 describe("globals.css — mobile sidebar has explicit RTL anchoring rules", () => {
   const css = src("src/app/globals.css");
 
-  it('pins .dashboard-sidebar-mobile to the right edge under dir=rtl', () => {
+  it("pins .dashboard-sidebar-mobile to the right edge under dir=rtl", () => {
     expect(css).toContain(".dashboard-sidebar-mobile");
     expect(css).toContain("right: 0");
   });
 
-  it('slides the closed drawer off the right edge under dir=rtl', () => {
+  it("slides the closed drawer off the right edge under dir=rtl", () => {
     expect(css).toContain("translateX(100%)");
   });
 });
@@ -76,7 +78,7 @@ describe("globals.css — mobile sidebar has explicit RTL anchoring rules", () =
 describe("persistLocale — flips <html> direction immediately on switch", () => {
   const code = src("src/shared/lib/persistLocale.ts");
 
-  it('sets document.documentElement.dir from the RTL locale list', () => {
+  it("sets document.documentElement.dir from the RTL locale list", () => {
     // router.refresh() never re-renders <html dir>, so the writer itself must
     // flip direction or Arabic text renders inside a stale dir="ltr" tree.
     expect(code).toContain("document.documentElement.dir");
@@ -89,12 +91,12 @@ describe("persistLocale — flips <html> direction immediately on switch", () =>
 describe("Sidebar — collapse toggle button uses logical margin", () => {
   const code = src("src/shared/components/Sidebar.tsx");
 
-  it('uses ms-auto (not ml-auto) for the macOS collapse-toggle alignment', () => {
+  it("uses ms-auto (not ml-auto) for the macOS collapse-toggle alignment", () => {
     // ml-auto is a physical class; ms-auto mirrors in RTL.
     expect(code).toContain("ms-auto");
   });
 
-  it('does not use bare ml-auto in the collapse-toggle className', () => {
+  it("does not use bare ml-auto in the collapse-toggle className", () => {
     expect(code).not.toContain("ml-auto");
   });
 });
@@ -104,19 +106,19 @@ describe("Sidebar — collapse toggle button uses logical margin", () => {
 describe("LanguageSelector — dropdown anchors to inline-end", () => {
   const code = src("src/shared/components/LanguageSelector.tsx");
 
-  it('uses end-0 (not right-0) for the dropdown panel', () => {
+  it("uses end-0 (not right-0) for the dropdown panel", () => {
     expect(code).toContain("end-0");
   });
 
-  it('does not use bare right-0 for the dropdown panel', () => {
+  it("does not use bare right-0 for the dropdown panel", () => {
     expect(code).not.toContain("right-0");
   });
 
-  it('uses text-start (not text-left) for lang name text alignment', () => {
+  it("uses text-start (not text-left) for lang name text alignment", () => {
     expect(code).toContain("text-start");
   });
 
-  it('does not use text-left for lang name text alignment', () => {
+  it("does not use text-left for lang name text alignment", () => {
     expect(code).not.toContain("text-left");
   });
 });
@@ -126,27 +128,27 @@ describe("LanguageSelector — dropdown anchors to inline-end", () => {
 describe("Select — chevron icon uses logical inset classes", () => {
   const code = src("src/shared/components/Select.tsx");
 
-  it('uses end-0 (not right-0) for the chevron wrapper', () => {
+  it("uses end-0 (not right-0) for the chevron wrapper", () => {
     expect(code).toContain("end-0");
   });
 
-  it('does not use bare right-0 for the chevron wrapper', () => {
+  it("does not use bare right-0 for the chevron wrapper", () => {
     expect(code).not.toContain("right-0");
   });
 
-  it('uses pe-3 (not pr-3) for chevron wrapper padding', () => {
+  it("uses pe-3 (not pr-3) for chevron wrapper padding", () => {
     expect(code).toContain("pe-3");
   });
 
-  it('does not use bare pr-3 for chevron wrapper padding', () => {
+  it("does not use bare pr-3 for chevron wrapper padding", () => {
     expect(code).not.toContain("pr-3");
   });
 
-  it('uses pe-10 (not pr-10) for the select element right-pad (space for chevron)', () => {
+  it("uses pe-10 (not pr-10) for the select element right-pad (space for chevron)", () => {
     expect(code).toContain("pe-10");
   });
 
-  it('does not use bare pr-10 for the select element', () => {
+  it("does not use bare pr-10 for the select element", () => {
     expect(code).not.toContain("pr-10");
   });
 });
