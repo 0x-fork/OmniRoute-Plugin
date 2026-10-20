@@ -22,7 +22,9 @@ interface SegmentedControlProps {
 // On the triggers: the kit's `.ci-tabs__trigger` sets the `font` shorthand, so a size on the
 // Tabs root would never reach them (utilities win over the kit's components layer).
 const SIZES = {
-  sm: "h-7 px-2 text-xs",
+  // min-h-7: the kit capsule trigger's min-height (~30px) would otherwise beat h-7; lg's h-10
+  // is already above it.
+  sm: "h-7 min-h-7 px-2 text-xs",
   md: "",
   lg: "h-10 px-4 text-base",
 };

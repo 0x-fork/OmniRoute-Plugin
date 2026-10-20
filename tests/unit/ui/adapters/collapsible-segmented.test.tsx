@@ -85,6 +85,8 @@ describe("Collapsible / CollapsibleSection / SegmentedControl adapters", () => {
     expect(list.className).toContain("sm:[&>*]:flex-none");
     for (const tab of screen.getAllByRole("tab")) {
       expect(tab.className).toContain("h-7");
+      // The kit capsule trigger has a ~30px min-height that would beat h-7 alone.
+      expect(tab.className).toContain("min-h-7");
       expect(tab.className).toContain("text-xs");
     }
   });
