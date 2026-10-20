@@ -1,5 +1,8 @@
 "use client";
 
+import Icon from "@/shared/components/Icon";
+import { OmniRouteLockup } from "@/shared/components/OmniRouteLogo";
+
 import { useTranslations } from "next-intl";
 
 import { useState, useEffect } from "react";
@@ -103,7 +106,7 @@ export default function LoginPage() {
         <div className="bg-red-950/60 border-2 border-red-500/40 rounded-2xl p-6 shadow-lg shadow-red-900/20 backdrop-blur-sm">
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span className="material-symbols-outlined text-red-400 text-[28px]">error</span>
+              <Icon name="error" size={28} className="text-red-400" />
             </div>
             <div className="flex-1 min-w-0">
               <h3 className="text-base font-bold text-red-300 mb-1">
@@ -114,13 +117,13 @@ export default function LoginPage() {
               </p>
               <div className="bg-black/40 rounded-lg px-4 py-3 font-mono text-sm border border-red-500/20">
                 <div className="flex items-center gap-2 text-red-300/60 mb-1">
-                  <span className="material-symbols-outlined text-[14px]">terminal</span>
+                  <Icon name="terminal" size={14} />
                   <span className="text-xs">{t("nodeIncompatibleFixLabel")}</span>
                 </div>
                 <code className="text-amber-300">nvm install 22 && nvm use 22</code>
               </div>
               <p className="text-xs text-red-300/50 mt-3 flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[14px]">info</span>
+                <Icon name="info" size={14} />
                 {t("nodeIncompatibleHint")}
               </p>
             </div>
@@ -157,11 +160,9 @@ export default function LoginPage() {
         >
           <div className="text-center mb-10">
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/10 mb-6">
-              <span className="material-symbols-outlined text-primary text-[40px]">
-                rocket_launch
-              </span>
+              <Icon name="rocket_launch" size={40} className="text-primary" />
             </div>
-            <h1 className="text-3xl font-bold text-text-main tracking-tight">{t("welcome")}</h1>
+            <h1 className="ci-heading text-3xl">{t("welcome")}</h1>
             <p className="text-text-muted mt-2">{t("configureInstance")}</p>
           </div>
 
@@ -195,13 +196,9 @@ export default function LoginPage() {
         >
           <div className="text-center mb-10">
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/10 mb-6">
-              <span className="material-symbols-outlined text-amber-500 text-[40px]">
-                shield_person
-              </span>
+              <Icon name="shield_person" size={40} className="text-amber-500" />
             </div>
-            <h1 className="text-3xl font-bold text-text-main tracking-tight">
-              {t("secureYourInstance")}
-            </h1>
+            <h1 className="ci-heading text-3xl">{t("secureYourInstance")}</h1>
             <p className="text-text-muted mt-2">{t("passwordNotEnabled")}</p>
           </div>
 
@@ -237,15 +234,10 @@ export default function LoginPage() {
             className={`w-full max-w-sm transition-all duration-700 ease-out ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
           >
             <div className="mb-10">
-              <div className="flex items-center gap-3 mb-8">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center">
-                  <span className="material-symbols-outlined text-white text-[20px]">hub</span>
-                </div>
-                <span className="text-xl font-semibold text-text-main tracking-tight">
-                  OmniRoute
-                </span>
+              <div className="mb-8">
+                <OmniRouteLockup />
               </div>
-              <h1 className="text-2xl font-bold text-text-main tracking-tight">{t("signIn")}</h1>
+              <h1 className="ci-heading text-2xl">{t("signIn")}</h1>
               <p className="text-text-muted mt-1.5">
                 {oidcEnabled && oidcDisablePasswordLogin
                   ? t("continueWithOidc")
@@ -261,7 +253,7 @@ export default function LoginPage() {
                   className="w-full h-11 text-sm font-medium flex items-center justify-center gap-2"
                   onClick={() => (window.location.href = "/api/auth/oidc/login")}
                 >
-                  <span className="material-symbols-outlined text-lg">login</span>
+                  <Icon name="login" />
                   {t("continueWithOidc")}
                 </Button>
               </div>
@@ -281,7 +273,7 @@ export default function LoginPage() {
                     />
                     {error && (
                       <p className="text-sm text-red-500 flex items-center gap-1.5 pt-1">
-                        <span className="material-symbols-outlined text-base">error</span>
+                        <Icon name="error" size={16} />
                         {error}
                       </p>
                     )}
@@ -306,7 +298,7 @@ export default function LoginPage() {
                       className="w-full h-11 text-sm font-medium flex items-center justify-center gap-2"
                       onClick={() => (window.location.href = "/api/auth/oidc/login")}
                     >
-                      <span className="material-symbols-outlined text-lg">login</span>
+                      <Icon name="login" />
                       {t("continueWithOidc")}
                     </Button>
                   </div>
@@ -360,9 +352,7 @@ export default function LoginPage() {
                     className="flex items-start gap-4 p-4 rounded-xl bg-surface/50 border border-border"
                   >
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <span className="material-symbols-outlined text-primary text-[20px]">
-                        {item.icon}
-                      </span>
+                      <Icon name={item.icon} size={20} className="text-primary" />
                     </div>
                     <div>
                       <h3 className="font-medium text-text-main">{item.title}</h3>
