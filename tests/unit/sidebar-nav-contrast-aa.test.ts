@@ -9,7 +9,8 @@ import { fileURLToPath } from "node:url";
 // the item subtitle are drawn on `--color-sidebar`, and WCAG 2 AA needs 4.5:1 for text under
 // 18 pt. `text-text-muted` is 4.45:1 on the light sidebar and `text-text-muted/60` is 2.23 / 3.37,
 // which is why the E2E shard went red. This test computes the same blended ratio axe reports from
-// the theme tokens in src/app/globals.css and the Tailwind classes in Sidebar.tsx, so the contract
+// the theme tokens in src/app/globals.css (resolved through the CI UI Kit token chain in
+// packages/ui-kit/src/ci-tokens.css) and the Tailwind classes in Sidebar.tsx, so the contract
 // is checked on every unit run instead of only in the Playwright lane.
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
@@ -27,28 +28,43 @@ function classOn(lineMarker: string): { token: string; alpha: number } {
   return { token: `--color-text-${match[1]}`, alpha: match[2] ? Number(match[2]) / 100 : 1 };
 }
 
-function tokens(block: string): Record<string, string> {
-  // globals.css opens more than one `:root {` block; take the first one that defines the sidebar.
-  let from = 0;
-  while (from < globals.length) {
-    const start = globals.indexOf(block, from);
-    assert(start >= 0, `no "${block}" block in globals.css defines --color-sidebar`);
-    const body = globals.slice(start, globals.indexOf("\n}", start));
-    const out: Record<string, string> = {};
-    for (const match of body.matchAll(
-      /--color-(sidebar|text-main|text-muted):\s*(#[0-9a-fA-F]{6})/g
-    )) {
-      out[`--color-${match[1]}`] = match[2].toLowerCase();
-    }
-    if (out["--color-sidebar"]) {
-      for (const name of ["--color-text-main", "--color-text-muted"]) {
-        assert(out[name], `${block} block in globals.css does not define ${name}`);
-      }
-      return out;
-    }
-    from = start + block.length;
-  }
-  assert.fail(`no "${block}" block in globals.css defines --color-sidebar`);
+const kitTokens = read("packages/ui-kit/src/ci-tokens.css");
+
+function cssBlock(source: string, selector: string): Record<string, string> {
+  const start = source.indexOf(selector);
+  assert(start >= 0, `no "${selector}" block`);
+  const body = source.slice(start, source.indexOf("\n}", start));
+  const out: Record<string, string> = {};
+  for (const m of body.matchAll(/(--[\w-]+):\s*([^;]+);/g)) out[m[1]] = m[2].trim();
+  return out;
+}
+
+// Follows the var() chain (globals.css bridge → kit tokens → palette) down to a hex literal.
+function resolveHex(name: string, scopes: Record<string, string>[]): string {
+  const scope = scopes.find((s) => name in s);
+  assert(scope, `token ${name} is not defined in any scope`);
+  const value = scope[name];
+  const ref = /^var\((--[\w-]+)\)$/.exec(value);
+  if (ref) return resolveHex(ref[1], scopes);
+  assert(/^#[0-9a-fA-F]{6}$/.test(value), `${name} resolves to "${value}", expected #rrggbb`);
+  return value.toLowerCase();
+}
+
+function themeTokens(theme: "light" | "dark"): Record<string, string> {
+  const light = [
+    cssBlock(globals, ":root {\n  --desktop-safe-top"),
+    cssBlock(kitTokens, ":root,\n.ci-theme {"),
+  ];
+  const scopes =
+    theme === "dark"
+      ? [cssBlock(globals, ".dark {"), cssBlock(kitTokens, ':root[data-theme="dark"]'), ...light]
+      : light;
+  return Object.fromEntries(
+    ["--color-sidebar", "--color-text-main", "--color-text-muted"].map((t) => [
+      t,
+      resolveHex(t, scopes),
+    ])
+  );
 }
 
 const channels = (hex: string) =>
@@ -69,7 +85,7 @@ function contrast(fg: string, alpha: number, bg: string): number {
   return (light + 0.05) / (dark + 0.05);
 }
 
-const themes = { light: tokens(":root {"), dark: tokens(".dark {") };
+const themes = { light: themeTokens("light"), dark: themeTokens("dark") };
 const inactiveItem = classOn("hover:bg-surface/50 hover:text-text-main");
 const subtitle = classOn("{item.subtitle}</span>");
 

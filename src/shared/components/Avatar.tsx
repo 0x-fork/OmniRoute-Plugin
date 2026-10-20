@@ -52,7 +52,7 @@ export default function Avatar({ src, alt = "Avatar", name, size = "md", classNa
       <div
         className={cn(
           "rounded-full bg-cover bg-center bg-no-repeat",
-          "ring-2 ring-white dark:ring-surface-dark shadow-sm",
+          "ring-2 ring-white dark:ring-surface shadow-sm",
           sizes[size],
           className
         )}
@@ -67,7 +67,7 @@ export default function Avatar({ src, alt = "Avatar", name, size = "md", classNa
     <div
       className={cn(
         "rounded-full flex items-center justify-center font-semibold text-white",
-        "ring-2 ring-white dark:ring-surface-dark shadow-sm",
+        "ring-2 ring-white dark:ring-surface shadow-sm",
         sizes[size],
         getColorFromName(name),
         className
