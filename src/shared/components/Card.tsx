@@ -20,6 +20,8 @@ interface CardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> 
   action?: React.ReactNode;
   padding?: "none" | "xs" | "sm" | "md" | "lg";
   hover?: boolean;
+  /** Kit surface: `subtle` is the neutral gradient for grouped secondary actions (spec §3.6). */
+  surface?: "default" | "subtle";
   className?: string;
 }
 

@@ -42,6 +42,13 @@ describe("Card adapter → kit Card", () => {
     expect(container.querySelector("[data-slot=card]")!.className).toContain("oi-card--hover");
   });
 
+  it('exposes the kit surface="subtle"', () => {
+    const { container } = render(<Card surface="subtle">x</Card>);
+    expect(container.querySelector("[data-slot=card]")!.getAttribute("data-surface")).toBe(
+      "subtle"
+    );
+  });
+
   it("keeps heading semantics for the title and a <p> subtitle", () => {
     const { getByRole, getByText } = render(<Card title="Providers" subtitle="All of them" />);
     const heading = getByRole("heading", { level: 3, name: "Providers" });
