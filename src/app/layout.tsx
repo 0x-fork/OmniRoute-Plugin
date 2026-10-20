@@ -133,11 +133,10 @@ export default async function RootLayout({ children }) {
                 const stored = localStorage.getItem('theme');
                 const parsed = stored ? JSON.parse(stored) : null;
                 const theme = parsed?.state?.theme || 'system';
-                if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                  document.documentElement.classList.add('dark');
-                } else {
-                  document.documentElement.classList.remove('dark');
-                }
+                const dark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                document.documentElement.classList.toggle('dark', dark);
+                document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+                document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
               } catch (e) {}
             `,
           }}
