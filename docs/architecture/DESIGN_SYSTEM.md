@@ -56,7 +56,8 @@ lastUpdated: 2026-10-20
    `LAYER_COLORS` (`src/app/(dashboard)/dashboard/compression/studio/nodes/EngineNode.tsx`).
 2. Never patch `packages/ui-kit/src` by hand: sync with `scripts/dev/sync-ui-kit.sh <commit>`; the
    pre-commit gate `npm run check:ui-kit-snapshot` (`.husky/pre-commit`) fails on any byte that
-   differs from the pinned upstream commit.
+   differs from the pinned upstream commit (it skips with a warning when the upstream clone,
+   `UI_KIT_CLONE` or `_references/cheaper-inference-ui-kit`, is absent).
 3. Kit text defaults are English (`label = "Loading"`, `loadingLabel = "Loading table"`…) — pass translated
    strings from `useTranslations(...)` whenever a kit component renders text.
 4. Tailwind utilities win over kit component classes (the kit declares

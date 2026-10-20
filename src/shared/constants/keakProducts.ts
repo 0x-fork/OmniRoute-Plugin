@@ -1,4 +1,4 @@
-import type { KeakProduct, ProductSwitcherItem } from "@omniroute/ui-kit";
+import type { KeakProduct, ProductSwitcherItem } from "@omniroute/ui-kit/keak-brand";
 
 /** Destinations for the kit ProductSwitcher (spec §3.7). Owned by OmniRoute, not the kit. */
 export const KEAK_PRODUCT_LINKS: ProductSwitcherItem[] = [

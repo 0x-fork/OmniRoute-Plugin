@@ -352,7 +352,7 @@ export default function LoginPage() {
                     className="flex items-start gap-4 p-4 rounded-xl bg-surface/50 border border-border"
                   >
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <Icon name={item.icon} size={20} className="text-primary" />
+                      <Icon name={item.icon} size={20} className="text-text-muted" />
                     </div>
                     <div>
                       <h3 className="font-medium text-text-main">{item.title}</h3>

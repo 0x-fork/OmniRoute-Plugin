@@ -15,6 +15,9 @@ export default function OmniRouteLogo({ size = 20, className = "" }: OmniRouteLo
       variant="glyph"
       width={size}
       height={size}
+      // The kit's `.ci-keak-product-icon { width: 2em; height: 2em }` beats SVG presentation
+      // attributes; inline style is what actually sizes the glyph in a browser.
+      style={{ width: size, height: size }}
       aria-hidden="true"
       className={cn(className)}
       suppressHydrationWarning
@@ -34,7 +37,7 @@ export function OmniRouteLockup({ name, logoSrc, className }: OmniRouteLockupPro
     return (
       <span
         role="img"
-        aria-label={name ?? "OmniRoute"}
+        aria-label={name || "OmniRoute"}
         className={cn("inline-flex items-center gap-2", className)}
       >
         {logoSrc ? (

@@ -18,11 +18,11 @@ export default function MaintenancePage() {
 
         <ul className="mt-6 text-sm text-text-muted text-left rounded-xl border border-border bg-bg-alt p-4 space-y-2">
           <li className="flex items-start gap-2">
-            <Icon name="info" size={16} className="text-primary mt-0.5" />
+            <Icon name="info" size={16} className="text-text-muted mt-0.5" />
             {t("maintenance.suggestion1")}
           </li>
           <li className="flex items-start gap-2">
-            <Icon name="info" size={16} className="text-primary mt-0.5" />
+            <Icon name="info" size={16} className="text-text-muted mt-0.5" />
             {t("maintenance.suggestion2")}
           </li>
         </ul>
