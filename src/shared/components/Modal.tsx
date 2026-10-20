@@ -54,6 +54,12 @@ interface ConfirmModalProps {
   loading?: boolean;
 }
 
+// The kit Toaster is portaled to body, outside the dialog: Radix would treat a click on a
+// toast (its close button, its action) as an outside interaction and dismiss the dialog.
+const TOASTER_SELECTOR = '[data-slot="toaster"]';
+const isFromToaster = (event: Event) =>
+  event.target instanceof Element && event.target.closest(TOASTER_SELECTOR) !== null;
+
 const SIZES = {
   sm: "max-w-sm",
   md: "max-w-md",
@@ -114,10 +120,10 @@ export default function Modal({
           if (opener?.isConnected) opener.focus();
         }}
         onPointerDownOutside={(e) => {
-          if (!closeOnOverlay) e.preventDefault();
+          if (!closeOnOverlay || isFromToaster(e)) e.preventDefault();
         }}
         onInteractOutside={(e) => {
-          if (!closeOnOverlay) e.preventDefault();
+          if (!closeOnOverlay || isFromToaster(e)) e.preventDefault();
         }}
       >
         <DialogHeader

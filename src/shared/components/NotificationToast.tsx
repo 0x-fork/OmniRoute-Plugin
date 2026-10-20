@@ -45,10 +45,47 @@ const VARIANT = {
   info: "info",
 } as const;
 
+// While a modal is open, Radix hides everything outside it from assistive tech
+// (`aria-hidden`), sparing only elements that already carry `aria-live` when the dialog
+// opens. The kit Toaster root has none (pendência do kit: it should be a live region
+// itself), so a toast raised under a Modal would be hidden. Once the Toaster portals its
+// root (one render after mount, hence the observer), mark it as a polite live region, and
+// keep it out of `aria-hidden` when a dialog that opened in the same render already hid it.
+// Each toast keeps its own `role="alert"` / `role="status"`.
+const TOASTER_SELECTOR = '[data-slot="toaster"]';
+
+function useToasterLiveRegion() {
+  useEffect(() => {
+    let rootObserver: MutationObserver | null = null;
+    const expose = (root: Element) => {
+      if (root.getAttribute("aria-hidden") === "true") root.removeAttribute("aria-hidden");
+    };
+    const mark = () => {
+      const root = document.querySelector(TOASTER_SELECTOR);
+      if (!root) return false;
+      if (!root.hasAttribute("aria-live")) root.setAttribute("aria-live", "polite");
+      expose(root);
+      rootObserver = new MutationObserver(() => expose(root));
+      rootObserver.observe(root, { attributes: true, attributeFilter: ["aria-hidden"] });
+      return true;
+    };
+    if (mark()) return () => rootObserver?.disconnect();
+    const bodyObserver = new MutationObserver(() => {
+      if (mark()) bodyObserver.disconnect();
+    });
+    bodyObserver.observe(document.body, { childList: true });
+    return () => {
+      bodyObserver.disconnect();
+      rootObserver?.disconnect();
+    };
+  }, []);
+}
+
 function NotificationBridge() {
   const t = useTranslations("common");
   const notifications = useNotificationStore((s) => s.notifications);
   const shown = useRef(new Set<number>());
+  useToasterLiveRegion();
 
   useEffect(() => {
     const live = new Set(notifications.map((n) => n.id));
