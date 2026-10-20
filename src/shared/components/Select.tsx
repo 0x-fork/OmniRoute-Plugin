@@ -1,6 +1,6 @@
 "use client";
 
-import { useId } from "react";
+import { useId, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Field } from "@omniroute/ui-kit/field";
 import { Select as KitSelect, SelectItem as KitSelectItem } from "@omniroute/ui-kit/select";
@@ -57,6 +57,7 @@ export default function Select({
   id: externalId,
   name,
   children,
+  "aria-describedby": callerDescribedBy,
   ...props
 }: SelectProps) {
   const t = useTranslations("common");
@@ -64,7 +65,13 @@ export default function Select({
   const selectId = externalId || generatedId;
   const errorId = error ? `${selectId}-error` : undefined;
   const hintId = hint && !error ? `${selectId}-hint` : undefined;
-  const describedBy = [errorId, hintId].filter(Boolean).join(" ") || undefined;
+  // A caller's aria-describedby is kept and the hint/error ids are appended (legacy let the
+  // caller's value through; the adapter must not overwrite it).
+  const describedBy = [callerDescribedBy, errorId, hintId].filter(Boolean).join(" ") || undefined;
+  // Uncontrolled kit mode: remember the last pick so the hidden form input stays in sync.
+  const [uncontrolledValue, setUncontrolledValue] = useState(
+    defaultValue == null ? "" : String(defaultValue)
+  );
   const resolvedPlaceholder = placeholder ?? t("selectOption");
   const useKit = options !== undefined && children == null;
 
@@ -91,7 +98,8 @@ export default function Select({
         // kit root <div>; the kit lifts aria-label/-labelledby/-describedby onto the trigger.
         {...(props as unknown as React.HTMLAttributes<HTMLDivElement>)}
         id={selectId}
-        name={name}
+        // `name` is not forwarded: Radix's hidden <select> would submit the internal empty-value
+        // sentinel. The adapter renders its own hidden input with the legacy value instead.
         disabled={disabled}
         required={required}
         error={Boolean(error)}
@@ -102,6 +110,7 @@ export default function Select({
         // DOM hook mirroring the legacy <select>.value (controlled callers) for e2e/tests.
         data-value={kitValue === undefined ? undefined : fromKitValue(kitValue)}
         onValueChange={(next) => {
+          if (value === undefined) setUncontrolledValue(fromKitValue(next));
           const target = { value: fromKitValue(next), name };
           onChange?.({
             target,
@@ -125,6 +134,16 @@ export default function Select({
         ))}
       </KitSelect>
     );
+    if (name) {
+      const submitted =
+        value === undefined ? uncontrolledValue : value == null ? "" : String(value);
+      control = (
+        <>
+          {control}
+          <input type="hidden" name={name} value={submitted} disabled={disabled} />
+        </>
+      );
+    }
   } else {
     control = (
       <select
@@ -159,7 +178,7 @@ export default function Select({
   // Same a11y workaround as the Input adapter: the kit Field's asterisk is plain text inside
   // the <label> and would end up in the control's accessible name ("Mode*").
   const fieldLabel =
-    label != null ? (
+    label != null && label !== "" ? (
       <>
         {label}
         {required && (

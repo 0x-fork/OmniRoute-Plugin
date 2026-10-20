@@ -72,4 +72,9 @@ describe("Input adapter → kit Field + Input", () => {
     expect(ref.current).toBeInstanceOf(HTMLInputElement);
     expect(ref.current?.id).toBe("q");
   });
+
+  it("an empty-string label renders no <label> element", () => {
+    const { container } = render(<Input label="" aria-label="Q" />);
+    expect(container.querySelector("label")).toBeNull();
+  });
 });

@@ -131,10 +131,75 @@ describe("Select adapter", () => {
       />
     );
     const trigger = getByRole("combobox", { name: "Tier" });
+    // value "" shows the "Auto" option, not the placeholder
     expect(trigger.textContent).toContain("Auto");
-    openKitSelect(trigger);
-    fireEvent.click(getByRole("option", { name: "Beta" }));
-    expect(onChange.mock.calls.at(-1)?.[0].target.value).toBe("b");
+    cleanup();
+    // picking the "" option from another value reports "" (sentinel mapped back)
+    const view = render(
+      <Select
+        label="Tier"
+        options={[{ value: "", label: "Auto" }, ...OPTIONS]}
+        value="b"
+        onChange={onChange}
+      />
+    );
+    openKitSelect(view.getByRole("combobox", { name: "Tier" }));
+    fireEvent.click(view.getByRole("option", { name: "Auto" }));
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange.mock.calls[0][0].target.value).toBe("");
+  });
+
+  it("inside a form, options mode submits its own hidden input with the legacy value", () => {
+    const { container, rerender } = render(
+      <form>
+        <Select
+          name="tier"
+          options={[{ value: "", label: "Auto" }, ...OPTIONS]}
+          value=""
+          onChange={() => {}}
+        />
+      </form>
+    );
+    const form = container.querySelector("form")!;
+    expect(new FormData(form).getAll("tier")).toEqual([""]);
+    rerender(
+      <form>
+        <Select
+          name="tier"
+          options={[{ value: "", label: "Auto" }, ...OPTIONS]}
+          value="b"
+          onChange={() => {}}
+        />
+      </form>
+    );
+    expect(new FormData(form).getAll("tier")).toEqual(["b"]);
+  });
+
+  it("merges a caller's aria-describedby with the hint/error ids (both modes)", () => {
+    const { getByRole, rerender } = render(
+      <Select
+        id="m"
+        aria-describedby="ext"
+        hint="h"
+        options={OPTIONS}
+        value="a"
+        onChange={() => {}}
+      />
+    );
+    expect(getByRole("combobox").getAttribute("aria-describedby")).toBe("ext m-hint");
+    rerender(
+      <Select id="m" aria-describedby="ext" error="bad" value="x" onChange={() => {}}>
+        <option value="x">X</option>
+      </Select>
+    );
+    expect(getByRole("combobox").getAttribute("aria-describedby")).toBe("ext m-error");
+  });
+
+  it("an empty-string label renders no <label> element", () => {
+    const { container } = render(
+      <Select label="" options={OPTIONS} value="a" onChange={() => {}} />
+    );
+    expect(container.querySelector("label")).toBeNull();
   });
 
   it("placeholderDisabled={false} keeps the placeholder pickable as the '' value", () => {

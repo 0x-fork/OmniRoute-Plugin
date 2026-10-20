@@ -112,7 +112,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   // input's accessible name ("Email*"). Render the same `.ci-field__required` marker ourselves,
   // aria-hidden like the legacy one; the native `required` attribute carries the semantics.
   const fieldLabel =
-    label != null ? (
+    label != null && label !== "" ? (
       <>
         {label}
         {required && (
