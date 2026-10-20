@@ -117,7 +117,7 @@ test("focus ring lives in @layer base so kit controls keep their own focus style
   // the box-shadow cascade over @layer base and leave legacy buttons without any focus cue.
   assert.match(
     css,
-    /@layer base \{[\s\S]*?:focus-visible \{\s*outline: 2px solid var\(--ci-color-focus-ring\);\s*outline-offset: 2px;/
+    /@layer base \{[\s\S]*?\n\s*:focus-visible \{\s*outline: 2px solid var\(--ci-color-focus-ring\);\s*outline-offset: 2px;/
   );
   // the generic rule (bare `:focus-visible`, not `.focus-ring:focus-visible`) no longer pairs
   // `outline: none` with a box-shadow
@@ -166,8 +166,19 @@ test("no class literal pairs a solid bg-accent/bg-primary with text-white (lime 
       else if (entry.name.endsWith(".tsx")) {
         const src = fs.readFileSync(full, "utf8");
         for (const m of src.matchAll(LITERAL)) {
-          if (SOLID.test(m[0]) && WHITE.test(m[0])) {
-            const line = src.slice(0, m.index).split("\n").length;
+          const line = src.slice(0, m.index).split("\n").length;
+          // A template literal is judged per branch: the static part plus ONE `${…}` branch at
+          // a time, so `${cond ? "bg-primary text-accent-foreground" : "bg-red-500 text-white"}`
+          // is fine while `bg-primary ${cond ? "text-white" : ""}` is not.
+          const units: string[] = [];
+          if (m[0].startsWith("`") && m[0].includes("${")) {
+            const stat = m[0].replace(/\$\{[^}]*\}/g, " ");
+            const branches = [...m[0].matchAll(/\$\{[^}]*\}/g)].flatMap(
+              (e) => e[0].match(/"[^"]*"|'[^']*'/g) ?? []
+            );
+            units.push(stat, ...branches.map((b) => `${stat} ${b}`));
+          } else units.push(m[0]);
+          if (units.some((u) => SOLID.test(u) && WHITE.test(u))) {
             offenders.push(`${path.relative(ROOT, full)}:${line}`);
           }
         }
@@ -175,7 +186,15 @@ test("no class literal pairs a solid bg-accent/bg-primary with text-white (lime 
     }
   };
   walk(path.join(ROOT, "src"));
-  assert.deepEqual(offenders, [], `solid accent surface with white ink:\n${offenders.join("\n")}`);
+  assert.deepEqual(
+    offenders,
+    [],
+    "solid accent surface with white ink (use text-accent-foreground). If the literal is a " +
+      "template whose bg-accent/bg-primary sits in one `${cond ? … : …}` branch while text-white " +
+      "belongs to another background, this is a legitimate split: move the ink into each branch " +
+      "by hand instead of replacing it globally:\n" +
+      offenders.join("\n")
+  );
 });
 
 test("<html> opts into the kit theme surface", () => {
@@ -278,6 +297,7 @@ test("@theme inline still exposes bg-surface-2 and rounded-card", () => {
   const theme = block("@theme inline {");
   assert.match(theme, /--color-surface-2:\s*var\(--surface-2\);/);
   assert.match(theme, /--radius-card:\s*var\(--radius\);/);
+  assert.match(theme, /--radius-control:\s*var\(--radius-control\);/);
 });
 
 test("cn() still dedupes via tailwind-merge and DataTable paints an opaque surface", () => {

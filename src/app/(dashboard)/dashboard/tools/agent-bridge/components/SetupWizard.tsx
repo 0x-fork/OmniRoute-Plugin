@@ -174,7 +174,7 @@ export function SetupWizard({
               <div
                 className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium shrink-0 ${
                   i < stepIndex
-                    ? "bg-emerald-500 text-accent-foreground"
+                    ? "bg-emerald-500 text-white"
                     : i === stepIndex
                       ? "bg-primary text-accent-foreground"
                       : "bg-surface text-text-muted border border-border/50"

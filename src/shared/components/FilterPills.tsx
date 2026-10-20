@@ -57,7 +57,9 @@ export default function FilterPills({
             )}
             {opt.label}
             {opt.count !== undefined && (
-              <span className={active ? "text-white/80" : "text-text-muted/70"}>{opt.count}</span>
+              <span className={active ? "text-accent-foreground/80" : "text-text-muted/70"}>
+                {opt.count}
+              </span>
             )}
           </button>
         );
