@@ -3,7 +3,6 @@
 import {
   Card as KitCard,
   CardAction,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -25,19 +24,15 @@ interface CardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> 
   className?: string;
 }
 
-// The kit puts its padding on the header (top + sides) and the content, not on the card, so
-// the legacy `padding` maps onto both. `md` is the kit default (space-6 = the legacy p-6).
-const CONTENT_PADDING = { none: "p-0", xs: "p-3", sm: "p-4", md: "", lg: "p-8" } as const;
-const HEADER_PADDING = {
-  none: "p-0",
-  xs: "px-3 pt-3",
-  sm: "px-4 pt-4",
-  md: "",
-  lg: "px-8 pt-8",
-} as const;
+// Legacy box model: the padding lives on the card root and the children render straight into
+// it, so a caller's `className` (`p-4`, `flex gap-2`, `grid`, `text-center` — ~180 call sites)
+// keeps acting on the element that holds the children. `cn` (tailwind-merge) lets a caller's
+// `p-*` replace the default. The kit's own padding lives on CardHeader/CardContent, so the
+// adapter never wraps the children in CardContent and zeroes the header padding.
+const PADDING = { none: "", xs: "p-3", sm: "p-4", md: "p-6", lg: "p-8" } as const;
 
 /**
- * Card — adapter over the kit Card + CardHeader/CardTitle/CardDescription/CardAction/CardContent.
+ * Card — adapter over the kit Card + CardHeader/CardTitle/CardDescription/CardAction.
  * The title keeps its <h3> (heading semantics) and the subtitle its <p> inside the kit slots.
  */
 function Card({
@@ -55,13 +50,14 @@ function Card({
   return (
     <KitCard
       className={cn(
+        PADDING[padding] ?? PADDING.md,
         hover && "oi-card--hover cursor-pointer transition-shadow hover:shadow-md",
         className
       )}
       {...props}
     >
       {hasHeader && (
-        <CardHeader className={cn("flex items-center gap-3", HEADER_PADDING[padding])}>
+        <CardHeader className="mb-4 flex items-center justify-between gap-3 p-0">
           {icon && (
             <span className="flex size-9 shrink-0 items-center justify-center rounded-control bg-bg-subtle text-text-muted">
               <Icon name={icon} size={20} />
@@ -82,15 +78,7 @@ function Card({
           {action && <CardAction>{action}</CardAction>}
         </CardHeader>
       )}
-      <CardContent
-        className={cn(
-          CONTENT_PADDING[padding],
-          // legacy `mb-4` under the header survives padding="none"
-          padding === "none" && hasHeader && "pt-4"
-        )}
-      >
-        {children}
-      </CardContent>
+      {children}
     </KitCard>
   );
 }

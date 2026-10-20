@@ -48,7 +48,13 @@ export default function Toggle({
       aria-label={label || ariaLabel || description || title || "Toggle"}
       aria-checked={checked}
       title={title}
-      className={cn((size === "xs" || size === "sm") && "ci-switch--compact", className)}
+      className={cn(
+        (size === "xs" || size === "sm") && "ci-switch--compact",
+        // The kit dims only the label row (`.ci-switch[data-disabled]`); the bare control a
+        // label-less switch renders has no disabled look, so keep the legacy `opacity-50`.
+        disabled && !label && !description && "opacity-50",
+        className
+      )}
     />
   );
 }

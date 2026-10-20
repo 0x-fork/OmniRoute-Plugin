@@ -28,7 +28,33 @@ describe("Card adapter → kit Card", () => {
     expect(getByText("Usage").closest("[data-slot=card-title]")).not.toBeNull();
     expect(getByText("Last 7 days").closest("[data-slot=card-description]")).not.toBeNull();
     expect(getByText("More").closest("[data-slot=card-action]")).not.toBeNull();
-    expect(getByText("body").closest("[data-slot=card-content]")).not.toBeNull();
+    // legacy contract: children sit directly in the card root, after the header
+    expect(card.querySelector("[data-slot=card-content]")).toBeNull();
+    const header = card.querySelector("[data-slot=card-header]")!;
+    expect(header.parentElement).toBe(card);
+    expect(header.className).toContain("p-0");
+    expect(header.className).toContain("mb-4");
+    expect(card.lastChild?.textContent).toBe("body");
+    expect(
+      header.compareDocumentPosition(card.lastChild!) & Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+  });
+
+  it("className keeps acting on the element that holds the children (legacy layout contract)", () => {
+    const { container, getByText } = render(
+      <Card className="flex gap-2 p-1">
+        <span>a</span>
+        <span>b</span>
+      </Card>
+    );
+    const card = container.querySelector("[data-slot=card]")!;
+    expect(getByText("a").parentElement).toBe(card);
+    expect(card.className).toContain("flex");
+    expect(card.className).toContain("gap-2");
+    // the caller's p-1 replaces the default md padding (tailwind-merge), no stacked padding
+    expect(card.className).toContain("p-1");
+    expect(card.className).not.toContain("p-6");
+    expect(card.querySelector(".ci-card__content")).toBeNull();
   });
 
   it("padding=none removes the content padding; hover adds the interactive class", () => {
@@ -37,9 +63,11 @@ describe("Card adapter → kit Card", () => {
         x
       </Card>
     );
-    const content = container.querySelector("[data-slot=card-content]")!;
-    expect(content.className).toContain("p-0");
-    expect(container.querySelector("[data-slot=card]")!.className).toContain("oi-card--hover");
+    const card = container.querySelector("[data-slot=card]")!;
+    expect(card.className).not.toMatch(/(^|\s)p-\d/);
+    expect(card.className).toContain("oi-card--hover");
+    const { container: md } = render(<Card>y</Card>);
+    expect(md.querySelector("[data-slot=card]")!.className).toContain("p-6");
   });
 
   it('exposes the kit surface="subtle"', () => {
@@ -56,15 +84,16 @@ describe("Card adapter → kit Card", () => {
     expect(getByText("All of them").tagName).toBe("P");
   });
 
-  it("maps padding onto the kit header and content; className reaches the root", () => {
+  it("maps padding onto the card root (legacy map); className reaches the root", () => {
     const { container } = render(
       <Card title="T" padding="xs" className="mt-4">
         x
       </Card>
     );
-    expect(container.querySelector("[data-slot=card]")!.className).toContain("mt-4");
-    expect(container.querySelector("[data-slot=card-header]")!.className).toContain("px-3");
-    expect(container.querySelector("[data-slot=card-content]")!.className).toContain("p-3");
+    const card = container.querySelector("[data-slot=card]")!;
+    expect(card.className).toContain("mt-4");
+    expect(card.className).toContain("p-3");
+    expect(container.querySelector("[data-slot=card-header]")!.className).toContain("p-0");
   });
 
   it("keeps Card.Section / Card.Row / Card.ListItem (also as named exports) with their markup", () => {

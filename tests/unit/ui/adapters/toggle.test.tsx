@@ -68,6 +68,18 @@ describe("Toggle adapter → kit Switch", () => {
     );
   });
 
+  it("a disabled switch without a label row is dimmed like the legacy toggle", () => {
+    const { container, rerender } = render(<Toggle disabled onChange={() => {}} ariaLabel="x" />);
+    expect((container.firstElementChild as HTMLElement).className).toContain("opacity-50");
+    rerender(<Toggle onChange={() => {}} ariaLabel="x" />);
+    expect((container.firstElementChild as HTMLElement).className).not.toContain("opacity-50");
+    // a labelled row is dimmed by the kit itself (data-disabled → opacity .48)
+    rerender(<Toggle disabled onChange={() => {}} label="L" />);
+    const row = container.firstElementChild as HTMLElement;
+    expect(row.getAttribute("data-disabled")).toBe("true");
+    expect(row.className).not.toContain("opacity-50");
+  });
+
   it("globals.css stretches the transparent input over the control (unlabelled switches stay clickable)", () => {
     const css = readFileSync(path.resolve(process.cwd(), "src/app/globals.css"), "utf8");
     const at = css.indexOf(".ci-switch__control > .ci-switch__input {");
