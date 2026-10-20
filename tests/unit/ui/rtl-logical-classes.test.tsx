@@ -101,6 +101,20 @@ describe("Sidebar — collapse toggle button uses logical margin", () => {
   });
 });
 
+describe("Kit shell — the sidebar side follows the document direction", () => {
+  it("kit shell passes the RTL-aware side to the Sidebar", () => {
+    expect(src("src/shared/components/layouts/DashboardShell.tsx")).toContain(
+      "side={useSidebarSide()}"
+    );
+  });
+
+  it("useSidebarSide reads dir=rtl from <html> and anchors the sidebar right", () => {
+    const sidebar = src("src/shared/components/Sidebar.tsx");
+    expect(sidebar).toContain("export function useSidebarSide()");
+    expect(sidebar).toContain('document.documentElement.dir === "rtl" ? "right" : "left"');
+  });
+});
+
 // ─── LanguageSelector.tsx ─────────────────────────────────────────────────────
 
 describe("LanguageSelector — dropdown anchors to inline-end", () => {

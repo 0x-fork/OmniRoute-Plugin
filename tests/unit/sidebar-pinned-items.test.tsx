@@ -4,6 +4,9 @@ import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 process.env.NEXT_PUBLIC_OMNIROUTE_E2E_MODE = "1";
+// Cold module transform of the Sidebar + kit tree is slow on a loaded box; behavior, not speed, is
+// tested (same budget as sidebar-hierarchy-a11y-12869).
+vi.setConfig({ testTimeout: 120_000 });
 
 vi.mock("next-intl", () => ({
   useTranslations: () => {
@@ -32,6 +35,23 @@ function makeContainer(): HTMLElement {
   document.body.appendChild(container);
   cleanupCallbacks.push(() => container.remove());
   return container;
+}
+
+// The Sidebar renders inside the kit SidebarProvider + kit <Sidebar> (as DashboardShell does); the
+// collapsed state comes from the provider. The kit is imported after vi.resetModules() together
+// with the Sidebar so both share one SidebarContext instance.
+async function loadHarness() {
+  const { SidebarProvider, Sidebar: KitSidebar } = await import("@omniroute/ui-kit");
+  const { default: Sidebar } = await import("@/shared/components/Sidebar");
+  return function Harness({ collapsed = false }: { collapsed?: boolean }) {
+    return (
+      <SidebarProvider defaultOpen={!collapsed}>
+        <KitSidebar collapsible="icon">
+          <Sidebar />
+        </KitSidebar>
+      </SidebarProvider>
+    );
+  };
 }
 
 function jsonResponse(body: unknown) {
@@ -68,11 +88,11 @@ describe("Sidebar pinned items shortcut (#pinned-items)", () => {
   });
 
   it("does not render PINNED section when no items are pinned", async () => {
-    const { default: Sidebar } = await import("@/shared/components/Sidebar");
+    const Harness = await loadHarness();
     const container = makeContainer();
     root = createRoot(container);
     await act(async () => {
-      root!.render(<Sidebar />);
+      root!.render(<Harness />);
     });
 
     const headers = Array.from(container.querySelectorAll("span")).map((s) => s.textContent);
@@ -82,11 +102,11 @@ describe("Sidebar pinned items shortcut (#pinned-items)", () => {
   it("hydrates and renders PINNED section when items are stored in localStorage", async () => {
     localStorage.setItem("sidebar-pinned-items", JSON.stringify(["analytics", "logs"]));
 
-    const { default: Sidebar } = await import("@/shared/components/Sidebar");
+    const Harness = await loadHarness();
     const container = makeContainer();
     root = createRoot(container);
     await act(async () => {
-      root!.render(<Sidebar />);
+      root!.render(<Harness />);
     });
 
     // Pinned section should now appear
@@ -100,11 +120,11 @@ describe("Sidebar pinned items shortcut (#pinned-items)", () => {
   });
 
   it("allows pinning and unpinning an item, persisting to localStorage", async () => {
-    const { default: Sidebar } = await import("@/shared/components/Sidebar");
+    const Harness = await loadHarness();
     const container = makeContainer();
     root = createRoot(container);
     await act(async () => {
-      root!.render(<Sidebar />);
+      root!.render(<Harness />);
     });
 
     // Expand ANALYTICS if not expanded
@@ -155,11 +175,11 @@ describe("Sidebar pinned items shortcut (#pinned-items)", () => {
   it("renders pinned shortcuts in collapsed mode", async () => {
     localStorage.setItem("sidebar-pinned-items", JSON.stringify(["analytics"]));
 
-    const { default: Sidebar } = await import("@/shared/components/Sidebar");
+    const Harness = await loadHarness();
     const container = makeContainer();
     root = createRoot(container);
     await act(async () => {
-      root!.render(<Sidebar collapsed />);
+      root!.render(<Harness collapsed />);
     });
 
     // In collapsed mode, the link should still exist
@@ -170,11 +190,11 @@ describe("Sidebar pinned items shortcut (#pinned-items)", () => {
   it("allows collapsing and expanding the PINNED section", async () => {
     localStorage.setItem("sidebar-pinned-items", JSON.stringify(["analytics"]));
 
-    const { default: Sidebar } = await import("@/shared/components/Sidebar");
+    const Harness = await loadHarness();
     const container = makeContainer();
     root = createRoot(container);
     await act(async () => {
-      root!.render(<Sidebar />);
+      root!.render(<Harness />);
     });
 
     // Find the Pinned section header button
@@ -205,29 +225,30 @@ describe("Sidebar pinned items shortcut (#pinned-items)", () => {
   it("renders proportional pin icon sizing on nav items and clean text header for PINNED", async () => {
     localStorage.setItem("sidebar-pinned-items", JSON.stringify(["analytics"]));
 
-    const { default: Sidebar } = await import("@/shared/components/Sidebar");
+    const Harness = await loadHarness();
     const container = makeContainer();
     root = createRoot(container);
     await act(async () => {
-      root!.render(<Sidebar />);
+      root!.render(<Harness />);
     });
 
-    // Nav item pin icon should have 13px fontSize (proportional to 14px item label)
+    // Nav item pin icon is 13px (proportional to the 14px item label) — a Lucide <Icon> now
     const navPinBtn = container.querySelector(
       'button[title*="Unpin item"], button[aria-label*="Unpin item"]'
     );
-    expect(navPinBtn).toBeDefined();
-    const navPinIcon = navPinBtn?.querySelector(".material-symbols-outlined");
-    expect((navPinIcon as HTMLElement)?.style.fontSize).toBe("13px");
+    expect(navPinBtn).not.toBeNull();
+    const navPinIcon = navPinBtn?.querySelector("svg.oi-icon");
+    expect(navPinIcon?.getAttribute("width")).toBe("13");
+    expect(navPinIcon?.getAttribute("height")).toBe("13");
 
     // Section header PINNED should be clean text without redundant leading icon, consistent with other category headers
     const pinnedHeader = Array.from(container.querySelectorAll("button[aria-expanded]")).find(
       (el) => el.textContent?.includes("Pinned")
     );
     expect(pinnedHeader).toBeDefined();
-    const headerPinIcon = pinnedHeader?.querySelector(
-      ".material-symbols-outlined:not(:last-child)"
-    );
+    // Only the trailing chevron: no leading icon before the title.
+    const headerPinIcon = pinnedHeader?.querySelector("svg:not(:last-child)");
     expect(headerPinIcon).toBeNull();
+    expect(pinnedHeader?.querySelectorAll("svg")).toHaveLength(1);
   });
 });
