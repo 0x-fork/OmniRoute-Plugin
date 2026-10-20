@@ -26,6 +26,13 @@ export function applyTheme(theme: string) {
   root.style.colorScheme = isDark ? "dark" : "light";
 }
 
+const KNOWN_THEMES = ["light", "dark", "system"] as const;
+
+/** A persisted value outside light/dark/system (hand-edited, corrupted) falls back to the default. */
+function isKnownTheme(value: unknown): value is (typeof KNOWN_THEMES)[number] {
+  return typeof value === "string" && (KNOWN_THEMES as readonly string[]).includes(value);
+}
+
 const useThemeStore = create<ThemeState>()(
   persist(
     (set, get) => ({
@@ -48,7 +55,7 @@ const useThemeStore = create<ThemeState>()(
       partialize: (state) => ({ theme: state.theme }),
       merge: (persisted, current) => {
         const saved = (persisted ?? {}) as { theme?: unknown };
-        const theme = typeof saved.theme === "string" ? saved.theme : current.theme;
+        const theme = isKnownTheme(saved.theme) ? saved.theme : current.theme;
         return { ...current, theme };
       },
     }

@@ -41,3 +41,24 @@ test("isUiKitShellEnabled honours the env override (kill switch)", async () => {
     else process.env.UI_KIT_SHELL = prev;
   }
 });
+
+test("isUiKitShellEnabled falls back to the definition default when the flag read throws", async () => {
+  const { isUiKitShellEnabled } = await import("../../src/shared/utils/featureFlags.ts");
+  const logs: unknown[][] = [];
+  const origError = console.error;
+  console.error = (...args: unknown[]) => {
+    logs.push(args);
+  };
+  try {
+    const result = isUiKitShellEnabled(() => {
+      throw new Error("db read failed");
+    });
+    assert.equal(result, true, "a throwing read must not disable the kit shell nor throw");
+    assert.ok(
+      logs.some((args) => String(args).includes("Failed to resolve UI_KIT_SHELL")),
+      "the failure is logged with the flag key"
+    );
+  } finally {
+    console.error = origError;
+  }
+});
