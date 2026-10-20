@@ -36,6 +36,11 @@ describe("themeStore ↔ CI UI Kit bridge", () => {
     expect("customColor" in state).toBe(false);
     expect("setColorTheme" in state).toBe(false);
     expect(document.documentElement.style.getPropertyValue("--color-primary")).toBe("");
+    // ThemeProvider / useTheme call initTheme() on mount: the legacy payload must land as dark.
+    expect(() => useThemeStore.getState().initTheme()).not.toThrow();
+    expect(document.documentElement.classList.contains("dark")).toBe(true);
+    expect(document.documentElement.dataset.theme).toBe("dark");
+    expect(document.documentElement.style.colorScheme).toBe("dark");
   });
 
   it("toggleTheme flips dark ↔ light and persists only the theme", async () => {
