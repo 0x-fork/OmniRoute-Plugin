@@ -25,6 +25,7 @@
     "confirm": "Are you sure?",
     "refresh": "Refresh",
     "close": "Close",
+    "dialogTitleFallback": "Dialog",
     "previousPage": "Previous page",
     "nextPage": "Next page",
     "capsLockOn": "Caps Lock is on",

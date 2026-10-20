@@ -11,6 +11,10 @@ const { default: Modal } = await import("../../../src/shared/components/Modal");
 
 const cleanups: Array<() => void> = [];
 
+// The kit Dialog (Radix FocusScope) restores focus to the opener on a
+// `setTimeout(0)` after the dialog unmounts — flush one macrotask inside act.
+const flush = () => act(() => new Promise<void>((resolve) => setTimeout(resolve, 0)));
+
 function Harness() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -38,8 +42,10 @@ function renderHarness() {
   return container;
 }
 
+// The dialog is portaled to document.body (Radix), not rendered inside the container.
+const getDialog = () => document.body.querySelector<HTMLElement>('[role="dialog"]');
+
 beforeEach(() => {
-  vi.useFakeTimers();
   (
     globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean }
   ).IS_REACT_ACT_ENVIRONMENT = true;
@@ -48,11 +54,10 @@ beforeEach(() => {
 afterEach(() => {
   while (cleanups.length) cleanups.pop()!();
   vi.restoreAllMocks();
-  vi.useRealTimers();
 });
 
 describe("shared Modal focus restoration", () => {
-  it("returns focus to the trigger after Escape closes the dialog", () => {
+  it("returns focus to the trigger after Escape closes the dialog", async () => {
     const container = renderHarness();
     const trigger = container.querySelector<HTMLButtonElement>("button")!;
 
@@ -61,7 +66,7 @@ describe("shared Modal focus restoration", () => {
       trigger.click();
     });
 
-    const dialog = container.querySelector<HTMLElement>('[role="dialog"]')!;
+    const dialog = getDialog()!;
     expect(dialog).not.toBeNull();
     act(() => {
       dialog.querySelector<HTMLButtonElement>("button")!.focus();
@@ -71,43 +76,36 @@ describe("shared Modal focus restoration", () => {
     act(() => {
       document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
     });
+    await flush();
 
-    expect(container.querySelector('[role="dialog"]')).toBeNull();
+    expect(getDialog()).toBeNull();
     expect(document.activeElement).toBe(trigger);
   });
 
-  it("returns focus after the close button dismisses the dialog", () => {
+  it("returns focus after the close button dismisses the dialog", async () => {
     const container = renderHarness();
     const trigger = container.querySelector<HTMLButtonElement>("button")!;
-    const setTimeoutSpy = vi.spyOn(window, "setTimeout");
-    const clearTimeoutSpy = vi.spyOn(window, "clearTimeout");
 
     act(() => {
       trigger.focus();
       trigger.click();
     });
-    const focusTimerIndex = setTimeoutSpy.mock.calls.findIndex(([, delay]) => delay === 50);
-    expect(focusTimerIndex).toBeGreaterThanOrEqual(0);
-    const focusTimer = setTimeoutSpy.mock.results[focusTimerIndex]!.value;
 
-    const closeButton = container.querySelector<HTMLButtonElement>('[role="dialog"] button')!;
+    const closeButton = getDialog()!.querySelector<HTMLButtonElement>("button")!;
     act(() => {
       closeButton.focus();
       closeButton.click();
     });
+    await flush();
 
-    expect(container.querySelector('[role="dialog"]')).toBeNull();
-    expect(clearTimeoutSpy).toHaveBeenCalledWith(focusTimer);
-    expect(document.activeElement).toBe(trigger);
-    act(() => vi.runAllTimers());
+    expect(getDialog()).toBeNull();
     expect(document.activeElement).toBe(trigger);
   });
 
-  it("does not try to focus an opener that was removed while the dialog was open", () => {
+  it("does not land focus on an opener that was removed while the dialog was open", async () => {
     const trigger = document.createElement("button");
     document.body.appendChild(trigger);
     trigger.focus();
-    const focusSpy = vi.spyOn(trigger, "focus");
 
     const container = document.createElement("div");
     document.body.appendChild(container);
@@ -129,7 +127,6 @@ describe("shared Modal focus restoration", () => {
     };
 
     act(renderModal);
-    focusSpy.mockClear();
     trigger.remove();
 
     expect(() => {
@@ -137,9 +134,12 @@ describe("shared Modal focus restoration", () => {
         document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
       });
     }).not.toThrow();
+    await flush();
 
-    expect(container.querySelector('[role="dialog"]')).toBeNull();
-    expect(focusSpy).not.toHaveBeenCalled();
+    expect(getDialog()).toBeNull();
+    // Focusing a detached element is a no-op: focus must not end up on the removed opener.
+    expect(document.activeElement).not.toBe(trigger);
+    expect(document.activeElement).toBe(document.body);
     act(() => root.unmount());
     container.remove();
   });

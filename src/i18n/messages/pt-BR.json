@@ -25,6 +25,7 @@
     "confirm": "Tem certeza?",
     "refresh": "Atualizar",
     "close": "Fechar",
+    "dialogTitleFallback": "Diálogo",
     "previousPage": "Página anterior",
     "nextPage": "Próxima página",
     "capsLockOn": "Caps Lock está ativado",
