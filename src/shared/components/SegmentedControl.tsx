@@ -1,6 +1,8 @@
 "use client";
 
+import { Tabs, TabsList, TabsTrigger } from "@omniroute/ui-kit/tabs";
 import { cn } from "@/shared/utils/cn";
+import Icon from "./Icon";
 
 interface SegmentedOption {
   value: string;
@@ -17,6 +19,16 @@ interface SegmentedControlProps {
   "aria-label"?: string;
 }
 
+const SIZES = {
+  sm: "text-xs",
+  md: "text-sm",
+  lg: "text-base",
+};
+
+/**
+ * Segmented control over the kit capsule `Tabs` (KEA-7886): `role="tablist"` with
+ * `role="tab"` + `aria-selected` triggers and arrow-key navigation from the kit.
+ */
 export default function SegmentedControl({
   options = [],
   value,
@@ -25,46 +37,25 @@ export default function SegmentedControl({
   className,
   "aria-label": ariaLabel,
 }: SegmentedControlProps) {
-  const sizes = {
-    sm: "h-7 text-xs",
-    md: "h-9 text-sm",
-    lg: "h-11 text-base",
-  };
-
   return (
-    <div
-      role="tablist"
-      aria-label={ariaLabel}
-      className={cn(
-        // Phones: full width, segments share the line and wrap; from sm up, natural width.
-        "flex w-full flex-wrap items-center p-1 rounded-lg sm:inline-flex sm:w-auto",
-        "bg-black/5 dark:bg-white/5",
-        className
-      )}
+    <Tabs
+      variant="capsule"
+      value={value}
+      onValueChange={(next) => onChange?.(next)}
+      className={cn("max-w-full", SIZES[size], className)}
     >
-      {options.map((option) => (
-        <button
-          key={option.value}
-          role="tab"
-          aria-selected={value === option.value}
-          tabIndex={value === option.value ? 0 : -1}
-          onClick={() => onChange(option.value)}
-          className={cn(
-            "grow px-3 rounded-md font-medium transition-all whitespace-nowrap flex items-center justify-center sm:grow-0 sm:px-4",
-            sizes[size],
-            value === option.value
-              ? "bg-white dark:bg-white/10 text-text-main shadow-sm"
-              : "text-text-muted hover:text-text-main"
-          )}
-        >
-          {option.icon && (
-            <span className="material-symbols-outlined text-[16px] mr-1.5" aria-hidden="true">
-              {option.icon}
-            </span>
-          )}
-          {option.label}
-        </button>
-      ))}
-    </div>
+      <TabsList aria-label={ariaLabel} className="flex-wrap">
+        {options.map((option) => (
+          <TabsTrigger
+            key={option.value}
+            value={option.value}
+            className="gap-1.5 whitespace-nowrap"
+          >
+            {option.icon && <Icon name={option.icon} size={16} />}
+            {option.label}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+    </Tabs>
   );
 }
