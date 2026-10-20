@@ -28,13 +28,31 @@ test("every Material Symbols name used in src/ has an entry in ICON_MAP (Lucide 
 });
 
 test("the generator never emits a name outside the Material Symbols vocabulary", async () => {
-  const { collectNames, loadMaterialNames } = await import("../../scripts/dev/gen-icon-map.mjs");
-  const vocabulary = loadMaterialNames(ROOT);
-  assert.ok(
-    vocabulary.size > 3000,
-    `expected the full Material vocabulary, got ${vocabulary.size}`
-  );
+  const { collectNames, loadDtsNames, LEGACY_LIGATURES } =
+    await import("../../scripts/dev/gen-icon-map.mjs");
+  // Vocabulary rebuilt here from the two exported sources, not via loadMaterialNames(), so the
+  // loop below checks the generator against an independent set instead of its own filter.
+  const dts = loadDtsNames(ROOT);
+  assert.ok(dts.size > 3000, `expected the full Material vocabulary, got ${dts.size}`);
+  const vocabulary = new Set([...dts, ...LEGACY_LIGATURES]);
   const names = collectNames(ROOT);
+  // Regression guard: these were ICON_MAP keys before the vocabulary filter existed.
   assert.ok(!names.includes("true") && !names.includes("anthropic"), "non-icon strings leaked");
   for (const n of names) assert.ok(vocabulary.has(n), `"${n}" is not a Material Symbols name`);
+});
+
+test("the scanner sees names already converted to <Icon name>", async () => {
+  const { collectNamesFromSource, loadMaterialNames } =
+    await import("../../scripts/dev/gen-icon-map.mjs");
+  const vocabulary = loadMaterialNames(ROOT);
+  const source = `
+    <Icon name="settings" size={16} />
+    <Icon name={x ? "light_mode" : "dark_mode"} className="shrink-0" />
+    <Icon name={active ? "true" : "anthropic"} />
+  `;
+  assert.deepEqual(collectNamesFromSource(source, vocabulary), [
+    "dark_mode",
+    "light_mode",
+    "settings",
+  ]);
 });

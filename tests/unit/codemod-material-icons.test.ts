@@ -28,3 +28,15 @@ test("a span the codemod cannot parse is reported, not mangled", () => {
   assert.equal(code, input);
   assert.deepEqual(leftovers, [{ file: "C.tsx", line: 1 }]);
 });
+
+test("leftover detection does not leak regex state between files", () => {
+  // A long first file whose manual span sits far into the text, then a short second file whose
+  // manual span sits before that offset — a global regex `.test()` would miss the second one.
+  const first = `${"const pad = 1;\n".repeat(40)}const a = <span className={cn("material-symbols-outlined", x)}>{icon}</span>;\n`;
+  const second = `const b = <span className={cn("material-symbols-outlined", y)}>{icon}</span>;\n`;
+  const one = transformSource(first, "first.tsx");
+  const two = transformSource(second, "second.tsx");
+  assert.equal(one.leftovers.length, 1);
+  assert.equal(two.leftovers.length, 1);
+  assert.deepEqual(two.leftovers, [{ file: "second.tsx", line: 1 }]);
+});

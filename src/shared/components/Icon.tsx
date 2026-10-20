@@ -42,7 +42,7 @@ export default function Icon({
       width: size,
       height: size,
       strokeWidth: strokeWidth ?? (fill ? 2.5 : 2),
-      className: cn("oi-icon shrink-0", className),
+      className: cn("oi-icon shrink-0 pointer-events-none", className),
       "data-icon": name,
     };
     return createElement(Lucide, props);

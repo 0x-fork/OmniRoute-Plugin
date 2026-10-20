@@ -2,13 +2,18 @@
 // Codemod: <span className="material-symbols-outlined ..." ...>name</span>  →  <Icon name="name" ... />
 // Só converte o padrão simples (className como string literal). Spans com className dinâmico
 // (cn(...), template) ou com style={} ficam para conversão manual e são listados em `leftovers`.
+// `title="…"` vira `ariaLabel` (role="img" + aria-label); o tooltip de hover some — o lote
+// recoloca `title` no wrapper quando o tooltip importava.
+// `pointer-events-none` (e `shrink-0`) é descartado do span porque o adapter já o recoloca.
 //   node scripts/dev/codemod-material-icons.mjs src/app/\(dashboard\)/dashboard/health [--write]
 import fs from "node:fs";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 
 const SPAN_RE =
   /<span((?:\s+(?:className="[^"]*"|aria-hidden(?:="true"|=\{true\})?|aria-label="[^"]*"|title="[^"]*"))*)\s*>\s*([a-z][a-z0-9_]+|\{[^{}]+\})\s*<\/span>/g;
-const ANY_MATERIAL_SPAN_RE = /<span[^>]*material-symbols-outlined[^>]*>/g;
+// No `g` flag: used with .test() only — a global regex keeps lastIndex between files and masks leftovers.
+const ANY_MATERIAL_SPAN_RE = /<span[^>]*material-symbols-outlined[^>]*>/;
 const IMPORT = 'import Icon from "@/shared/components/Icon";';
 
 export function transformSource(source, file) {
@@ -68,7 +73,7 @@ function walk(p, out = []) {
   return out;
 }
 
-if (import.meta.url === new URL(`file://${process.argv[1]}`).href) {
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const args = process.argv.slice(2);
   const write = args.includes("--write");
   const targets = args.filter((a) => !a.startsWith("--"));

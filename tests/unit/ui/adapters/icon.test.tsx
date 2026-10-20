@@ -16,6 +16,7 @@ describe("<Icon> adapter (Material name → Lucide, with Material fallback)", ()
     expect(svg!.getAttribute("aria-hidden")).toBe("true");
     expect(svg!.getAttribute("width")).toBe("18");
     expect(svg!.classList.contains("oi-icon")).toBe(true);
+    expect(svg!.classList.contains("pointer-events-none")).toBe(true);
     expect(container.querySelector(".material-symbols-outlined")).toBeNull();
   });
 

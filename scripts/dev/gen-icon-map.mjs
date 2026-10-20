@@ -7,7 +7,7 @@
 //   node scripts/dev/gen-icon-map.mjs --names   # só os nomes, um por linha (usado pelo teste de cobertura)
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const DIRS = ["src/app", "src/shared"];
@@ -15,12 +15,14 @@ const PATTERNS = [
   /material-symbols-outlined[^>]*>\s*([a-z][a-z0-9_]+)\s*</g, // <span className="material-symbols-outlined">name</span>
   /\b(?:icon|iconRight|emptyIcon|leadingIcon)=\"([a-z][a-z0-9_]+)\"/g, // prop icon="name"
   /\bicon:\s*\"([a-z][a-z0-9_]+)\"/g, // { icon: "name" } (sidebar sections, tabs)
+  /<Icon\b[^>]*\bname=\"([a-z][a-z0-9_]+)\"/g, // <Icon name="name" /> (already converted by the codemod)
 ];
 // Ternários (`cond ? "a" : "b"`) só contam quando estão num slot de ícone: o conteúdo de um span
 // material-symbols-outlined ou a expressão de uma prop icon=/iconRight=/emptyIcon=/leadingIcon={…}.
 const SLOT_PATTERNS = [
   /material-symbols-outlined[^>]*>([^<]*)</g, // <span className="material-symbols-outlined">{cond ? "a" : "b"}</span>
   /\b(?:icon|iconRight|emptyIcon|leadingIcon)=\{([^{}]*(?:\{[^{}]*\}[^{}]*)*)\}/g, // icon={cond ? "a" : "b"}
+  /<Icon\b[^>]*\bname=\{([^{}]*(?:\{[^{}]*\}[^{}]*)*)\}/g, // <Icon name={cond ? "a" : "b"} />
 ];
 const TERNARY_RE = /\?\s*\"([a-z][a-z0-9_]+)\"\s*:\s*\"([a-z][a-z0-9_]+)\"/g;
 const VOCABULARY_FILE = "node_modules/material-symbols/index.d.ts";
@@ -29,7 +31,7 @@ const VOCABULARY_FILE = "node_modules/material-symbols/index.d.ts";
 // material-symbols@0.47.0, 2026-10-19). Only the ones in use are listed; add a name here only
 // after confirming the font renders it — new code should prefer the canonical Symbols name
 // (expand_more → keyboard_arrow_down, push_pin → keep, emoji_events → trophy, …).
-const LEGACY_LIGATURES = [
+export const LEGACY_LIGATURES = [
   "auto_awesome",
   "auto_fix_high",
   "auto_fix_normal",
@@ -49,11 +51,8 @@ const LEGACY_LIGATURES = [
   "tips_and_updates",
 ];
 
-/**
- * Every ligature name the installed `material-symbols` package declares
- * (`type MaterialSymbols = ["123", …]` in index.d.ts) plus LEGACY_LIGATURES.
- */
-export function loadMaterialNames(root = ROOT) {
+/** The names the installed `material-symbols` package declares (`type MaterialSymbols = ["123", …]`). */
+export function loadDtsNames(root = ROOT) {
   const file = path.join(root, VOCABULARY_FILE);
   if (!fs.existsSync(file)) {
     throw new Error(`${VOCABULARY_FILE} not found under ${root} — run npm install first`);
@@ -62,7 +61,12 @@ export function loadMaterialNames(root = ROOT) {
   const start = text.indexOf("type MaterialSymbols = [");
   const end = text.indexOf("];", start);
   if (start < 0 || end < 0) throw new Error(`${VOCABULARY_FILE}: MaterialSymbols tuple not found`);
-  const names = new Set([...text.slice(start, end).matchAll(/"([^"]+)"/g)].map((m) => m[1]));
+  return new Set([...text.slice(start, end).matchAll(/"([^"]+)"/g)].map((m) => m[1]));
+}
+
+/** The vocabulary the scanner accepts: loadDtsNames() plus LEGACY_LIGATURES. */
+export function loadMaterialNames(root = ROOT) {
+  const names = loadDtsNames(root);
   for (const n of LEGACY_LIGATURES) names.add(n);
   return names;
 }
@@ -77,22 +81,29 @@ function walk(dir, out = []) {
   return out;
 }
 
-export function collectNames(root = ROOT) {
-  const vocabulary = loadMaterialNames(root);
+/** Material names used in one source text (sorted, vocabulary-filtered). */
+export function collectNamesFromSource(text, vocabulary) {
   const names = new Set();
   const add = (g) => {
     if (g && vocabulary.has(g)) names.add(g);
   };
+  if (/material-symbols-outlined|icon[:=]|<Icon\b/.test(text)) {
+    for (const re of PATTERNS)
+      for (const m of text.matchAll(re)) for (const g of m.slice(1)) add(g);
+    for (const re of SLOT_PATTERNS)
+      for (const slot of text.matchAll(re))
+        for (const m of slot[1].matchAll(TERNARY_RE)) for (const g of m.slice(1)) add(g);
+  }
+  return [...names].sort();
+}
+
+export function collectNames(root = ROOT) {
+  const vocabulary = loadMaterialNames(root);
+  const names = new Set();
   for (const dir of DIRS)
-    for (const file of walk(path.join(root, dir))) {
-      const text = fs.readFileSync(file, "utf8");
-      if (!/material-symbols-outlined|icon[:=]/.test(text)) continue;
-      for (const re of PATTERNS)
-        for (const m of text.matchAll(re)) for (const g of m.slice(1)) add(g);
-      for (const re of SLOT_PATTERNS)
-        for (const slot of text.matchAll(re))
-          for (const m of slot[1].matchAll(TERNARY_RE)) for (const g of m.slice(1)) add(g);
-    }
+    for (const file of walk(path.join(root, dir)))
+      for (const n of collectNamesFromSource(fs.readFileSync(file, "utf8"), vocabulary))
+        names.add(n);
   return [...names].sort();
 }
 
@@ -104,7 +115,7 @@ function existingMap() {
   );
 }
 
-if (import.meta.url === new URL(`file://${process.argv[1]}`).href) {
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const names = collectNames();
   if (process.argv.includes("--names")) {
     console.log(names.join("\n"));
