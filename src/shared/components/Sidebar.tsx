@@ -149,6 +149,7 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
   const t = useTranslations("sidebar");
   const tc = useTranslations("common");
   const { state: sidebarState, isMobile } = useSidebar();
+  const sidebarSide = useSidebarSide();
   const collapsed = sidebarState === "collapsed" && !isMobile;
   const triggerLabel = isMobile
     ? tc("close")
@@ -534,12 +535,16 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
     const content = (
       <>
         <Icon name={item.icon} size={18} fill={active} />
-        <span className="flex min-w-0 flex-1 flex-col">
-          <span className={cn("truncate text-sm", active ? "font-semibold" : "font-medium")}>
-            {item.label}
+        {/* Icon rail: the label lives in the tooltip/aria-label. (The kit hides non-svg children
+            when collapsed, but this span's `flex` utility would out-rank that rule.) */}
+        {!collapsed && (
+          <span className="flex min-w-0 flex-1 flex-col">
+            <span className={cn("truncate text-sm", active ? "font-semibold" : "font-medium")}>
+              {item.label}
+            </span>
+            {item.subtitle && <span className={subtitleClassName}>{item.subtitle}</span>}
           </span>
-          {item.subtitle && <span className={subtitleClassName}>{item.subtitle}</span>}
-        </span>
+        )}
       </>
     );
     const linkClassName = cn(showPin && "pe-8");
@@ -676,7 +681,7 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
                 <OmniRouteLockup
                   name={customAppName}
                   logoSrc={customLogo}
-                  className="h-6 max-w-full"
+                  className="max-w-full flex-nowrap gap-1.5 whitespace-nowrap [&>.ci-keak-logo]:text-[1.1rem] [&>.ci-keak-product-icon]:size-7 [&_.ci-keak-product]:text-[0.95rem]"
                 />
                 <span className="text-xs text-text-muted">v{APP_CONFIG.version}</span>
               </>
@@ -825,7 +830,10 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
         </div>
       </SidebarFooter>
 
-      <SidebarRail />
+      {/* The kit rail straddles the outer edge (right: -0.25rem), which overflows the clipped aside
+          (scrollWidth > clientWidth) and sits on the wrong edge under dir=rtl: keep it inside, on
+          the edge that faces the content. */}
+      <SidebarRail className={sidebarSide === "right" ? "left-0 right-auto" : "right-0"} />
 
       <ConfirmModal
         isOpen={showShutdownModal}

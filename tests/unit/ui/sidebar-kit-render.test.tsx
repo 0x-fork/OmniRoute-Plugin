@@ -80,7 +80,10 @@ describe("Sidebar rendered with the kit Sidebar family", () => {
       "collapsed"
     );
     expect(screen.queryByRole("searchbox")).toBeNull();
-    expect(screen.getByRole("link", { name: "Home" })).not.toBeNull();
+    const home = screen.getByRole("link", { name: "Home" });
+    // Icon rail: only the glyph is painted; the name comes from aria-label (+ the kit tooltip).
+    expect(home.textContent).toBe("");
+    expect(home.querySelector("svg.oi-icon")).not.toBeNull();
     await user.click(screen.getByRole("button", { name: "Expand sidebar" }));
     expect(screen.getByRole("searchbox")).not.toBeNull();
   });
@@ -105,5 +108,15 @@ describe("Sidebar rendered with the kit Sidebar family", () => {
     expect(document.querySelector("aside[data-slot=sidebar]")!.getAttribute("data-side")).toBe(
       "right"
     );
+    // The rail stays inside the aside on the content-facing edge (left under RTL).
+    expect(document.querySelector("[data-slot=sidebar-rail]")!.className).toContain("left-0");
+  });
+
+  it("keeps the rail inside the aside on the right edge in LTR (no horizontal overflow)", async () => {
+    render(<Harness />);
+    await screen.findByRole("navigation", { name: "Main navigation" });
+    const rail = document.querySelector("[data-slot=sidebar-rail]")!;
+    expect(rail.closest("aside[data-slot=sidebar]")).not.toBeNull();
+    expect(rail.className).toContain("right-0");
   });
 });
