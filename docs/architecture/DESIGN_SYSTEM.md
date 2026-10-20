@@ -21,10 +21,12 @@ lastUpdated: 2026-10-20
   `border-border`, `text-success`, `bg-success-bg`, `bg-chart-1`…) or kit classes — never a hex value
   (`tests/unit/design-kit-bridge.test.ts` enforces the bridge).
 - **Themes.** `<html className="ci-theme">` (`src/app/layout.tsx`) opts the document into the kit theme.
-  `src/store/themeStore.ts` (and the inline bootstrap script in `src/app/layout.tsx`, which runs before
-  hydration) applies the chosen theme to `<html>`. The kit's dark token set is keyed on
-  `data-theme="dark"` (`packages/ui-kit/src/ci-tokens.css`); OmniRoute's own dark overrides (the `.dark`
-  block in `globals.css`) and the Tailwind `dark:` variant key on the `.dark` class.
+  `applyTheme()` in `src/store/themeStore.ts` (mirrored by the inline bootstrap script in
+  `src/app/layout.tsx`, which runs before hydration) sets `data-theme="dark"|"light"` and toggles the
+  `.dark` class on `<html>` together. The kit's dark token set is keyed on `data-theme="dark"`
+  (`packages/ui-kit/src/ci-tokens.css`); OmniRoute's own dark overrides (the `.dark` block in
+  `globals.css`) and the legacy Tailwind `dark:` utilities key on the `.dark` class. There are no
+  accent color presets: the accent always comes from the kit.
 - **Components.** `src/shared/components/*` keep the OmniRoute component API. `Button variant="primary"`
   paints with the bridged accent (`--grad-brand` → `--ci-color-accent`) and the kit's accent ink
   (`text-accent-foreground`); the `.ci-button--warning` and `.ci-badge[data-tone]` rules at the end of
