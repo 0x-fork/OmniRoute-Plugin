@@ -2,6 +2,7 @@
 import React from "react";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { chooseKitSelectValue, kitSelectValue } from "../../../helpers/kitSelect";
 
 const { default: DataTable } = await import("@/shared/components/DataTable");
 const { default: FilterPills } = await import("@/shared/components/FilterPills");
@@ -125,9 +126,10 @@ describe("DataTable family adapters", () => {
     const search = screen.getByRole("searchbox", { name: "Search" });
     fireEvent.change(search, { target: { value: "cl" } });
     expect(onSearchChange).toHaveBeenCalledWith("cl");
-    const select = screen.getByRole("combobox", { name: "Status" }) as HTMLSelectElement;
-    expect(select.value).toBe("ok");
-    fireEvent.change(select, { target: { value: "down" } });
+    // FilterBar passes `options`, so the shared Select is the kit (Radix) Select (track C).
+    const select = screen.getByRole("combobox", { name: "Status" });
+    expect(kitSelectValue(select)).toBe("ok");
+    chooseKitSelectValue(select, "down");
     expect(onFilterChange).toHaveBeenCalledWith("status", "down");
     fireEvent.click(screen.getByRole("button", { name: "Clear filters" }));
     expect(onSearchChange).toHaveBeenLastCalledWith("");

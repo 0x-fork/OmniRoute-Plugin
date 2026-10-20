@@ -6,6 +6,7 @@
 import React, { act } from "react";
 import { createRoot } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { kitSelectValue } from "../../../../../../../../../tests/helpers/kitSelect";
 import AddApiKeyModal from "../AddApiKeyModal";
 import EditConnectionModal from "../EditConnectionModal";
 
@@ -434,10 +435,16 @@ describe("conn-modals (Phase 1c extraction)", () => {
       />
     );
 
-    const regionSelect = Array.from(c.querySelectorAll("select")).find((select) =>
-      Array.from(select.options).some((option) => option.value === "china-beijing")
+    // The region picker is the kit (Radix) Select since KEA-7886: a combobox trigger
+    // labelled by the field, showing the selected option's label ("… (Beijing)").
+    const regionLabel = Array.from(c.querySelectorAll("label")).find((label) =>
+      label.textContent?.includes("apiRegionLabel")
     );
-    expect(regionSelect?.value).toBe("china-beijing");
+    const regionSelect = regionLabel ? document.getElementById(regionLabel.htmlFor) : null;
+    expect(regionSelect?.getAttribute("role")).toBe("combobox");
+    expect(kitSelectValue(regionSelect!)).toBe("china-beijing");
+    expect(regionSelect?.textContent).toContain("(Beijing)");
+    expect(regionSelect?.textContent).not.toContain("(Singapore)");
   });
 
   it("EditConnectionModal renders without ReferenceError for oauth connection", () => {

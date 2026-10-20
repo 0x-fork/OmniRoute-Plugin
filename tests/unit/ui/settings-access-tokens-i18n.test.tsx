@@ -4,6 +4,9 @@ import { NextIntlClientProvider } from "next-intl";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import AccessTokensTab from "@/app/(dashboard)/dashboard/settings/components/AccessTokensTab";
 import zh from "@/i18n/messages/zh-CN.json";
+// The shared Select renders the kit (Radix) Select for `options` since KEA-7886: no DOM
+// <select>/<option>; the helpers read the menu items (data-value) and the controlled value.
+import { chooseKitSelectValue } from "../../helpers/kitSelect";
 
 const token = {
   id: "demo/read",
@@ -100,7 +103,7 @@ describe("access-token settings with real Chinese catalogs", () => {
     fireEvent.change(screen.getByPlaceholderText("名称（例如：笔记本电脑）"), {
       target: { value: "  Remote laptop  " },
     });
-    fireEvent.change(screen.getByRole("combobox"), { target: { value: "admin" } });
+    chooseKitSelectValue(screen.getByRole("combobox"), "admin");
     fireEvent.change(screen.getByPlaceholderText("有效期（天，可选）"), { target: { value: "7" } });
     let resolve!: (value: Response) => void;
     fetchMock.mockImplementationOnce(

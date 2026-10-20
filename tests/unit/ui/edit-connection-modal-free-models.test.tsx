@@ -17,7 +17,7 @@ vi.mock("next-intl", () => ({
 const { default: EditConnectionModal } =
   await import("../../../src/app/(dashboard)/dashboard/providers/[id]/components/modals/EditConnectionModal");
 
-const FREE_TOGGLE = 'button[role="switch"][aria-label="importFreeModelsOnlyLabel"]';
+const FREE_TOGGLE = '[role="switch"][aria-label="importFreeModelsOnlyLabel"]';
 
 const containers: Array<{ root: ReturnType<typeof createRoot>; el: HTMLDivElement }> = [];
 
@@ -166,7 +166,7 @@ describe("EditConnectionModal — import only free models", () => {
 });
 
 describe("EditConnectionModal — encrypted Responses reasoning", () => {
-  const PRESERVE_TOGGLE = 'button[role="switch"][aria-label="Preserve encrypted reasoning"]';
+  const PRESERVE_TOGGLE = '[role="switch"][aria-label="Preserve encrypted reasoning"]';
 
   it("loads and saves the opt-in for an OpenAI-compatible Responses connection", async () => {
     const onSave = vi.fn().mockResolvedValue(undefined);
@@ -255,7 +255,7 @@ describe("EditConnectionModal — encrypted Responses reasoning", () => {
     expect(el.querySelector(PRESERVE_TOGGLE)).toBeNull();
     expect(el.textContent).toContain("defaultThinkingStrengthLabel");
     expect(
-      el.querySelector('button[role="switch"][aria-label="openaiResponsesStoreLabel"]')
+      el.querySelector('[role="switch"][aria-label="openaiResponsesStoreLabel"]')
     ).toBeTruthy();
     const saveBtn = Array.from(el.querySelectorAll("button")).find(
       (button) => button.textContent?.trim() === "save"

@@ -186,7 +186,7 @@ describe("CompressionPanel", () => {
     // The data-testid hook wraps the Toggle; its inner <button role="switch"> is the
     // clickable element.
     const toggle = container.querySelector(
-      `[data-testid="engine-toggle-caveman"] button`
+      `[data-testid="engine-toggle-caveman"] [role="switch"]`
     ) as HTMLButtonElement | null;
     expect(toggle, "caveman toggle must exist").toBeTruthy();
 
@@ -506,7 +506,7 @@ describe("CompressionPanel", () => {
     const container = await renderPanel();
     const autoTrigger = container.querySelector(`input[type="number"]`) as HTMLInputElement;
     const cavemanToggle = container.querySelector(
-      `[data-testid="engine-toggle-caveman"] button`
+      `[data-testid="engine-toggle-caveman"] [role="switch"]`
     ) as HTMLButtonElement;
     const user = userEvent.setup();
     await user.clear(autoTrigger);
@@ -706,7 +706,7 @@ describe("CompressionPanel", () => {
     const { puts, answer } = holdSettingsPuts();
     const container = await renderPanel();
     const toggle = container.querySelector(
-      `[data-testid="engine-toggle-caveman"] button`
+      `[data-testid="engine-toggle-caveman"] [role="switch"]`
     ) as HTMLButtonElement;
     await act(async () => {
       toggle.click();
