@@ -248,8 +248,10 @@ export default function MitmProxyTab() {
               <button
                 onClick={toggleMitm}
                 disabled={saving || loading}
-                className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-white transition-colors disabled:opacity-40 ${
-                  status.running ? "bg-red-500 hover:bg-red-600" : "bg-primary hover:bg-primary/90"
+                className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:opacity-40 ${
+                  status.running
+                    ? "bg-red-500 hover:bg-red-600 text-white"
+                    : "bg-primary hover:bg-primary/90 text-accent-foreground"
                 }`}
               >
                 <span className="material-symbols-outlined text-[18px]">

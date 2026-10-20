@@ -237,7 +237,7 @@ export function AddWebhookWizard({
                 type="button"
                 onClick={() => (step === 2 ? void handleNextFromStep2() : setStep((s) => s + 1))}
                 disabled={!canGoNext || saving}
-                className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary/90 disabled:opacity-40"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-accent-foreground transition-colors hover:bg-primary/90 disabled:opacity-40"
               >
                 {saving && step === 2 && (
                   <span className="material-symbols-outlined animate-spin text-[16px]">sync</span>
@@ -249,7 +249,7 @@ export function AddWebhookWizard({
                 type="button"
                 onClick={() => void finish()}
                 disabled={saving}
-                className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary/90 disabled:opacity-40"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-accent-foreground transition-colors hover:bg-primary/90 disabled:opacity-40"
               >
                 {saving && (
                   <span className="material-symbols-outlined animate-spin text-[16px]">sync</span>

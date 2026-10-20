@@ -49,7 +49,7 @@ export default function ConnectionsTab({
               }}
               className={`px-3 py-1.5 rounded text-xs font-medium transition-all ${
                 formState.allowAllConnections
-                  ? "bg-primary text-white"
+                  ? "bg-primary text-accent-foreground"
                   : "text-text-muted hover:bg-black/5 dark:hover:bg-white/5"
               }`}
             >
@@ -60,7 +60,7 @@ export default function ConnectionsTab({
               onClick={() => setAllowAllConnections(false)}
               className={`px-3 py-1.5 rounded text-xs font-medium transition-all ${
                 !formState.allowAllConnections
-                  ? "bg-primary text-white"
+                  ? "bg-primary text-accent-foreground"
                   : "text-text-muted hover:bg-black/5 dark:hover:bg-white/5"
               }`}
             >

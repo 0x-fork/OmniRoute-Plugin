@@ -336,7 +336,7 @@ export default function OnboardingWizard() {
                   <button
                     onClick={isLastStep ? handleFinish : handleSetPassword}
                     disabled={!bootstrapToken}
-                    className="px-6 py-2 bg-primary rounded-lg text-white font-medium text-sm hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    className="px-6 py-2 bg-primary rounded-lg text-accent-foreground font-medium text-sm hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                   >
                     {t("retry")}
                   </button>
@@ -495,7 +495,7 @@ export default function OnboardingWizard() {
                 {testStatus === "idle" && (
                   <button
                     onClick={handleTestProvider}
-                    className="px-6 py-2.5 bg-primary rounded-lg text-white font-medium text-sm hover:bg-primary/90 transition-colors cursor-pointer"
+                    className="px-6 py-2.5 bg-primary rounded-lg text-accent-foreground font-medium text-sm hover:bg-primary/90 transition-colors cursor-pointer"
                   >
                     {t("runTest")}
                   </button>
@@ -567,7 +567,7 @@ export default function OnboardingWizard() {
               {currentStep.id === "welcome" && (
                 <button
                   onClick={handleNext}
-                  className="px-6 py-2.5 bg-primary rounded-lg text-white font-medium text-sm hover:bg-primary/90 transition-colors cursor-pointer"
+                  className="px-6 py-2.5 bg-primary rounded-lg text-accent-foreground font-medium text-sm hover:bg-primary/90 transition-colors cursor-pointer"
                 >
                   {t("getStarted")}
                 </button>
@@ -575,7 +575,7 @@ export default function OnboardingWizard() {
               {currentStep.id === "tiers" && (
                 <button
                   onClick={handleNext}
-                  className="px-6 py-2.5 bg-primary rounded-lg text-white font-medium text-sm hover:bg-primary/90 transition-colors cursor-pointer"
+                  className="px-6 py-2.5 bg-primary rounded-lg text-accent-foreground font-medium text-sm hover:bg-primary/90 transition-colors cursor-pointer"
                 >
                   {t("continue")}
                 </button>
@@ -584,7 +584,7 @@ export default function OnboardingWizard() {
                 <button
                   onClick={handleSetPassword}
                   disabled={!skipSecurity && (!password || password !== confirmPassword)}
-                  className="px-6 py-2.5 bg-primary rounded-lg text-white font-medium text-sm hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                  className="px-6 py-2.5 bg-primary rounded-lg text-accent-foreground font-medium text-sm hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
                   {skipSecurity ? t("skipAndContinue") : t("setPassword")}
                 </button>
@@ -593,7 +593,7 @@ export default function OnboardingWizard() {
                 <button
                   onClick={handleAddProvider}
                   disabled={!selectedProvider || !providerKey}
-                  className="px-6 py-2.5 bg-primary rounded-lg text-white font-medium text-sm hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                  className="px-6 py-2.5 bg-primary rounded-lg text-accent-foreground font-medium text-sm hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
                   {t("addProvider")}
                 </button>
@@ -601,7 +601,7 @@ export default function OnboardingWizard() {
               {currentStep.id === "test" && (
                 <button
                   onClick={handleNext}
-                  className="px-6 py-2.5 bg-primary rounded-lg text-white font-medium text-sm hover:bg-primary/90 transition-colors cursor-pointer"
+                  className="px-6 py-2.5 bg-primary rounded-lg text-accent-foreground font-medium text-sm hover:bg-primary/90 transition-colors cursor-pointer"
                 >
                   {testStatus === "success" ? t("continue") : t("skip")}
                 </button>

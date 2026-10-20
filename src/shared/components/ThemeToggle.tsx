@@ -29,7 +29,7 @@ export default function ThemeToggle({
       "hover:bg-surface",
       "border border-border",
       "backdrop-blur-md shadow-sm hover:shadow-md",
-      "text-text-muted-light hover:text-primary",
+      "text-text-muted hover:text-primary",
       "hover:text-primary",
       "transition-all group"
     ),

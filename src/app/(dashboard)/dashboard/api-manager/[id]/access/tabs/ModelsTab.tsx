@@ -185,7 +185,7 @@ function ModelAccessModeToggle({
         onClick={onSelectAll}
         className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all ${
           allowAll
-            ? "bg-primary text-white"
+            ? "bg-primary text-accent-foreground"
             : "text-text-muted hover:bg-black/5 dark:hover:bg-white/5"
         }`}
       >
@@ -197,7 +197,7 @@ function ModelAccessModeToggle({
         onClick={onRestrict}
         className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all ${
           !allowAll
-            ? "bg-primary text-white"
+            ? "bg-primary text-accent-foreground"
             : "text-text-muted hover:bg-black/5 dark:hover:bg-white/5"
         }`}
       >
