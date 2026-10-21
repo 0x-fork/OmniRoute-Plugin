@@ -12696,7 +12696,11 @@
     "avgTtft": "Avg TTFT",
     "avgTotal": "Avg Total",
     "requestTelemetry": "Request Telemetry",
-    "requestTelemetryDescription": "7-phase pipeline breakdown (last 5 minutes)"
+    "requestTelemetryDescription": "7-phase pipeline breakdown (last 5 minutes)",
+    "title": "Provider stats",
+    "description": "Per-provider and per-model traffic, latency and success rates",
+    "combo": "Combo",
+    "toggleModels": "Show models for {provider}"
   },
   "relay": {
     "title": "Serverless Relay Proxies",
