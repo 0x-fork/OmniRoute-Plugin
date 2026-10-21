@@ -365,7 +365,7 @@ export function ApiKeyTable({
   const t = useTranslations("analytics");
   const [query, setQuery] = useState("");
   const [sortBy, setSortBy] = useState("totalTokens");
-  const [sortOrder, setSortOrder] = useState("desc");
+  const [sortOrder, setSortOrder] = useState<DataTableSortDirection>("desc");
 
   const data = useMemo(() => byApiKey || [], [byApiKey]);
 
@@ -854,7 +854,7 @@ export function ProviderTable({
 }) {
   const t = useTranslations("analytics");
   const [sortBy, setSortBy] = useState("totalTokens");
-  const [sortOrder, setSortOrder] = useState("desc");
+  const [sortOrder, setSortOrder] = useState<DataTableSortDirection>("desc");
 
   const data = useMemo(() => byProvider || [], [byProvider]);
   const totalTokens = useMemo(() => data.reduce((acc, p) => acc + p.totalTokens, 0), [data]);
