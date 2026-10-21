@@ -118,7 +118,7 @@ export function PayloadSection({
               variant="ghost"
               size="icon-sm"
               onClick={() => setOpen((v) => !v)}
-              className="size-6 text-text-muted"
+              className="size-6 min-h-6 text-text-muted"
               aria-expanded={open}
               aria-label={open ? t("collapse", { title }) : t("expand", { title })}
             >
@@ -132,7 +132,7 @@ export function PayloadSection({
               variant="ghost"
               size="sm"
               onClick={handleCopy}
-              className="h-7 px-2 text-xs text-text-muted"
+              className="h-7 min-h-7 px-2 text-xs text-text-muted"
               aria-label={t("copyTitle", { title })}
             >
               <Icon name={copied ? "check" : "content_copy"} size={14} />
@@ -312,7 +312,7 @@ export function ConversationContextSection({ log, detail }) {
             variant="ghost"
             size="icon-sm"
             onClick={() => setOpen((v) => !v)}
-            className="size-6 text-text-muted"
+            className="size-6 min-h-6 text-text-muted"
             aria-expanded={open}
             aria-label={
               open
@@ -361,7 +361,7 @@ export function ConversationContextSection({ log, detail }) {
                 onClick={toggleLiveRefresh}
                 title={liveRefresh ? t("liveRefreshOn") : t("liveRefreshOff")}
                 aria-label={liveRefresh ? t("liveRefreshOn") : t("liveRefreshOff")}
-                className={cn("size-7", liveRefresh ? "text-primary" : "text-text-muted")}
+                className={cn("size-7 min-h-7", liveRefresh ? "text-primary" : "text-text-muted")}
                 aria-pressed={liveRefresh}
               >
                 <Icon name={liveRefresh ? "sync" : "sync_disabled"} size={18} />
@@ -372,7 +372,7 @@ export function ConversationContextSection({ log, detail }) {
               size="icon-sm"
               onClick={scrollToBottom}
               title={t("goToBottom")}
-              className="size-7 text-text-muted"
+              className="size-7 min-h-7 text-text-muted"
               aria-label={t("goToBottom")}
             >
               <Icon name="vertical_align_bottom" size={18} />

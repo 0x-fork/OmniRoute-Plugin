@@ -587,7 +587,7 @@ export default function RequestTimeline({
                 aria-pressed={mode === m}
                 onClick={() => handleModeChange(m)}
                 title={t(`modes.${MODE_META[m].descriptionKey}`)}
-                className="h-7 px-2.5 text-[11px]"
+                className="h-7 min-h-7 px-2.5 text-[11px]"
               >
                 {t(`modes.${MODE_META[m].labelKey}`)}
               </Button>
@@ -598,7 +598,7 @@ export default function RequestTimeline({
             size="sm"
             onClick={handleReset}
             title={t("jumpToNow", { position: Math.round(nowLineX) })}
-            className="h-7 px-2 text-[11px]"
+            className="h-7 min-h-7 px-2 text-[11px]"
           >
             {t("reset")}
           </Button>
@@ -639,7 +639,7 @@ export default function RequestTimeline({
                   localStorage.setItem(CONVERSATION_LANE_REUSE_STORAGE_KEY, String(next));
                 } catch {}
               }}
-              inputClassName="h-7 w-12 px-1 text-center font-mono text-[11px]"
+              inputClassName="h-7 min-h-7 w-12 px-1 text-center font-mono text-[11px]"
             />
             <span aria-hidden="true">{t("laneReuseUnit")}</span>
           </div>
@@ -662,7 +662,7 @@ export default function RequestTimeline({
                   localStorage.setItem(TIMELINE_LIST_POLL_STORAGE_KEY, String(next));
                 } catch {}
               }}
-              inputClassName="h-7 w-12 px-1 text-center font-mono text-[11px]"
+              inputClassName="h-7 min-h-7 w-12 px-1 text-center font-mono text-[11px]"
             />
             <span aria-hidden="true">{t("autoRefreshUnit")}</span>
           </div>

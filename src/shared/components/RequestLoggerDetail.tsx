@@ -257,7 +257,7 @@ function StreamSection({ title, sectionId, json, onCopy }) {
             variant="ghost"
             size="icon-sm"
             onClick={() => setOpen((v) => !v)}
-            className="size-6 text-text-muted"
+            className="size-6 min-h-6 text-text-muted"
             aria-expanded={open}
             aria-label={open ? t("collapse", { title }) : t("expand", { title })}
           >
@@ -271,7 +271,7 @@ function StreamSection({ title, sectionId, json, onCopy }) {
             onClick={toggleRaw}
             title={showRaw ? t("rawViewOn") : t("rawViewOff")}
             aria-label={showRaw ? t("rawViewOn") : t("rawViewOff")}
-            className={cn("size-7", showRaw ? "text-primary" : "text-text-muted")}
+            className={cn("size-7 min-h-7", showRaw ? "text-primary" : "text-text-muted")}
             aria-pressed={showRaw}
           >
             <Icon name="code" size={18} />
@@ -282,7 +282,7 @@ function StreamSection({ title, sectionId, json, onCopy }) {
             onClick={toggleAutoscroll}
             title={autoscroll ? t("autoscrollOn") : t("autoscrollOff")}
             aria-label={autoscroll ? t("autoscrollOn") : t("autoscrollOff")}
-            className={cn("size-7", autoscroll ? "text-primary" : "text-text-muted")}
+            className={cn("size-7 min-h-7", autoscroll ? "text-primary" : "text-text-muted")}
             aria-pressed={autoscroll}
           >
             <Icon name="vertical_align_bottom" size={18} />
@@ -291,7 +291,7 @@ function StreamSection({ title, sectionId, json, onCopy }) {
             variant="ghost"
             size="sm"
             onClick={handleCopy}
-            className="h-7 px-2 text-xs text-text-muted"
+            className="h-7 min-h-7 px-2 text-xs text-text-muted"
             aria-label={t("copyTitle", { title })}
           >
             <Icon name={copied ? "check" : "content_copy"} size={14} />
@@ -989,7 +989,7 @@ export default function RequestLoggerDetail({
                     size="sm"
                     onClick={handleUnblockAll}
                     disabled={unblockAllBusy}
-                    className="h-7 px-2.5 text-[10px]"
+                    className="h-7 min-h-7 px-2.5 text-[10px]"
                   >
                     <Icon name="lock_open" size={12} />
                     {unblockAllBusy ? "..." : t("unblockAll")}
@@ -1007,7 +1007,7 @@ export default function RequestLoggerDetail({
                     size="sm"
                     onClick={handleUnblockModel}
                     disabled={unblocking}
-                    className="h-7 px-2.5 text-[10px]"
+                    className="h-7 min-h-7 px-2.5 text-[10px]"
                   >
                     <Icon name="lock_open" size={12} />
                     {unblocking ? "..." : t("unblock")}

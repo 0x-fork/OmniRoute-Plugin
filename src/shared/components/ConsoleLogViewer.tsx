@@ -342,7 +342,7 @@ export default function ConsoleLogViewer() {
                     onClick={() => handleCopy(entry, idx)}
                     title={tv("copyLogEntry")}
                     aria-label={tv("copyLogEntry")}
-                    className="size-6 shrink-0 text-[#8b949e] opacity-0 transition-opacity hover:bg-white/10 hover:text-white group-hover:opacity-100 focus-visible:opacity-100"
+                    className="size-6 min-h-6 shrink-0 text-[#8b949e] opacity-0 transition-opacity hover:bg-white/10 hover:text-white group-hover:opacity-100 focus-visible:opacity-100"
                   >
                     <Icon name={copiedIdx === idx ? "check" : "content_copy"} size={14} />
                   </Button>

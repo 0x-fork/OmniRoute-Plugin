@@ -27,7 +27,7 @@ export function JsonTreeExpandControls({ sectionId }: JsonTreeExpandControlsProp
         onClick={() => collapseAll(sectionId)}
         title={t("collapseAllLevels")}
         aria-label={t("collapseAllLevels")}
-        className="size-6 text-text-muted"
+        className="size-6 min-h-6 text-text-muted"
       >
         <Icon name="collapse_all" size={16} />
       </Button>
@@ -37,7 +37,7 @@ export function JsonTreeExpandControls({ sectionId }: JsonTreeExpandControlsProp
         onClick={() => collapseOneLevel(sectionId)}
         title={t("collapseOneLevel")}
         aria-label={t("collapseOneLevel")}
-        className="size-6 text-text-muted"
+        className="size-6 min-h-6 text-text-muted"
       >
         <Icon name="remove" size={16} />
       </Button>
@@ -53,7 +53,7 @@ export function JsonTreeExpandControls({ sectionId }: JsonTreeExpandControlsProp
         onClick={() => expandOneLevel(sectionId)}
         title={t("expandOneLevel")}
         aria-label={t("expandOneLevel")}
-        className="size-6 text-text-muted"
+        className="size-6 min-h-6 text-text-muted"
       >
         <Icon name="add" size={16} />
       </Button>
@@ -63,7 +63,7 @@ export function JsonTreeExpandControls({ sectionId }: JsonTreeExpandControlsProp
         onClick={() => expandAll(sectionId)}
         title={t("expandAllLevels")}
         aria-label={t("expandAllLevels")}
-        className="size-6 text-text-muted"
+        className="size-6 min-h-6 text-text-muted"
       >
         <Icon name="expand_all" size={16} />
       </Button>

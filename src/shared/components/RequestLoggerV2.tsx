@@ -1023,7 +1023,7 @@ const RequestLoggerV2 = forwardRef<RequestLoggerV2Handle, RequestLoggerV2Initial
               }}
               title={t("interval.title")}
               aria-label={t("interval.title")}
-              inputClassName="h-8 w-14 px-1 text-center text-xs [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              inputClassName="h-8 min-h-8 w-14 px-1 text-center text-xs [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
             />
             <Button
               variant="ghost"
@@ -1187,7 +1187,7 @@ const RequestLoggerV2 = forwardRef<RequestLoggerV2Handle, RequestLoggerV2Initial
                 aria-pressed={activeFilter === f.key}
                 onClick={() => setActiveFilter(activeFilter === f.key ? "all" : f.key)}
                 className={cn(
-                  "h-7 rounded-full px-3 text-xs",
+                  "h-7 min-h-7 rounded-full px-3 text-xs",
                   activeFilter === f.key
                     ? f.key === "error"
                       ? "bg-error/20 text-error border-error/40"
@@ -1228,7 +1228,7 @@ const RequestLoggerV2 = forwardRef<RequestLoggerV2Handle, RequestLoggerV2Initial
                   aria-pressed={isActive}
                   onClick={() => setSelectedProvider(isActive ? "" : p)}
                   className={cn(
-                    "h-7 rounded-full border px-3 text-xs font-bold uppercase",
+                    "h-7 min-h-7 rounded-full border px-3 text-xs font-bold uppercase",
                     isActive
                       ? "border-border-strong ring-1 ring-border-strong"
                       : "border-transparent opacity-70 hover:opacity-100"
@@ -1257,7 +1257,7 @@ const RequestLoggerV2 = forwardRef<RequestLoggerV2Handle, RequestLoggerV2Initial
                 aria-pressed={!!visibleColumns[col.key]}
                 onClick={() => toggleColumn(col.key)}
                 className={cn(
-                  "h-6 px-2 text-[10px]",
+                  "h-6 min-h-6 px-2 text-[10px]",
                   visibleColumns[col.key]
                     ? "bg-primary/15 text-primary border-primary/30"
                     : "text-text-muted opacity-60 hover:opacity-90"
@@ -1395,7 +1395,7 @@ const RequestLoggerV2 = forwardRef<RequestLoggerV2Handle, RequestLoggerV2Initial
                                 <Button
                                   variant="ghost"
                                   size="icon-sm"
-                                  className="ml-0.5 size-5 text-[11px] text-warning"
+                                  className="ml-0.5 size-5 min-h-5 text-[11px] text-warning"
                                   title={t("status.goToParent")}
                                   aria-label={t("status.goToParent")}
                                   onClick={(e) => {
