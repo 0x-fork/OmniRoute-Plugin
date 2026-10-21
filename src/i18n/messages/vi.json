@@ -1000,7 +1000,10 @@
     "batchFileUsedByCount": "{count, plural, one {# batch} other {# batch}}",
     "batchFilePreview": "Bản xem trước",
     "batchFilePreviewTruncated": "Hiển thị {shown} dòng đầu tiên (tổng cộng {total} dòng)",
-    "batchFileDownloadFull": "Tải xuống toàn bộ tệp"
+    "batchFileDownloadFull": "Tải xuống toàn bộ tệp",
+    "tokensPageTitle": "Token",
+    "tokensPageDescription": "Gửi token giữa các khóa API, chia sẻ mã mời và kết nối máy chủ cộng đồng.",
+    "tokensServerUrlLabel": "URL máy chủ"
   },
   "disabled": "Đã tắt",
   "featureFlagOmnirouteEmergencyFallbackDescription": "Định tuyến các yêu cầu đã hết ngân sách đến nhà cung cấp/mô hình dự phòng khẩn cấp miễn phí.",
@@ -2504,7 +2507,8 @@
     "onlySelectedConnections": "Chỉ các kết nối đã chọn",
     "selectAtLeastOneConnection": "Chọn ít nhất một kết nối hoặc chọn Tất cả kết nối.",
     "allConnectionsDesc": "Khóa này có thể dùng bất kỳ kết nối đang hoạt động nào.",
-    "restrictedToConnections": "Giới hạn ở {count, plural, one {# kết nối} other {# kết nối}}."
+    "restrictedToConnections": "Giới hạn ở {count, plural, one {# kết nối} other {# kết nối}}.",
+    "removeSelection": "Xóa {name}"
   },
   "auditLog": {
     "title": "Nhật ký kiểm tra",
@@ -5304,7 +5308,8 @@
         "skipped": "đã được cấu hình",
         "failed": "thất bại"
       }
-    }
+    },
+    "stepProgress": "Tiến độ thiết lập"
   },
   "providers": {
     "tosAvoidNoticeTitle": "Nhà cung cấp này mặc định bị loại khỏi auto",
@@ -11825,7 +11830,8 @@
       "nextButton": "Tiếp theo",
       "runButton": "Chạy",
       "promptPlaceholder": "Nhập tin nhắn của bạn… (Enter để gửi, Shift+Enter để xuống dòng)"
-    }
+    },
+    "playgroundTabs": "Chế độ playground"
   },
   "miniPlayground": {
     "endpoint": "Điểm cuối",

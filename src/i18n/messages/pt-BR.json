@@ -1000,7 +1000,10 @@
     "batchFileUsedByCount": "Usado por {count, plural, one {# lote} other {# lotes}}",
     "batchFilePreview": "Prévia",
     "batchFilePreviewTruncated": "Mostrando as primeiras {shown} linhas ({total} linhas no total)",
-    "batchFileDownloadFull": "Baixar Arquivo Completo"
+    "batchFileDownloadFull": "Baixar Arquivo Completo",
+    "tokensPageTitle": "Tokens",
+    "tokensPageDescription": "Envie tokens entre chaves de API, compartilhe códigos de convite e conecte servidores da comunidade.",
+    "tokensServerUrlLabel": "URL do servidor"
   },
   "disabled": "Desabilitado",
   "featureFlagOmnirouteEmergencyFallbackDescription": "Roteie solicitações com orçamento esgotado para o provedor/modelo de fallback gratuito de emergência.",
@@ -2504,7 +2507,8 @@
     "onlySelectedConnections": "Apenas as conexões selecionadas",
     "selectAtLeastOneConnection": "Selecione pelo menos uma conexão ou escolha Todas as conexões.",
     "allConnectionsDesc": "Esta chave pode usar qualquer conexão ativa.",
-    "restrictedToConnections": "Restrita a {count, plural, one {# conexão} other {# conexões}}."
+    "restrictedToConnections": "Restrita a {count, plural, one {# conexão} other {# conexões}}.",
+    "removeSelection": "Remover {name}"
   },
   "auditLog": {
     "title": "Log de Auditoria",
@@ -5304,7 +5308,8 @@
         "skipped": "já configurado",
         "failed": "falhou"
       }
-    }
+    },
+    "stepProgress": "Progresso da configuração"
   },
   "providers": {
     "tosAvoidNoticeTitle": "Este provedor é excluído do auto por padrão",
@@ -11825,7 +11830,8 @@
       "nextButton": "Próximo",
       "runButton": "Executar",
       "promptPlaceholder": "Digite sua mensagem… (Enter para enviar, Shift+Enter para nova linha)"
-    }
+    },
+    "playgroundTabs": "Modos do playground"
   },
   "miniPlayground": {
     "endpoint": "Endpoint",
