@@ -312,7 +312,7 @@ export default function SecurityTab() {
       <Card title={t("apiEndpointProtection")} icon="api">
         <div className="flex flex-col gap-4">
           <div className="rounded-lg border border-border bg-bg-subtle p-3 text-sm text-text-muted">
-            <p className="font-medium text-text">{t("authModelHeading")}</p>
+            <p className="font-medium text-text-main">{t("authModelHeading")}</p>
             <ul className="list-disc pl-5 mt-1 space-y-1">
               <li>{t("authModelClient")}</li>
               <li>{t("authModelManagement")}</li>
