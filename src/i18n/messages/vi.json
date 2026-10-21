@@ -2621,7 +2621,8 @@
     "sttBridgeCta": "Cấu hình cầu Nói→Văn bản trong cài đặt Cầu Modality",
     "existingConnection": "Kết nối hiện có",
     "openrouterSttDescription": "Mô hình chuyển đổi giọng nói thành văn bản của OpenRouter sử dụng kết nối OpenRouter đã được cấu hình của bạn. Không cần thông tin xác thực riêng biệt.",
-    "modalityTabsAria": "Loại phương tiện"
+    "modalityTabsAria": "Loại phương tiện",
+    "serviceKindsAria": "Loại dịch vụ"
   },
   "search": {
     "searchQuery": "Truy vấn tìm kiếm",

@@ -2621,7 +2621,8 @@
     "sttBridgeCta": "Configure a ponte de Fala→Texto nas configurações da Ponte de Modalidade",
     "existingConnection": "Conexão existente",
     "openrouterSttDescription": "Os modelos de reconhecimento de fala do OpenRouter usam sua conexão OpenRouter configurada. Nenhuma credencial separada é necessária.",
-    "modalityTabsAria": "Tipo de mídia"
+    "modalityTabsAria": "Tipo de mídia",
+    "serviceKindsAria": "Tipo de serviço"
   },
   "search": {
     "searchQuery": "Consulta de busca",
