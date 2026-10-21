@@ -12666,7 +12666,21 @@
       "goNow": "Đi ngay",
       "message": "MITM Proxy hiện nằm trong AgentBridge.",
       "title": "Trang này đã được di chuyển"
-    }
+    },
+    "dnsOn": "DNS bật",
+    "dnsOff": "DNS tắt",
+    "showServerSettings": "Hiện cài đặt máy chủ",
+    "hideServerSettings": "Ẩn cài đặt máy chủ",
+    "upstreamCaTesting": "Đang kiểm tra…",
+    "removeMapping": "Xóa ánh xạ",
+    "mappingSourcePlaceholder": "vd: gemini-3.6-flash-medium, hoặc * cho tất cả chưa ánh xạ",
+    "mappingWildcardHint": "Dùng * làm nguồn để định tuyến mọi mô hình chưa có ánh xạ qua OmniRoute tới đích đã chọn. Khớp chính xác luôn ưu tiên hơn *.",
+    "wizardDetectingModels": "Đang phát hiện mô hình từ lưu lượng bị chặn...",
+    "wizardDetectedModels": "Tìm thấy {count} mô hình trong lưu lượng bị chặn. Chọn những mô hình bạn muốn thêm:",
+    "wizardSelectedModels": "Đã chọn {count} mô hình. Bạn sẽ ánh xạ chúng tới mô hình OmniRoute ở màn hình tiếp theo.",
+    "wizardAddModels": "Thêm {count} mô hình",
+    "wizardNoModelsDetected": "Chưa phát hiện mô hình nào. Dùng {agent} để gửi một yêu cầu, rồi chạy lại trình hướng dẫn này để tự phát hiện mô hình từ lưu lượng.",
+    "wizardNoModelsHint": "Hoặc đóng trình hướng dẫn này và thêm ánh xạ thủ công trong thẻ tác nhân."
   },
   "providerStats": {
     "unknownError": "Lỗi không xác định",

@@ -12666,7 +12666,21 @@
       "goNow": "Go now",
       "message": "The MITM Proxy now lives under AgentBridge.",
       "title": "This page has moved"
-    }
+    },
+    "dnsOn": "DNS on",
+    "dnsOff": "DNS off",
+    "showServerSettings": "Show server settings",
+    "hideServerSettings": "Hide server settings",
+    "upstreamCaTesting": "Testing…",
+    "removeMapping": "Remove mapping",
+    "mappingSourcePlaceholder": "e.g., gemini-3.6-flash-medium, or * for all unmapped",
+    "mappingWildcardHint": "Use * as the source to route every model without an explicit mapping through OmniRoute to the selected target. Exact source matches always win over *.",
+    "wizardDetectingModels": "Detecting models from intercepted traffic...",
+    "wizardDetectedModels": "Found {count, plural, one {# model} other {# models}} in intercepted traffic. Select the ones you want to add:",
+    "wizardSelectedModels": "{count, plural, one {# model} other {# models}} selected. You'll map them to OmniRoute models in the next screen.",
+    "wizardAddModels": "Add {count, plural, one {# model} other {# models}}",
+    "wizardNoModelsDetected": "No models detected yet. Use {agent} to make a request, then run this wizard again to auto-detect models from traffic.",
+    "wizardNoModelsHint": "Or close this wizard and add mappings manually in the agent card."
   },
   "providerStats": {
     "unknownError": "Unknown error",

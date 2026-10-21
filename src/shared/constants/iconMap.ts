@@ -226,7 +226,17 @@ import {
   Target,
 } from "lucide-react";
 // Lote 9 — tools, system, resilience, rankings, changelog, provider-stats (KEA-7886).
-import { BadgePlus, BellOff, FolderOpen, PartyPopper, Radio } from "lucide-react";
+import {
+  BadgePlus,
+  BellOff,
+  BrushCleaning,
+  FolderOpen,
+  NotebookPen,
+  PartyPopper,
+  Radio,
+  SquareCode,
+  Stethoscope,
+} from "lucide-react";
 
 /**
  * Material Symbols name → Lucide icon. `null` = still rendered with the Material ligature by
@@ -407,7 +417,7 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   battery_status_good: BatteryFull,
   blur_on: null,
   brush: null,
-  build: null,
+  build: Wrench,
   build_circle: Wrench,
   business: null,
   business_center: null,
@@ -418,12 +428,12 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   chat: MessageSquare,
   chat_bubble: MessageSquare,
   checklist: ListChecks,
-  cleaning_services: null,
+  cleaning_services: BrushCleaning,
   cloud_done: null,
   cloud_off: CloudOff,
   cloud_queue: null,
   cloud_sync: null,
-  code_blocks: null,
+  code_blocks: SquareCode,
   collapse_all: null,
   compare: Columns2,
   compare_arrows: ArrowLeftRight,
@@ -450,7 +460,7 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   drag_indicator: GripVertical,
   dynamic_feed: GalleryVerticalEnd,
   eco: null,
-  edit_note: null,
+  edit_note: NotebookPen,
   edit_square: null,
   electrical_services: null,
   error_outline: CircleAlert,
@@ -605,7 +615,7 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   trending_down: TrendingDown,
   trending_flat: MoveRight,
   trending_up: TrendingUp,
-  troubleshoot: null,
+  troubleshoot: Stethoscope,
   unfold_less: null,
   unfold_more: ChevronsUpDown,
   upload_file: FileUp,
