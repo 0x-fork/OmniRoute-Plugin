@@ -1600,7 +1600,8 @@
     "mcpMetricCalls24h": "Chamadas (24h)",
     "mcpMetricSuccessRate": "Taxa de sucesso",
     "mcpMetricAvgDuration": "Duração média",
-    "mcpMetricTopTool": "Ferramenta principal"
+    "mcpMetricTopTool": "Ferramenta principal",
+    "dismissError": "Dispensar erro"
   },
   "themesPage": {
     "title": "Temas",

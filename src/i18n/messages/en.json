@@ -1600,7 +1600,8 @@
     "mcpMetricCalls24h": "Calls (24h)",
     "mcpMetricSuccessRate": "Success rate",
     "mcpMetricAvgDuration": "Avg duration",
-    "mcpMetricTopTool": "Top tool"
+    "mcpMetricTopTool": "Top tool",
+    "dismissError": "Dismiss error"
   },
   "themesPage": {
     "title": "Themes",

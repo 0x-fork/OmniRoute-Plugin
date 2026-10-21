@@ -1600,7 +1600,8 @@
     "mcpMetricCalls24h": "Lượt gọi (24 giờ)",
     "mcpMetricSuccessRate": "Tỷ lệ thành công",
     "mcpMetricAvgDuration": "Thời lượng trung bình",
-    "mcpMetricTopTool": "tool hàng đầu"
+    "mcpMetricTopTool": "tool hàng đầu",
+    "dismissError": "Bỏ qua lỗi"
   },
   "themesPage": {
     "title": "Chủ đề",
