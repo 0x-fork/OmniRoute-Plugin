@@ -250,6 +250,7 @@ function HealthSnapshot() {
     <div className="space-y-6">
       {/* Verdict Header */}
       <PageHeader
+        compact
         title={
           data.status === "healthy"
             ? t("healthVerdictReady")
