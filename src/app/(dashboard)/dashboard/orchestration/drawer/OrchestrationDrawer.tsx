@@ -458,9 +458,6 @@ function DrawerActions({
   );
 }
 
-/** Closes the drawer on Escape while `node` is set. Rebinds by id, not by object
- * identity, so a fresh `node` reference for the same task (e.g. a refetch) does not
- * tear down and re-add the listener. */
 /**
  * Local, self-clearing toast state. `showToast` starts the timer synchronously in the
  * same handler that sets the message (button onClick / async action callback) — never

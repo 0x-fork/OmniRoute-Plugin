@@ -74,7 +74,7 @@ export function IntegrationCard({
       </div>
       {selected && !disabled && (
         <span className="ml-auto mt-auto flex size-5 items-center justify-center rounded-full bg-primary">
-          <Icon name="check" size={14} className="text-primary-ink" />
+          <Icon name="check" size={14} className="text-accent-foreground" />
         </span>
       )}
     </button>

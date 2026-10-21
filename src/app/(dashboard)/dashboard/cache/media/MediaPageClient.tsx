@@ -987,7 +987,7 @@ export default function MediaPageClient() {
               <p className="text-xs text-text-muted">
                 {t("providerCount", { count: providerCount })}
               </p>
-              <code className="block mt-2 text-xs text-text-muted bg-bg-subtle rounded px-2 py-1">
+              <code className="block mt-2 break-all text-xs text-text-muted bg-bg-subtle rounded px-2 py-1">
                 POST {cfg.endpoint}
               </code>
             </Card>

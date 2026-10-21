@@ -107,7 +107,9 @@ export function WebhookCard({
             icon={webhook.enabled ? "toggle_on" : "toggle_off"}
             onClick={() => onToggleEnabled(webhook)}
             title={webhook.enabled ? t("disable") : t("enable")}
-            aria-label={webhook.enabled ? t("disable") : t("enable")}
+            // Stable name + pressed state ("Enabled, pressed"); a flipping action label
+            // next to aria-pressed would read "Disable, pressed".
+            aria-label={t("enabled")}
             aria-pressed={webhook.enabled}
           />
           <Button
