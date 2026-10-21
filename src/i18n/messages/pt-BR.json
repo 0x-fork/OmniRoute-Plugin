@@ -12381,7 +12381,10 @@
     "ungroupedTitle": "Sem grupo",
     "ungroupedHint": "Estes pools não estão atribuídos a um grupo conhecido. Edite um pool para movê-lo para um grupo real.",
     "removeFailed": "Não foi possível remover este pool.",
-    "dismiss": "Dispensar"
+    "dismiss": "Dispensar",
+    "allocationsHeading": "Alocações",
+    "wizardRemoveDimension": "Remover dimensão",
+    "wizardRemoveKey": "Remover chave"
   },
   "plugins": {
     "title": "Plugins",

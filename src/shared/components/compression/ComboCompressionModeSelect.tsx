@@ -95,7 +95,7 @@ export function ComboCompressionModeSelect({
 
   return (
     // Kit-styled native select (adapter `Select` with <option> children). A caller's
-    // `className` still lands on the control itself, as with the legacy <select>.
+    // `className` still lands on the control itself, as with the legacy native select.
     <Select
       compact
       value={compressionOverride}

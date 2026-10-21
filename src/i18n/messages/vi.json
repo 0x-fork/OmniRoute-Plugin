@@ -12381,7 +12381,10 @@
     "ungroupedTitle": "Chưa phân nhóm",
     "ungroupedHint": "Các pool này chưa được gán cho một nhóm mà hệ thống nhận diện. Hãy chỉnh sửa một pool để chuyển pool đó vào một nhóm hợp lệ.",
     "removeFailed": "Không thể xóa nhóm này.",
-    "dismiss": "Đóng"
+    "dismiss": "Đóng",
+    "allocationsHeading": "Phân bổ",
+    "wizardRemoveDimension": "Xóa chiều hạn mức",
+    "wizardRemoveKey": "Xóa khóa"
   },
   "plugins": {
     "title": "Plugin",
