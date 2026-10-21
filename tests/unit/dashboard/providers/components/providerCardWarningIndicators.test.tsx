@@ -114,9 +114,11 @@ describe("ProviderCard — #10261 warning indicator consistency", () => {
     );
     expect(riskEl).toBeTruthy();
     expect(badge).toBeTruthy();
-    // The risk indicator keeps the bare material-symbols glyph; the warning badge is
-    // rendered through the pill-shaped Badge component — distinct visual language.
-    expect(riskEl!.className).toContain("material-symbols-outlined");
-    expect(badge!.className).not.toContain("material-symbols-outlined");
+    // The risk indicator is a bare icon glyph (kit ghost icon button + Lucide <svg>); the
+    // warning badge is rendered through the pill-shaped kit Badge — distinct visual language.
+    expect(riskEl!.querySelector("svg.oi-icon")).toBeTruthy();
+    expect(riskEl!.closest(".ci-badge")).toBeNull();
+    expect(badge!.querySelector(".ci-badge")).toBeTruthy();
+    expect(badge!.querySelector("svg.oi-icon")?.closest(".ci-badge")).toBeTruthy();
   });
 });
