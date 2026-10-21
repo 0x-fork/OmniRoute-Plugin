@@ -3,9 +3,9 @@
 import { useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { CheckboxGroup } from "@omniroute/ui-kit/checkbox";
+// The kit Checkbox directly: the adapter does not type the kit `card` prop.
+import { Checkbox, CheckboxGroup } from "@omniroute/ui-kit/checkbox";
 import Button from "@/shared/components/Button";
-import Checkbox from "@/shared/components/Checkbox";
 import Icon from "@/shared/components/Icon";
 import Input from "@/shared/components/Input";
 import type { SearchProviderCatalogItem } from "@/shared/schemas/searchTools";
