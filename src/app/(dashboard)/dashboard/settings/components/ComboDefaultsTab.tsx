@@ -1,14 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import {
-  Card,
-  Button,
-  Input,
-  ModelSelectField,
-  SegmentedControl,
-  Toggle,
-} from "@/shared/components";
+import { Card, Button, Input, ModelSelectField, Select, Toggle } from "@/shared/components";
 import Icon from "@/shared/components/Icon";
 import { matchesSearch } from "@/shared/utils/turkishText";
 import FusionDefaultsFields from "./FusionDefaultsFields";
@@ -379,19 +372,19 @@ export default function ComboDefaultsTab() {
             <p className="font-medium text-sm">{t("defaultStrategy")}</p>
             <p className="text-xs text-text-muted">{t("defaultStrategyDesc")}</p>
           </div>
-          <SegmentedControl
-            size="sm"
+          <Select
             aria-label={t("comboStrategyAria")}
             value={comboDefaults.strategy}
-            onChange={(value) => {
+            onChange={(event) => {
+              const value = event.target.value;
               setComboDefaults((prev) => ({ ...prev, strategy: value }));
               void syncGlobalRoutingSettings(toGlobalRoutingPatch(value)).catch((error) => {
                 console.error("Failed to sync fallback strategy:", error);
                 showStatus("error", t("errorOccurred"));
               });
             }}
-            options={strategyOptions.map((s) => ({ value: s.value, label: s.label, icon: s.icon }))}
-            className="max-w-xl"
+            options={strategyOptions.map((s) => ({ value: s.value, label: s.label }))}
+            className="w-56 shrink-0"
           />
         </div>
 
