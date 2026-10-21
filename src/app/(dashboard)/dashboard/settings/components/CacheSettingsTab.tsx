@@ -489,21 +489,18 @@ export default function CacheSettingsTab() {
                   <p className="text-xs text-text-muted mt-1">{t("semanticCacheThresholdHint")}</p>
                 </div>
 
-                <div className="flex items-end gap-2">
-                  <Input
-                    id="sem-retention"
-                    type="number"
-                    label={t("semanticCacheRetention")}
-                    hint={t("semanticCacheRetentionHint")}
-                    min={1}
-                    max={10080}
-                    value={semTtlMinutes}
-                    onChange={(e) => setSemTtlMinutes(Math.max(1, parseInt(e.target.value) || 1))}
-                    inputClassName="w-28"
-                    disabled={semSaving}
-                  />
-                  <span className="pb-8 text-xs text-text-muted">{t("semanticCacheMinutes")}</span>
-                </div>
+                <Input
+                  id="sem-retention"
+                  type="number"
+                  label={`${t("semanticCacheRetention")} (${t("semanticCacheMinutes")})`}
+                  hint={t("semanticCacheRetentionHint")}
+                  min={1}
+                  max={10080}
+                  value={semTtlMinutes}
+                  onChange={(e) => setSemTtlMinutes(Math.max(1, parseInt(e.target.value) || 1))}
+                  inputClassName="w-28"
+                  disabled={semSaving}
+                />
               </div>
 
               {/* Storage Backend Selection */}
@@ -714,7 +711,7 @@ export default function CacheSettingsTab() {
               onKeyDown={(event) => {
                 if (event.key === "Enter" && catalogDirty) void saveCatalogTtl();
               }}
-              inputClassName="w-32"
+              className="w-32 shrink-0"
               disabled={catalogLoading || catalogSaving}
             />
             <span className="text-xs text-text-muted">{t("semanticCacheMilliseconds")}</span>

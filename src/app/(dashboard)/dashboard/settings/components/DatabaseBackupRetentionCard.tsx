@@ -114,7 +114,7 @@ export default function DatabaseBackupRetentionCard({
               keepLatest: Number.isFinite(parsed) ? Math.max(1, parsed) : 1,
             }));
           }}
-          inputClassName="w-32"
+          className="w-32 shrink-0"
         />
         <Input
           label={t("storageBackupDeleteOlderThan")}
@@ -130,7 +130,7 @@ export default function DatabaseBackupRetentionCard({
               retentionDays: Number.isFinite(parsed) ? Math.max(0, parsed) : 0,
             }));
           }}
-          inputClassName="w-32"
+          className="w-32 shrink-0"
         />
         <Button
           icon="save"
