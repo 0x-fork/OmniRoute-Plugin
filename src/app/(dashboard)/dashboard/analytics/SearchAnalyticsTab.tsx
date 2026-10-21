@@ -1,4 +1,3 @@
-import Icon from "@/shared/components/Icon";
 /**
  * Search Analytics Tab
  *
@@ -6,10 +5,11 @@ import Icon from "@/shared/components/Icon";
  * provider breakdown, cache hit rate, and cost summary.
  */
 
-("use client");
+"use client";
 
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
+import Icon from "@/shared/components/Icon";
 
 interface SearchStats {
   total: number;
