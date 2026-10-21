@@ -626,7 +626,10 @@ export default function ProviderOnboardingWizard() {
                 onClick={() => resetProviderSelection(item.id)}
                 className="h-auto w-full flex-col items-start justify-start gap-0 whitespace-normal rounded-xl p-5 text-left font-normal hover:border-primary/50"
               >
-                <Icon name={item.icon} size={32} className="text-primary" />
+                {/* Wrapped: the kit sizes direct svg children of .ci-button to the icon token. */}
+                <span aria-hidden className="text-primary">
+                  <Icon name={item.icon} size={32} />
+                </span>
                 <h2 className="mt-3 text-lg font-semibold text-text-main">{item.title}</h2>
                 <p className="mt-2 text-sm text-text-muted">{item.text}</p>
               </Button>

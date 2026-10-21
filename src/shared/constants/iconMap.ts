@@ -1,4 +1,5 @@
 import type { LucideIcon } from "lucide-react";
+import { Circle, CircleDot, CircleUserRound } from "lucide-react";
 import {
   Activity,
   AppWindow,
@@ -328,7 +329,7 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   // the Material Symbols vocabulary, so nothing here is a non-icon string. ──
   ac_unit: null,
   account_balance: null,
-  account_circle: null,
+  account_circle: CircleUserRound,
   add_circle: null,
   add_task: null,
   air: null,
@@ -489,8 +490,8 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   psychology_alt: null,
   public_off: null,
   query_stats: null,
-  radio_button_checked: null,
-  radio_button_unchecked: null,
+  radio_button_checked: CircleDot,
+  radio_button_unchecked: Circle,
   receipt_long: null,
   record_voice_over: Speech,
   redeem: null,
