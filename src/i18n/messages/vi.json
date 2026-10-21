@@ -11088,7 +11088,8 @@
       "message": "Tin nhắn",
       "error": "Lỗi",
       "completion": "Hoàn tất"
-    }
+    },
+    "statusFilter": "Trạng thái"
   },
   "templateNames": {
     "simple-chat": "Trò chuyện đơn giản",

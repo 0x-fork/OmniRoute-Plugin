@@ -11088,7 +11088,8 @@
       "message": "Mensagem",
       "error": "Erro",
       "completion": "Conclusão"
-    }
+    },
+    "statusFilter": "Status"
   },
   "templateNames": {
     "simple-chat": "Bate-papo simples",

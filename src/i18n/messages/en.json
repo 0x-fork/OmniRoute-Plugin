@@ -11088,7 +11088,8 @@
       "message": "Message",
       "error": "Error",
       "completion": "Completion"
-    }
+    },
+    "statusFilter": "Status"
   },
   "templateNames": {
     "simple-chat": "Simple Chat",
