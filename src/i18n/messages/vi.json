@@ -9324,7 +9324,8 @@
     "encoderWinner": "tốt nhất: {winner}",
     "encoder": "bộ mã hóa",
     "bytes": "byte",
-    "tokensCl100k": "token (cl100k)"
+    "tokensCl100k": "token (cl100k)",
+    "studioViews": "Các chế độ xem của studio"
   },
   "omniglyph": {
     "preview": "Xem trước",

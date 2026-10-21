@@ -9324,7 +9324,8 @@
     "encoderWinner": "vencedor: {winner}",
     "encoder": "codificador",
     "bytes": "bytes",
-    "tokensCl100k": "tokens (cl100k)"
+    "tokensCl100k": "tokens (cl100k)",
+    "studioViews": "Visões do estúdio"
   },
   "omniglyph": {
     "preview": "Visualização",

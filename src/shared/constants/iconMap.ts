@@ -522,7 +522,7 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   record_voice_over: null,
   redeem: null,
   remove: Minus,
-  replay: null,
+  replay: RotateCcw,
   reply: Reply,
   report: null,
   restore: null,
