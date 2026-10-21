@@ -88,6 +88,7 @@ export default function ProviderPageHeader({
 
   return (
     <PageHeader
+      compact
       breadcrumbs={
         <Link
           href="/dashboard/providers"
