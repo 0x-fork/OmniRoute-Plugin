@@ -7723,6 +7723,7 @@
     "configured": "đã định cấu hình",
     "none": "Không có",
     "modelOverrideValuePlaceholder": "Giá trị số",
+    "modelOverrideKey": "Khóa ghi đè",
     "modelOverrideReasoningEffortsPlaceholder": "Các giá trị tiếng Anh được phân tách bằng dấu phẩy, ví dụ: low, medium, high",
     "addKeyValue": "Thêm cặp khóa-giá trị",
     "noModelOverrides": "Không có ghi đè nào được định cấu hình cho mô hình này.",

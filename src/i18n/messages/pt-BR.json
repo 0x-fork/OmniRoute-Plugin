@@ -7723,6 +7723,7 @@
     "configured": "configurado",
     "none": "Nenhum",
     "modelOverrideValuePlaceholder": "Valor numérico",
+    "modelOverrideKey": "Chave da substituição",
     "modelOverrideReasoningEffortsPlaceholder": "Valores em inglês separados por vírgulas, por exemplo: low, medium, high",
     "addKeyValue": "Adicionar valor da chave",
     "noModelOverrides": "Nenhuma substituição configurada para este modelo.",
