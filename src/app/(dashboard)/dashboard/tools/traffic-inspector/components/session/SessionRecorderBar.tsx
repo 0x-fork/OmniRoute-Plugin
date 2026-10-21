@@ -50,7 +50,14 @@ export function SessionRecorderBar({
           {session?.name && (
             <span className="text-xs opacity-70 truncate max-w-[120px]">{session.name}</span>
           )}
-          <Button variant="danger" size="sm" icon="stop" className="ml-auto" onClick={onStop}>
+          <Button
+            variant="danger"
+            size="sm"
+            icon="stop"
+            className="ml-auto"
+            onClick={onStop}
+            aria-label={t("stopSession")}
+          >
             {t("stopSession")}
           </Button>
         </>
@@ -64,6 +71,7 @@ export function SessionRecorderBar({
             icon="fiber_manual_record"
             className="ml-auto"
             onClick={() => onStart()}
+            aria-label={t("recordSession")}
           >
             {t("recordSession")}
           </Button>
