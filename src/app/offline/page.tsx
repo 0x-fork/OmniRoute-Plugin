@@ -5,6 +5,10 @@ import { OmniRouteLockup } from "@/shared/components/OmniRouteLogo";
 
 import { useSyncExternalStore } from "react";
 import Link from "next/link";
+import { buttonVariants } from "@omniroute/ui-kit/button";
+import Badge from "@/shared/components/Badge";
+import Button from "@/shared/components/Button";
+import Card from "@/shared/components/Card";
 import { useTranslations } from "next-intl";
 
 function subscribeToOnline(callback: () => void) {
@@ -26,7 +30,7 @@ export default function OfflinePage() {
 
   return (
     <main className="min-h-screen text-text-main flex items-center justify-center p-6">
-      <section className="w-full max-w-xl rounded-2xl border border-border bg-surface p-8 shadow-soft text-center">
+      <Card padding="lg" className="w-full max-w-xl text-center">
         <div className="mb-4 flex justify-center">
           <OmniRouteLockup />
         </div>
@@ -34,35 +38,24 @@ export default function OfflinePage() {
         <h1 className="ci-heading text-2xl">{t("offline.title")}</h1>
         <p className="mt-3 text-text-muted leading-relaxed">{t("offline.description")}</p>
 
-        <div
-          className={`mt-6 inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm border ${
-            isOnline
-              ? "border-green-500/30 text-green-600 dark:text-green-400 bg-green-500/10"
-              : "border-amber-500/30 text-amber-600 dark:text-amber-400 bg-amber-500/10"
-          }`}
-          aria-live="polite"
-        >
-          <Icon name={isOnline ? "wifi" : "wifi_off"} size={16} />
-          <span>
+        <div className="mt-6" aria-live="polite">
+          <Badge
+            variant={isOnline ? "success" : "warning"}
+            icon={<Icon name={isOnline ? "wifi" : "wifi_off"} size={16} />}
+          >
             {isOnline ? t("offline.connectionRestored") : t("offline.offlineModeDetected")}
-          </span>
+          </Badge>
         </div>
 
         <div className="mt-8 flex flex-col sm:flex-row gap-3">
-          <button
-            onClick={() => window.location.reload()}
-            className="inline-flex items-center justify-center px-6 py-3 rounded-lg text-sm font-semibold bg-primary text-accent-foreground hover:bg-primary-hover hover:shadow-elevated transition-all duration-200 motion-reduce:transition-none"
-          >
+          <Button size="lg" onClick={() => window.location.reload()}>
             {t("offline.retryConnection")}
-          </button>
-          <Link
-            href="/status"
-            className="inline-flex items-center justify-center px-6 py-3 rounded-lg text-sm font-semibold border border-border hover:bg-bg-alt transition-colors duration-200 motion-reduce:transition-none"
-          >
+          </Button>
+          <Link href="/status" className={buttonVariants({ variant: "outline", size: "lg" })}>
             {t("offline.openStatusPage")}
           </Link>
         </div>
-      </section>
+      </Card>
     </main>
   );
 }
