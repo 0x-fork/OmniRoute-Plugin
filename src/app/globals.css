@@ -172,6 +172,8 @@
   /* `text-*` reads --text-color-* before --color-*: text-primary → readable ink, while
      bg-/border-/ring-primary keep the lime above. */
   --text-color-primary: var(--color-primary-ink);
+  /* --color-accent is the same kit lime (var(--ci-color-accent)), so text-accent gets the ink. */
+  --text-color-accent: var(--color-primary-ink);
 
   /* Accent */
   --color-accent: var(--color-accent);

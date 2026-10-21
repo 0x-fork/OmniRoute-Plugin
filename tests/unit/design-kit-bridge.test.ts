@@ -336,6 +336,9 @@ test("text-primary resolves to a readable primary ink; lime stays on bg/border/r
   const theme = block("@theme inline {");
   assert.match(theme, /--text-color-primary:\s*var\(--color-primary-ink\);/);
   assert.match(theme, /--color-primary:\s*var\(--color-primary\);/, "bg/border/ring stay lime");
+  // `--color-accent` is the same lime, so `text-accent` reads the same ink (bg-accent stays lime).
+  assert.match(theme, /--text-color-accent:\s*var\(--color-primary-ink\);/);
+  assert.match(theme, /--color-accent:\s*var\(--color-accent\);/, "bg-accent stays lime");
 
   const root = block(":root {\n  --desktop-safe-top");
   const darkRoot = block(':root[data-theme="dark"] {');
@@ -394,6 +397,7 @@ test("text-primary resolves to a readable primary ink; lime stays on bg/border/r
 
   // --color-primary itself is still the lime accent (the surface that carries dark ink).
   assert.ok(root.includes("--color-primary: var(--ci-color-accent);"));
+  assert.ok(root.includes("--color-accent: var(--ci-color-accent);"), "accent is the same lime");
   assert.equal(resolve("--ci-color-accent", [light]), resolve("--ci-lime-400", [light]));
   assert.ok(
     contrast(resolve("--ci-color-accent", [light]), lightBg) < 4.5,
