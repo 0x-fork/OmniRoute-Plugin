@@ -2612,7 +2612,8 @@
     "imageToTextBridgeCta": "Configure a ponte Imagem→Texto nas configurações da Ponte de Modalidade",
     "sttBridgeCta": "Configure a ponte de Fala→Texto nas configurações da Ponte de Modalidade",
     "existingConnection": "Conexão existente",
-    "openrouterSttDescription": "Os modelos de reconhecimento de fala do OpenRouter usam sua conexão OpenRouter configurada. Nenhuma credencial separada é necessária."
+    "openrouterSttDescription": "Os modelos de reconhecimento de fala do OpenRouter usam sua conexão OpenRouter configurada. Nenhuma credencial separada é necessária.",
+    "modalityTabsAria": "Tipo de mídia"
   },
   "search": {
     "searchQuery": "Consulta de busca",
@@ -11269,7 +11270,8 @@
     "minutesAgo": "{minutes}m atrás",
     "hoursAgo": "{hours}h atrás",
     "daysAgo": "{days}d atrás",
-    "entries": "Entradas"
+    "entries": "Entradas",
+    "viewSwitcherAria": "Visualização do cache"
   },
   "proxyConfigModal": {
     "levelGlobal": "Globais",
@@ -11890,7 +11892,8 @@
     "assistant": "Assistente",
     "errorLabel": "Erro",
     "requestFailed": "Falha na requisição",
-    "stop": "Pare"
+    "stop": "Pare",
+    "messageInputAria": "Mensagem"
   },
   "requestLogger": {
     "recording": "Gravando",

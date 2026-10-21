@@ -2612,7 +2612,8 @@
     "imageToTextBridgeCta": "Cấu hình cầu Hình Ảnh→Văn Bản trong cài đặt Cầu Modality",
     "sttBridgeCta": "Cấu hình cầu Nói→Văn bản trong cài đặt Cầu Modality",
     "existingConnection": "Kết nối hiện có",
-    "openrouterSttDescription": "Mô hình chuyển đổi giọng nói thành văn bản của OpenRouter sử dụng kết nối OpenRouter đã được cấu hình của bạn. Không cần thông tin xác thực riêng biệt."
+    "openrouterSttDescription": "Mô hình chuyển đổi giọng nói thành văn bản của OpenRouter sử dụng kết nối OpenRouter đã được cấu hình của bạn. Không cần thông tin xác thực riêng biệt.",
+    "modalityTabsAria": "Loại phương tiện"
   },
   "search": {
     "searchQuery": "Truy vấn tìm kiếm",
@@ -11269,7 +11270,8 @@
     "minutesAgo": "{minutes} phút trước",
     "hoursAgo": "{hours} giờ trước",
     "daysAgo": "{days} ngày trước",
-    "entries": "Mục"
+    "entries": "Mục",
+    "viewSwitcherAria": "Chế độ xem bộ nhớ đệm"
   },
   "proxyConfigModal": {
     "levelGlobal": "Toàn cầu",
@@ -11890,7 +11892,8 @@
     "assistant": "Trợ lý",
     "errorLabel": "Lỗi",
     "requestFailed": "Yêu cầu thất bại",
-    "stop": "Dừng"
+    "stop": "Dừng",
+    "messageInputAria": "Tin nhắn"
   },
   "requestLogger": {
     "recording": "Đang ghi",
