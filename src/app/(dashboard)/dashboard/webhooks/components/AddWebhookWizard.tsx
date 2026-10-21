@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Alert } from "@omniroute/ui-kit/alert";
 import Button from "@/shared/components/Button";
 import Modal from "@/shared/components/Modal";
@@ -89,6 +90,7 @@ export function AddWebhookWizard({
   const [step, setStep] = useState(1);
   const [state, setState] = useState<WizardState>(INITIAL);
   const [saving, setSaving] = useState(false);
+  const tc = useTranslations("common");
   const [error, setError] = useState<string | null>(null);
   const [createdId, setCreatedId] = useState<string | null>(null);
 
@@ -249,7 +251,15 @@ export function AddWebhookWizard({
     >
       <div className="flex gap-6">
         <div className="min-w-0 flex-1">
-          {error && <Alert variant="critical" className="mb-4" description={error} />}
+          {error && (
+            <Alert
+              variant="critical"
+              className="mb-4"
+              description={error}
+              dismissLabel={tc("dismissNotification")}
+              onDismiss={() => setError(null)}
+            />
+          )}
           {step === 1 && (
             <Step1ChooseIntegration
               selected={state.kind}

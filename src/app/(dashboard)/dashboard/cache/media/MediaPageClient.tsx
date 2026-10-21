@@ -423,6 +423,7 @@ function ImageResults({ data }: { data: any }) {
 
 export default function MediaPageClient() {
   const t = useTranslations("media");
+  const tc = useTranslations("common");
   const [activeTab, setActiveTab] = useState<Modality>("image");
   const [prompt, setPrompt] = useState("");
 
@@ -903,6 +904,8 @@ export default function MediaPageClient() {
           icon={<Icon name={isCredentialsError ? "key" : "error"} size={20} />}
           title={isCredentialsError ? t("apiKeyRequired") : t("error")}
           description={<span className="break-words">{error}</span>}
+          dismissLabel={tc("dismissNotification")}
+          onDismiss={() => setError(null)}
           actions={
             isCredentialsError ? (
               <Link

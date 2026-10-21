@@ -27,6 +27,7 @@ export function WebhooksPageClient() {
   const [webhooks, setWebhooks] = useState<WebhookItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [testingId, setTestingId] = useState<string | null>(null);
+  const tc = useTranslations("common");
   const [feedback, setFeedback] = useState<FeedbackState>(null);
   const [wizardOpen, setWizardOpen] = useState(false);
   const [editingWebhook, setEditingWebhook] = useState<WebhookItem | null>(null);
@@ -165,6 +166,8 @@ export function WebhooksPageClient() {
         <Alert
           variant={feedback.type === "success" ? "success" : "critical"}
           description={feedback.message}
+          dismissLabel={tc("dismissNotification")}
+          onDismiss={() => setFeedback(null)}
         />
       )}
 

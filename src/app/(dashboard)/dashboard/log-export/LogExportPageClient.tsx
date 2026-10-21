@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Alert } from "@omniroute/ui-kit/alert";
 import { PageHeader } from "@omniroute/ui-kit/page-header";
 import Button from "@/shared/components/Button";
@@ -45,6 +46,7 @@ export function LogExportPageClient() {
   const [status, setStatus] = useState<LogExportStatus | null>(null);
   const [types, setTypes] = useState<LogExportTypeDescriptor[]>([]);
   const [loading, setLoading] = useState(true);
+  const tc = useTranslations("common");
   const [feedback, setFeedback] = useState<Feedback>(null);
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<LogExportDestination | null>(null);
@@ -229,6 +231,8 @@ export function LogExportPageClient() {
         <Alert
           variant={feedback.type === "success" ? "success" : "critical"}
           description={feedback.message}
+          dismissLabel={tc("dismissNotification")}
+          onDismiss={() => setFeedback(null)}
         />
       ) : null}
 
