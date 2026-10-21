@@ -306,6 +306,9 @@ export function ComboLiveStudio({
         {showSelector && (
           <Select
             compact
+            // The kit Field is full-width by default; in the toolbar it must not push the tabs
+            // onto their own line.
+            className="w-auto"
             value={selectedCombo}
             onChange={(e) => setSelectedCombo(e.target.value)}
             aria-label={t("liveSelectCombo")}
