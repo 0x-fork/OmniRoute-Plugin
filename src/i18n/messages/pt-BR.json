@@ -14563,7 +14563,9 @@
       "circuitBreakerState": "Estado do Disjuntor do Provedor",
       "lastUpdate": "Última atualização: {timestamp}",
       "uptimeMinutes": "{minutes}min",
-      "uptimeHoursMinutes": "{hours}h {minutes}min"
+      "uptimeHoursMinutes": "{hours}h {minutes}min",
+      "breakerClosed": "Fechado",
+      "breakerNotClosed": "Aberto ou semiaberto"
     },
     "statusPages": {
       "400": {
@@ -14638,6 +14640,9 @@
         "primaryAction": "Detalhes da Manutenção",
         "secondaryAction": "Status do Sistema"
       }
+    },
+    "miniapp": {
+      "askAnything": "Pergunte qualquer coisa…"
     }
   },
   "kiroAuthModal": {
