@@ -12861,7 +12861,18 @@
     "noRequestBody": "No request body.",
     "noResponseBody": "No response body.",
     "formatted": "Formatted",
-    "raw": "Raw"
+    "raw": "Raw",
+    "requestCount": "{count, plural, one {# request} other {# requests}}",
+    "expandList": "Expand list",
+    "collapseList": "Collapse list",
+    "snippetLanguage": "Snippet language",
+    "headersTable": "Headers",
+    "showSecrets": "Show secrets",
+    "maskSecrets": "Mask secrets",
+    "llmNotAvailable": "LLM metadata not available for this request.",
+    "llmStreamYes": "yes (SSE)",
+    "llmStreamNo": "no",
+    "llmTotalTokens": "Total: {count} tokens"
   },
   "cliCommon": {
     "companion": {

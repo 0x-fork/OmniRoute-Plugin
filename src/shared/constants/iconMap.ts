@@ -226,7 +226,7 @@ import {
   Target,
 } from "lucide-react";
 // Lote 9 — tools, system, resilience, rankings, changelog, provider-stats (KEA-7886).
-import { BellOff, PartyPopper, BadgePlus } from "lucide-react";
+import { BadgePlus, BellOff, FolderOpen, PartyPopper, Radio } from "lucide-react";
 
 /**
  * Material Symbols name → Lucide icon. `null` = still rendered with the Material ligature by
@@ -416,7 +416,7 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   casino: Dices,
   category: null,
   chat: MessageSquare,
-  chat_bubble: null,
+  chat_bubble: MessageSquare,
   checklist: ListChecks,
   cleaning_services: null,
   cloud_done: null,
@@ -471,7 +471,7 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   flight: null,
   flutter_dash: null,
   folder_off: null,
-  folder_open: null,
+  folder_open: FolderOpen,
   folder_zip: null,
   function: null,
   gate: null,
@@ -567,7 +567,7 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   select_all: null,
   sell: Tag,
   send: null,
-  sensors: null,
+  sensors: Radio,
   settings_backup_restore: RotateCcw,
   shield_lock: null,
   shield_person: ShieldUser,
@@ -630,6 +630,7 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   workspace_premium: Award,
   celebration: PartyPopper,
   new_releases: BadgePlus,
+  fiber_manual_record: Circle,
 };
 
 export function resolveIcon(name: string | null | undefined): LucideIcon | null {

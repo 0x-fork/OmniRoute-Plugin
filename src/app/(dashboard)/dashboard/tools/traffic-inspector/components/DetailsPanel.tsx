@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { Tabs, TabsList, TabsTrigger } from "@omniroute/ui-kit/tabs";
 import type { InterceptedRequest } from "@/mitm/inspector/types";
-import { cn } from "@/shared/utils/cn";
+import EmptyState from "@/shared/components/EmptyState";
+import Icon from "@/shared/components/Icon";
 import { HeadersTab } from "./tabs/HeadersTab";
 import { RequestBodyTab } from "./tabs/RequestBodyTab";
 import { ResponseBodyTab } from "./tabs/ResponseBodyTab";
@@ -43,13 +45,8 @@ export function DetailsPanel({ request, allRequests }: DetailsPanelProps) {
 
   if (!request) {
     return (
-      <div className="h-full flex items-center justify-center text-text-muted">
-        <div className="text-center space-y-2">
-          <span className="material-symbols-outlined text-[36px] block" aria-hidden="true">
-            info
-          </span>
-          <p className="text-sm">{t("selectRequest")}</p>
-        </div>
+      <div data-testid="details-panel" className="h-full flex items-center justify-center p-4">
+        <EmptyState icon="info" title={t("selectRequest")} />
       </div>
     );
   }
@@ -61,37 +58,28 @@ export function DetailsPanel({ request, allRequests }: DetailsPanelProps) {
   const currentTab = visibleTabs.find((t) => t.id === activeTab) ? activeTab : "conversation";
 
   return (
-    <div className="h-full flex flex-col overflow-hidden">
-      {/* Tab bar */}
-      <div
-        role="tablist"
-        aria-label={t("requestDetails")}
-        className="flex flex-wrap items-center gap-0.5 border-b border-border px-2 pt-1 bg-bg-subtle shrink-0"
+    <div data-testid="details-panel" className="h-full flex flex-col overflow-hidden">
+      {/* Tab bar — panels render below conditionally, so the triggers drop aria-controls. */}
+      <Tabs
+        variant="underline"
+        value={currentTab}
+        onValueChange={(next) => setActiveTab(next as TabId)}
+        className="shrink-0 border-b border-border bg-bg-subtle px-2 pt-1"
       >
-        {visibleTabs.map((tab) => {
-          const selected = currentTab === tab.id;
-          return (
-            <button
+        <TabsList aria-label={t("requestDetails")} className="flex-wrap">
+          {visibleTabs.map((tab) => (
+            <TabsTrigger
               key={tab.id}
-              type="button"
-              role="tab"
-              aria-selected={selected}
-              onClick={() => setActiveTab(tab.id)}
-              className={cn(
-                "inline-flex items-center gap-1 h-8 px-2 text-xs rounded-t border-b-2 transition-colors focus-ring",
-                selected
-                  ? "border-blue-500 text-blue-400 bg-surface"
-                  : "border-transparent text-text-muted hover:text-text-main hover:bg-surface/50"
-              )}
+              value={tab.id}
+              aria-controls={undefined}
+              className="gap-1 text-xs"
             >
-              <span className="material-symbols-outlined text-[13px]" aria-hidden="true">
-                {tab.icon}
-              </span>
+              <Icon name={tab.icon} size={13} />
               {t(tab.labelKey)}
-            </button>
-          );
-        })}
-      </div>
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
 
       {/* Tab content */}
       <div className="flex-1 overflow-hidden">

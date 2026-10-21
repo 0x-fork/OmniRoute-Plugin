@@ -12861,7 +12861,18 @@
     "noRequestBody": "Không có phần thân yêu cầu.",
     "noResponseBody": "Không có phần thân phản hồi.",
     "formatted": "Đã định dạng",
-    "raw": "Dữ liệu thô"
+    "raw": "Dữ liệu thô",
+    "requestCount": "{count} yêu cầu",
+    "expandList": "Mở rộng danh sách",
+    "collapseList": "Thu gọn danh sách",
+    "snippetLanguage": "Ngôn ngữ đoạn mã",
+    "headersTable": "Tiêu đề",
+    "showSecrets": "Hiện bí mật",
+    "maskSecrets": "Ẩn bí mật",
+    "llmNotAvailable": "Không có siêu dữ liệu LLM cho yêu cầu này.",
+    "llmStreamYes": "có (SSE)",
+    "llmStreamNo": "không",
+    "llmTotalTokens": "Tổng: {count} token"
   },
   "cliCommon": {
     "companion": {

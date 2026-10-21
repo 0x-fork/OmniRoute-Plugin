@@ -12861,7 +12861,18 @@
     "noRequestBody": "Sem corpo de solicitação.",
     "noResponseBody": "Sem corpo de resposta.",
     "formatted": "Formatado",
-    "raw": "Bruto"
+    "raw": "Bruto",
+    "requestCount": "{count, plural, one {# requisição} other {# requisições}}",
+    "expandList": "Expandir lista",
+    "collapseList": "Recolher lista",
+    "snippetLanguage": "Linguagem do snippet",
+    "headersTable": "Cabeçalhos",
+    "showSecrets": "Mostrar segredos",
+    "maskSecrets": "Ocultar segredos",
+    "llmNotAvailable": "Metadados de LLM indisponíveis para esta requisição.",
+    "llmStreamYes": "sim (SSE)",
+    "llmStreamNo": "não",
+    "llmTotalTokens": "Total: {count} tokens"
   },
   "cliCommon": {
     "companion": {

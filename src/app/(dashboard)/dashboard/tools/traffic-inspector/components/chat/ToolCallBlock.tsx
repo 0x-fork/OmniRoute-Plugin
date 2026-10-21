@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Icon from "@/shared/components/Icon";
 import { JsonViewer } from "../shared/JsonViewer";
 import { shortCallId } from "@/shared/utils/formatting";
 
@@ -14,22 +15,23 @@ export function ToolCallBlock({ id, name, input }: ToolCallBlockProps) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="rounded border border-amber-500/40 bg-amber-900/20 px-3 py-2 text-sm">
+    <div className="rounded-control border border-warning/40 bg-warning-bg px-3 py-2 text-sm">
       <button
         type="button"
+        aria-expanded={expanded}
         onClick={() => setExpanded((e) => !e)}
-        className="flex w-full items-center gap-2 text-left focus-ring rounded"
+        // Full-width disclosure row (name + call id); a kit Button is a fixed-height,
+        // centred pill, so this stays a native button styled with tokens.
+        className="flex w-full items-center gap-2 rounded-control text-left focus-ring"
       >
-        <span className="material-symbols-outlined text-[14px] text-amber-400" aria-hidden="true">
-          {expanded ? "expand_less" : "expand_more"}
-        </span>
-        <span className="text-amber-300 font-mono font-medium">{name}</span>
+        <Icon name={expanded ? "expand_less" : "expand_more"} size={14} className="text-warning" />
+        <span className="text-text-main font-mono font-medium">{name}</span>
         <span className="text-text-muted text-xs font-mono ml-auto" title={id}>
           {shortCallId(id)}
         </span>
       </button>
       {expanded && (
-        <div className="mt-2 border-t border-amber-500/20 pt-2">
+        <div className="mt-2 border-t border-warning/20 pt-2">
           <JsonViewer data={input} />
         </div>
       )}
