@@ -503,7 +503,12 @@ export default function ChatTab({ configState, onMetricsUpdate }: ChatTabProps) 
           className="text-sm resize-y flex-1"
         />
         {loading ? (
-          <Button variant="outline" icon="stop" onClick={handleCancel} className="shrink-0">
+          <Button
+            variant="outline"
+            icon="stop"
+            onClick={handleCancel}
+            className="shrink-0 self-end"
+          >
             {t("stop")}
           </Button>
         ) : (
@@ -511,7 +516,7 @@ export default function ChatTab({ configState, onMetricsUpdate }: ChatTabProps) 
             icon="send"
             onClick={() => void handleSend()}
             disabled={!input.trim()}
-            className="shrink-0"
+            className="shrink-0 self-end"
           >
             {t("send")}
           </Button>
