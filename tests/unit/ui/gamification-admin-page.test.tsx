@@ -13,6 +13,12 @@ beforeAll(() => {
   } as unknown as typeof ResizeObserver;
 });
 
+// Warm the page module once, outside the 5 s per-test budget: the first cold transform of the
+// kit (PageHeader, Table…) can take several seconds on a loaded runner. Assertions are unchanged.
+beforeAll(async () => {
+  await import("../../../src/app/(dashboard)/dashboard/gamification/admin/page");
+}, 60_000);
+
 // Namespace-prefixed keys instead of the global en.json-backed mock: any English
 // string still hard-coded in the page would surface verbatim in the rendered text.
 vi.mock("next-intl", () => ({
