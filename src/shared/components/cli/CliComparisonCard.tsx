@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { cn } from "@/shared/utils/cn";
+import Badge from "@/shared/components/Badge";
 import Card from "@/shared/components/Card";
+import { cn } from "@/shared/utils/cn";
 import type { CliConceptType } from "./CliConceptCard";
 
 export interface CliComparisonCardProps {
@@ -23,7 +24,7 @@ export default function CliComparisonCard({ currentType }: CliComparisonCardProp
 
   return (
     <Card padding="sm">
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         {types.map((type) => {
           const isCurrent = type === currentType;
           return (
@@ -33,7 +34,7 @@ export default function CliComparisonCard({ currentType }: CliComparisonCardProp
                 "flex flex-col gap-2 p-3 rounded-lg",
                 isCurrent
                   ? "bg-primary/10 border border-primary/30"
-                  : "border border-transparent bg-bg-subtle"
+                  : "bg-bg-subtle border border-transparent"
               )}
             >
               {/* Title */}
@@ -47,13 +48,13 @@ export default function CliComparisonCard({ currentType }: CliComparisonCardProp
                   {t(`comparison.${type}.title`)}
                 </span>
                 {isCurrent ? (
-                  <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-medium rounded-full bg-primary/20 text-primary whitespace-nowrap">
+                  <Badge variant="primary" size="sm" className="whitespace-nowrap">
                     {t("comparison.thisPage")} ✓
-                  </span>
+                  </Badge>
                 ) : (
                   <Link
                     href={TYPE_HREFS[type]}
-                    className="inline-flex items-center whitespace-nowrap rounded-full bg-surface-2 px-1.5 py-0.5 text-[10px] font-medium text-text-muted transition-colors hover:bg-primary/10 hover:text-primary"
+                    className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-medium rounded-full bg-bg-subtle text-text-muted hover:text-primary hover:bg-primary/10 transition-colors whitespace-nowrap"
                   >
                     {t("comparison.open")}
                   </Link>

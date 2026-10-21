@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import Icon from "@/shared/components/Icon";
+import Badge from "@/shared/components/Badge";
 import type { CliCatalogEntry } from "@/shared/schemas/cliCatalog";
 import type { ToolBatchStatus } from "@/shared/types/cliBatchStatus";
 import CliStatusBadge from "@/app/(dashboard)/dashboard/cli-code/components/CliStatusBadge";
 import { useTheme } from "@/shared/hooks/useTheme";
 import { cn } from "@/shared/utils/cn";
-import Badge from "@/shared/components/Badge";
-import Icon from "@/shared/components/Icon";
 
 export interface CliToolCardProps {
   tool: CliCatalogEntry;
@@ -53,8 +53,7 @@ export default function CliToolCard({
           style={{ width: "auto", height: "auto", maxWidth: 32, maxHeight: 32 }}
         />
       ) : (
-        // Tool brand colour (catalog data), not a theme tone.
-        <span className="shrink-0" style={{ color: tool.color }}>
+        <span className="inline-flex shrink-0" style={{ color: tool.color }} aria-hidden="true">
           <Icon name={tool.icon ?? "terminal"} size={20} />
         </span>
       )}
@@ -63,7 +62,7 @@ export default function CliToolCard({
           <span className="font-semibold text-text-main text-sm leading-tight truncate">
             {tool.name}
           </span>
-          <span className="rounded bg-bg-subtle px-1.5 py-0.5 font-mono text-[11px] text-text-muted">
+          <span className="text-[11px] text-text-muted font-mono bg-bg-subtle px-1.5 py-0.5 rounded">
             {version}
           </span>
         </div>
@@ -79,9 +78,9 @@ export default function CliToolCard({
     <Link
       href={detailHref}
       className={cn(
-        "block min-h-[180px]",
-        "rounded-card border border-border bg-surface shadow-sm",
-        "transition-all hover:border-primary/30 hover:shadow-md",
+        // Kit card surface on the link itself (the whole card is the navigation target).
+        "ci-card block min-h-[180px]",
+        "hover:shadow-md hover:border-primary/30 transition-all",
         "p-4 flex flex-col gap-3"
       )}
     >
@@ -121,12 +120,12 @@ export default function CliToolCard({
       {/* Badges row */}
       <div className="flex items-center gap-1.5 flex-wrap">
         {tool.baseUrlSupport === "partial" && (
-          <Badge size="sm" variant="warning">
+          <Badge variant="warning" size="sm">
             <span aria-hidden="true">⚠</span> {t("card.baseUrlPartial")}
           </Badge>
         )}
         {tool.acpSpawnable === true && (
-          <Badge size="sm" variant="info">
+          <Badge variant="info" size="sm">
             {t("card.alsoAcp")}
           </Badge>
         )}
