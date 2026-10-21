@@ -39,7 +39,7 @@ export function RequestNode({ data }: NodeProps) {
         Request
       </div>
       <div
-        className="text-[11px] font-mono text-muted truncate max-w-[130px]"
+        className="text-[11px] font-mono text-text-muted truncate max-w-[130px]"
         title={comboName as string}
       >
         {comboName as string}
