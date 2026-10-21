@@ -5,6 +5,8 @@ import { Checkbox as KitCheckbox } from "@omniroute/ui-kit/checkbox";
 
 interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {
   label?: React.ReactNode;
+  /** The kit's "–" mixed state (a DOM property applied via ref, not an HTML attribute). */
+  indeterminate?: boolean;
 }
 
 /**
@@ -14,10 +16,18 @@ interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>
  * the native <input> as in the legacy Checkbox.
  */
 const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
-  { label, className, ...props },
+  { label, className, indeterminate, ...props },
   ref
 ) {
-  return <KitCheckbox ref={ref} label={label} className={className} {...props} />;
+  return (
+    <KitCheckbox
+      ref={ref}
+      label={label}
+      className={className}
+      indeterminate={indeterminate}
+      {...props}
+    />
+  );
 });
 
 export default Checkbox;

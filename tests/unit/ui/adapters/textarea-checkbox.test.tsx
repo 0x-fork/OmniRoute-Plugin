@@ -34,4 +34,18 @@ describe("Textarea / Checkbox adapters", () => {
     expect(container.querySelector("label")).toBeNull();
     expect(container.querySelector("input[type=checkbox]")).not.toBeNull();
   });
+
+  it("Checkbox forwards indeterminate to the kit's mixed state and clears it", () => {
+    const { getByLabelText, rerender } = render(
+      <Checkbox aria-label="all" checked={false} onChange={() => {}} indeterminate />
+    );
+    const box = getByLabelText("all") as HTMLInputElement;
+    expect(box.indeterminate).toBe(true);
+    expect(box.matches(":indeterminate")).toBe(true);
+    rerender(
+      <Checkbox aria-label="all" checked={false} onChange={() => {}} indeterminate={false} />
+    );
+    expect(box.indeterminate).toBe(false);
+    expect(box.matches(":indeterminate")).toBe(false);
+  });
 });
