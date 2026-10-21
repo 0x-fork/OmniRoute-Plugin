@@ -3287,7 +3287,8 @@
     "cliproxyapiUnknown": "Không rõ",
     "cliproxyapiUpdate": "Cập nhật",
     "cliproxyapiUpdateAvailable": "Có bản cập nhật: v{current} → v{latest}",
-    "cliproxyapiVersion": "Phiên bản"
+    "cliproxyapiVersion": "Phiên bản",
+    "removeMapping": "Xóa ánh xạ"
   },
   "modelCatalog": {
     "title": "Mô hình & Combo",
@@ -11093,7 +11094,8 @@
       "message": "Tin nhắn",
       "error": "Lỗi",
       "completion": "Hoàn tất"
-    }
+    },
+    "statusFilter": "Trạng thái"
   },
   "templateNames": {
     "simple-chat": "Trò chuyện đơn giản",
@@ -13426,7 +13428,8 @@
     "ownProxy": "Proxy riêng",
     "freeTierPause": "Mô hình {model} đã tạm dừng (429), quay lại lúc {time}",
     "freeTierPauseProvider": "Đã tạm dừng (429), quay lại lúc {time}",
-    "freeTierPauseNote": "Tạm dừng trong tiến trình trên phiên bản này"
+    "freeTierPauseNote": "Tạm dừng trong tiến trình trên phiên bản này",
+    "proxyType": "Loại proxy"
   },
   "gamification": {
     "leaderboardScopes": {
