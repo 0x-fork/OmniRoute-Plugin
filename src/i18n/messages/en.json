@@ -13348,7 +13348,11 @@
     "method": "Method",
     "auth": "Auth",
     "feasibility": "Feasibility",
-    "models": "Models"
+    "models": "Models",
+    "provider": "Provider",
+    "status": "Status",
+    "endpoint": "Endpoint",
+    "actions": "Actions"
   },
   "noAuthProvider": {
     "title": "No authentication required",

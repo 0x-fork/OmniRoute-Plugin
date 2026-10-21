@@ -13348,7 +13348,11 @@
     "method": "Phương thức",
     "auth": "Xác thực",
     "feasibility": "Tính khả thi",
-    "models": "Mô hình"
+    "models": "Mô hình",
+    "provider": "Nhà cung cấp",
+    "status": "Trạng thái",
+    "endpoint": "Điểm cuối",
+    "actions": "Hành động"
   },
   "noAuthProvider": {
     "title": "Không cần xác thực",
