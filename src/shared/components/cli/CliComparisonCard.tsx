@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { cn } from "@/shared/utils/cn";
+import Card from "@/shared/components/Card";
 import type { CliConceptType } from "./CliConceptCard";
 
 export interface CliComparisonCardProps {
@@ -21,7 +22,7 @@ export default function CliComparisonCard({ currentType }: CliComparisonCardProp
   const types: CliConceptType[] = ["code", "agent", "acp"];
 
   return (
-    <div className="bg-surface border border-black/5 dark:border-white/5 rounded-lg shadow-sm p-4">
+    <Card padding="sm">
       <div className="grid grid-cols-3 gap-3">
         {types.map((type) => {
           const isCurrent = type === currentType;
@@ -32,7 +33,7 @@ export default function CliComparisonCard({ currentType }: CliComparisonCardProp
                 "flex flex-col gap-2 p-3 rounded-lg",
                 isCurrent
                   ? "bg-primary/10 border border-primary/30"
-                  : "bg-black/[0.02] dark:bg-white/[0.02] border border-transparent"
+                  : "border border-transparent bg-bg-subtle"
               )}
             >
               {/* Title */}
@@ -52,7 +53,7 @@ export default function CliComparisonCard({ currentType }: CliComparisonCardProp
                 ) : (
                   <Link
                     href={TYPE_HREFS[type]}
-                    className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-medium rounded-full bg-black/5 dark:bg-white/5 text-text-muted hover:text-primary hover:bg-primary/10 transition-colors whitespace-nowrap"
+                    className="inline-flex items-center whitespace-nowrap rounded-full bg-surface-2 px-1.5 py-0.5 text-[10px] font-medium text-text-muted transition-colors hover:bg-primary/10 hover:text-primary"
                   >
                     {t("comparison.open")}
                   </Link>
@@ -77,6 +78,6 @@ export default function CliComparisonCard({ currentType }: CliComparisonCardProp
           );
         })}
       </div>
-    </div>
+    </Card>
   );
 }

@@ -91,10 +91,8 @@ test("connection filters use the shared FilterPills that fill the line on phones
 test("connection rows use the compact shared ReorderControl and hide separators on phones", () => {
   assert.match(source, /<ReorderControl/);
   assert.doesNotMatch(source, /<span className="text-text-muted\/30 select-none">\|<\/span>/);
-  assert.match(
-    read("src/shared/components/ReorderControl.tsx"),
-    /flex size-5 items-center justify-center/
-  );
+  // KEA-7886: compact 20px kit ghost icon buttons (the kit min-height is reset).
+  assert.match(read("src/shared/components/ReorderControl.tsx"), /size-5 min-h-5/);
 });
 
 test("icon size utilities win over the Material Symbols base size", () => {
