@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
  * Escape and focus return come from Radix).
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@omniroute/ui-kit/popover";
 import Badge from "./Badge";
 import Button from "./Button";
@@ -38,6 +38,10 @@ export default function TokenHealthBadge() {
   const t = useTranslations("stats");
   const [health, setHealth] = useState(null);
   const [open, setOpen] = useState(false);
+  // A hover-opened panel is a passive summary: it must not take focus (the badge sits in every
+  // dashboard header, next to inputs) and it closes when the pointer leaves. A click "pins" it
+  // open instead of toggling the hover-opened panel shut.
+  const openedByHover = useRef(false);
 
   useEffect(() => {
     const fetchHealth = async () => {
@@ -63,17 +67,34 @@ export default function TokenHealthBadge() {
   const label = t(`tokenHealthTooltips.${status.tooltipKey}`);
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="gap-1 px-2"
-          title={label}
-          aria-label={label}
-          onMouseEnter={() => setOpen(true)}
-          onMouseLeave={() => setOpen(false)}
-        >
+    <Popover
+      open={open}
+      onOpenChange={(next) => {
+        if (!next) openedByHover.current = false;
+        setOpen(next);
+      }}
+    >
+      <PopoverTrigger
+        asChild
+        onMouseEnter={() => {
+          if (open) return;
+          openedByHover.current = true;
+          setOpen(true);
+        }}
+        onMouseLeave={() => {
+          if (!openedByHover.current) return;
+          openedByHover.current = false;
+          setOpen(false);
+        }}
+        onClick={(event) => {
+          // Radix skips its toggle when the click is default-prevented: pin the hover panel.
+          if (openedByHover.current) {
+            event.preventDefault();
+            openedByHover.current = false;
+          }
+        }}
+      >
+        <Button variant="ghost" size="sm" className="gap-1 px-2" title={label} aria-label={label}>
           <Icon name={status.icon} size={18} className={status.tone} />
           {health.errored > 0 && (
             <Badge variant={status.badge} size="sm">
@@ -83,7 +104,19 @@ export default function TokenHealthBadge() {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent align="end" className="min-w-[200px] p-3">
+      <PopoverContent
+        align="end"
+        className="min-w-[200px] p-3"
+        onOpenAutoFocus={(event) => {
+          if (openedByHover.current) event.preventDefault();
+        }}
+        onCloseAutoFocus={(event) => {
+          // Closing never yanks focus to the trigger when the user's focus is elsewhere.
+          if (document.activeElement && document.activeElement !== document.body) {
+            event.preventDefault();
+          }
+        }}
+      >
         <p className="text-xs font-medium text-text-main mb-2">{t("tokenHealth")}</p>
         <dl className="flex flex-col gap-1 text-xs">
           <div className="flex justify-between">

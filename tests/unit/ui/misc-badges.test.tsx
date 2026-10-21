@@ -112,6 +112,63 @@ describe("TokenHealthBadge", () => {
 
     fireEvent.keyDown(panel, { key: "Escape" });
     expect(screen.queryByRole("dialog")).toBeNull();
+    // Keyboard/click sessions still hand focus back to the trigger on close.
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 0));
+    });
+    expect(document.activeElement).toBe(trigger);
+  });
+
+  it("opens on hover without moving focus away from what the user is typing in", async () => {
+    stubFetch({ total: 3, healthy: 1, errored: 2, warning: 0, status: "error" });
+    render(
+      <NextIntlClientProvider locale="en" timeZone="UTC" messages={messages}>
+        <input aria-label="search" />
+        <TokenHealthBadge />
+      </NextIntlClientProvider>
+    );
+    const trigger = await screen.findByRole("button", {
+      name: "Token refresh failures detected",
+    });
+    const input = screen.getByRole("textbox", { name: "search" });
+    input.focus();
+
+    await act(async () => {
+      fireEvent.mouseEnter(trigger);
+    });
+    expect(screen.getByRole("dialog").textContent).toContain("Token Health");
+    expect(document.activeElement).toBe(input);
+
+    await act(async () => {
+      fireEvent.mouseLeave(trigger);
+    });
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(document.activeElement).toBe(input);
+  });
+
+  it("keeps the hover-opened panel open when the badge is then clicked", async () => {
+    stubFetch({ total: 3, healthy: 1, errored: 2, warning: 0, status: "error" });
+    wrap(<TokenHealthBadge />);
+    const trigger = await screen.findByRole("button", {
+      name: "Token refresh failures detected",
+    });
+    await act(async () => {
+      fireEvent.mouseEnter(trigger);
+    });
+    await act(async () => {
+      fireEvent.click(trigger);
+    });
+    expect(screen.queryByRole("dialog")).not.toBeNull();
+    // Clicked open, the panel stays when the pointer moves on (to read or select its rows).
+    await act(async () => {
+      fireEvent.mouseLeave(trigger);
+    });
+    expect(screen.queryByRole("dialog")).not.toBeNull();
+    // A second click closes it as before.
+    await act(async () => {
+      fireEvent.click(trigger);
+    });
+    expect(screen.queryByRole("dialog")).toBeNull();
   });
 
   it("hides the count when no token errored", async () => {

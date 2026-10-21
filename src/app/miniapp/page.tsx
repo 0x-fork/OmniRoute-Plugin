@@ -9,6 +9,7 @@
  */
 
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import Button from "@/shared/components/Button";
 import Input from "@/shared/components/Input";
 import { cn } from "@/shared/utils/cn";
@@ -37,6 +38,7 @@ interface ChatMessage {
 const STREAM_URL = "/api/telegram/update";
 
 export default function TelegramMiniApp() {
+  const t = useTranslations("publicSystem");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -125,11 +127,11 @@ export default function TelegramMiniApp() {
       <div className="flex items-end gap-2">
         <Input
           className="flex-1"
-          aria-label="Ask anything…"
+          aria-label={t("miniapp.askAnything")}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && send()}
-          placeholder="Ask anything…"
+          placeholder={t("miniapp.askAnything")}
           disabled={busy}
         />
         <Button onClick={send} disabled={busy || !input.trim()}>

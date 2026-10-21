@@ -14640,6 +14640,9 @@
         "primaryAction": "Chi tiết bảo trì",
         "secondaryAction": "Trạng thái hệ thống"
       }
+    },
+    "miniapp": {
+      "askAnything": "Hỏi bất cứ điều gì…"
     }
   },
   "kiroAuthModal": {

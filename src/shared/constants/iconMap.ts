@@ -81,6 +81,7 @@ import {
   Flag,
   FlaskConical,
   Folder,
+  FolderOpen,
   GalleryVerticalEnd,
   Gauge,
   Globe,
@@ -242,8 +243,6 @@ import {
   Tally3,
   Target,
 } from "lucide-react";
-// Auth, error, status, legal and docs pages (KEA-7886, lote 10).
-import { FolderOpen } from "lucide-react";
 
 /**
  * Material Symbols name → Lucide icon. `null` = still rendered with the Material ligature by

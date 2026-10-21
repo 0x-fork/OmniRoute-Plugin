@@ -14640,6 +14640,9 @@
         "primaryAction": "Detalhes da Manutenção",
         "secondaryAction": "Status do Sistema"
       }
+    },
+    "miniapp": {
+      "askAnything": "Pergunte qualquer coisa…"
     }
   },
   "kiroAuthModal": {
