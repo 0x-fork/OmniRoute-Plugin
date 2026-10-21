@@ -1,9 +1,8 @@
 "use client";
 
-import Icon from "@/shared/components/Icon";
-
 import { useCallback, useEffect, useState } from "react";
 import { Card, Input, Toggle } from "@/shared/components";
+import Icon from "@/shared/components/Icon";
 import { useTranslations } from "next-intl";
 
 type RoutingSettings = {
@@ -110,6 +109,7 @@ function AccountRoundRobinSection({ t, busy, settings, setSettings, run }: Secti
         </div>
         <Toggle
           checked={accountRoundRobin}
+          ariaLabel={t("accountRoundRobin")}
           disabled={busy}
           onChange={() =>
             run(async () => {
@@ -171,6 +171,7 @@ function ComboRoundRobinSection({ t, busy, settings, setSettings, run }: Section
         </div>
         <Toggle
           checked={comboRoundRobin}
+          ariaLabel={t("comboRoundRobin")}
           disabled={busy}
           onChange={() =>
             run(async () => {

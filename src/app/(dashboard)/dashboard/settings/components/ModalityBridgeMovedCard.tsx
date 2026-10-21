@@ -1,9 +1,8 @@
 "use client";
 
-import Icon from "@/shared/components/Icon";
-
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import Icon from "@/shared/components/Icon";
 
 // One-cycle migration notice. Settings → AI no longer renders or writes the
 // legacy controls; the dedicated Modality Bridge page owns these settings.

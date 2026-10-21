@@ -1,10 +1,9 @@
 "use client";
 
-import Icon from "@/shared/components/Icon";
-
 import { useEffect, useState, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { Card, Select } from "@/shared/components";
+import Icon from "@/shared/components/Icon";
 import {
   DEFAULT_RESPONSES_PREVIOUS_RESPONSE_ID_MODE,
   RESPONSES_PREVIOUS_RESPONSE_ID_MODES,

@@ -1,10 +1,9 @@
 "use client";
 
-import Icon from "@/shared/components/Icon";
-
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Button, Card, Input } from "@/shared/components";
+import Icon from "@/shared/components/Icon";
 
 export default function UsageTokenBufferTab() {
   const t = useTranslations("settings");

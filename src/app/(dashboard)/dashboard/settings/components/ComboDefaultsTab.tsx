@@ -685,6 +685,7 @@ export default function ComboDefaultsTab() {
             </div>
             <Toggle
               checked={comboDefaults.trackMetrics !== false}
+              ariaLabel={t("trackMetrics")}
               onChange={() =>
                 setComboDefaults((prev) => ({ ...prev, trackMetrics: !prev.trackMetrics }))
               }
@@ -705,6 +706,11 @@ export default function ComboDefaultsTab() {
             </div>
             <Toggle
               checked={promptCacheAffinityEnabled}
+              ariaLabel={translateOrFallback(
+                t,
+                "promptCacheAffinity",
+                "Prompt-cache locality routing"
+              )}
               onChange={() => setPromptCacheAffinityEnabled((enabled) => !enabled)}
             />
           </div>
@@ -723,6 +729,7 @@ export default function ComboDefaultsTab() {
             </div>
             <Toggle
               checked={comboDefaults.reasoningTokenBufferEnabled !== false}
+              ariaLabel={translateOrFallback(t, "reasoningTokenBuffer", "Reasoning token buffer")}
               onChange={() =>
                 setComboDefaults((prev) => ({
                   ...prev,
@@ -746,6 +753,11 @@ export default function ComboDefaultsTab() {
             </div>
             <Toggle
               checked={comboDefaults.zeroLatencyOptimizationsEnabled === true}
+              ariaLabel={translateOrFallback(
+                t,
+                "zeroLatencyOptimizations",
+                "Zero-latency optimizations"
+              )}
               onChange={() =>
                 setComboDefaults((prev) => ({
                   ...prev,
@@ -769,6 +781,11 @@ export default function ComboDefaultsTab() {
             </div>
             <Toggle
               checked={comboDefaults.disableSessionStickiness === true}
+              ariaLabel={translateOrFallback(
+                t,
+                "disableSessionStickiness",
+                "Disable session stickiness"
+              )}
               onChange={() =>
                 setComboDefaults((prev) => ({
                   ...prev,

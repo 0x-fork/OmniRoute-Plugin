@@ -1,9 +1,8 @@
 "use client";
 
-import Icon from "@/shared/components/Icon";
-
 import { useEffect, useState } from "react";
 import { Card, Toggle } from "@/shared/components";
+import Icon from "@/shared/components/Icon";
 import { useTranslations } from "next-intl";
 import { NumberField } from "./ResilienceFields";
 
@@ -135,6 +134,7 @@ export default function QuotaPreflightCard() {
           </div>
           <Toggle
             checked={value.enabled}
+            ariaLabel={tx("quotaPreflightEnable", "Enable quota preflight")}
             disabled={saving}
             onChange={() => save({ enabled: !value.enabled })}
           />
