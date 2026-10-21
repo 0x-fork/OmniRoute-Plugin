@@ -1,5 +1,6 @@
 "use client";
 
+import { Field } from "@omniroute/ui-kit/field";
 import Button from "@/shared/components/Button";
 import Input from "@/shared/components/Input";
 import Select from "@/shared/components/Select";
@@ -229,10 +230,8 @@ export default function StudioConfigPane({ configState, setConfigState }: Studio
 
         {/* Model */}
         <div className="flex flex-col gap-1.5">
-          <span
-            id={modelLabelId}
-            className="text-xs font-medium text-text-muted uppercase tracking-wider"
-          >
+          {/* Same typography as the kit Field labels of Endpoint/Provider/System prompt. */}
+          <span id={modelLabelId} className="ci-label">
             {tp("model")}
           </span>
           {availableModels.length > 0 ? (
@@ -276,20 +275,16 @@ export default function StudioConfigPane({ configState, setConfigState }: Studio
 
         {/* System prompt */}
         <div className="flex flex-col gap-1.5">
-          <label
-            htmlFor={systemPromptId}
-            className="text-xs font-medium text-text-muted uppercase tracking-wider"
-          >
-            {tp("systemPrompt")}
-          </label>
-          <Textarea
-            id={systemPromptId}
-            value={configState.systemPrompt}
-            onChange={(e) => update("systemPrompt", e.target.value)}
-            placeholder={tp("systemPromptPlaceholder")}
-            rows={4}
-            className="text-xs resize-y"
-          />
+          <Field label={tp("systemPrompt")} htmlFor={systemPromptId}>
+            <Textarea
+              id={systemPromptId}
+              value={configState.systemPrompt}
+              onChange={(e) => update("systemPrompt", e.target.value)}
+              placeholder={tp("systemPromptPlaceholder")}
+              rows={4}
+              className="text-xs resize-y"
+            />
+          </Field>
           {/* ImprovePromptButton — injected by F7 */}
           <ImprovePromptButton configState={configState} setConfigState={setConfigState} />
         </div>

@@ -533,7 +533,7 @@ export default function McpDashboardPage() {
       <Card className="p-5">
         <h2 className="text-lg font-semibold mb-4">{t("toolsAndScopes")}</h2>
         <div className="overflow-x-auto">
-          <Table>
+          <Table scrollbarLabel={t("toolsAndScopes")}>
             <TableHeader>
               <TableRow>
                 <TableHead>{t("tableTool")}</TableHead>
@@ -610,7 +610,7 @@ export default function McpDashboardPage() {
           <p className="text-sm text-text-muted">{t("noAuditEntriesForFilters")}</p>
         ) : (
           <div className="overflow-x-auto">
-            <Table>
+            <Table scrollbarLabel={t("auditLog")}>
               <TableHeader>
                 <TableRow>
                   <TableHead>{t("tableTimestamp")}</TableHead>

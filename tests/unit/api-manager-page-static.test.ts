@@ -216,7 +216,8 @@ test("behaviour tab persists the per-key prompt-compression switch", () => {
   assert.match(component, /useTranslations\("settings"\)/);
   assert.match(component, /tSettings\("compressionTitle"\)/);
   assert.match(component, /tSettings\("compressionDesc"\)/);
-  assert.match(component, /checked=\{enabled\}/);
+  assert.match(component, /[^-]checked=\{enabled\}/);
+  assert.doesNotMatch(component, /aria-checked=\{enabled\}/);
 });
 
 test("access editor exposes Claude Code default wildcard model", () => {

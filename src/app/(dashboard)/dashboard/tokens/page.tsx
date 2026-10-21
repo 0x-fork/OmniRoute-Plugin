@@ -11,7 +11,8 @@ import {
   TableHeader,
   TableRow,
 } from "@omniroute/ui-kit/table";
-import { TableLoadingState } from "@omniroute/ui-kit/table-loading";
+import { DataTableShell } from "@omniroute/ui-kit/data-table-shell";
+import { PageHeader } from "@omniroute/ui-kit/page-header";
 import Badge from "@/shared/components/Badge";
 import Button from "@/shared/components/Button";
 import Card from "@/shared/components/Card";
@@ -301,6 +302,8 @@ export default function TokensPage() {
 
   return (
     <div className="flex flex-col gap-6">
+      <PageHeader compact title={t("tokensPageTitle")} description={t("tokensPageDescription")} />
+
       {/* Balance */}
       <Card>
         <div className="flex items-center justify-between">
@@ -357,54 +360,57 @@ export default function TokensPage() {
 
       {/* Transaction History */}
       <Card title={t("tokensTransactionHistory")} icon="history">
-        {historyLoading ? (
-          <TableLoadingState label={t("loading")} />
-        ) : history.length === 0 ? (
-          <EmptyState icon="history" title={t("tokensNoTransactionsYet")} />
-        ) : (
-          <Table scrollbarLabel={t("tokensTransactionHistory")}>
-            <TableHeader>
-              <TableRow>
-                <TableHead>{t("type")}</TableHead>
-                <TableHead>{t("tokensFrom")}</TableHead>
-                <TableHead>{t("tokensTo")}</TableHead>
-                <TableHead className="text-right">{t("tokensAmount")}</TableHead>
-                <TableHead>{t("tokensReason")}</TableHead>
-                <TableHead className="text-right">{t("tokensDate")}</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {history.map((entry) => {
-                const isSent = entry.fromApiKeyId !== "current";
-                return (
-                  <TableRow key={entry.id}>
-                    <TableCell>
-                      <Badge variant={isSent ? "error" : "success"} size="sm">
-                        {isSent ? t("tokensSent") : t("tokensReceived")}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-sm font-mono">
-                      {entry.fromApiKeyId.slice(0, 8)}...
-                    </TableCell>
-                    <TableCell className="text-sm font-mono">
-                      {entry.toApiKeyId.slice(0, 8)}...
-                    </TableCell>
-                    <TableCell
-                      className={`text-right font-mono ${isSent ? "text-error" : "text-success"}`}
-                    >
-                      {isSent ? "-" : "+"}
-                      {entry.amount.toLocaleString(locale)}
-                    </TableCell>
-                    <TableCell className="text-sm text-text-muted">{entry.reason || "-"}</TableCell>
-                    <TableCell className="text-right text-sm text-text-muted">
-                      {new Date(entry.createdAt).toLocaleDateString(locale)}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        )}
+        {/* Kit DataTableShell owns the loading overlay; no filters/pagination on this ledger. */}
+        <DataTableShell loading={historyLoading} loadingLabel={t("loading")}>
+          {!historyLoading && history.length === 0 ? (
+            <EmptyState icon="history" title={t("tokensNoTransactionsYet")} />
+          ) : (
+            <Table scrollbarLabel={t("tokensTransactionHistory")}>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t("type")}</TableHead>
+                  <TableHead>{t("tokensFrom")}</TableHead>
+                  <TableHead>{t("tokensTo")}</TableHead>
+                  <TableHead className="text-right">{t("tokensAmount")}</TableHead>
+                  <TableHead>{t("tokensReason")}</TableHead>
+                  <TableHead className="text-right">{t("tokensDate")}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {history.map((entry) => {
+                  const isSent = entry.fromApiKeyId !== "current";
+                  return (
+                    <TableRow key={entry.id}>
+                      <TableCell>
+                        <Badge variant={isSent ? "error" : "success"} size="sm">
+                          {isSent ? t("tokensSent") : t("tokensReceived")}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-sm font-mono">
+                        {entry.fromApiKeyId.slice(0, 8)}...
+                      </TableCell>
+                      <TableCell className="text-sm font-mono">
+                        {entry.toApiKeyId.slice(0, 8)}...
+                      </TableCell>
+                      <TableCell
+                        className={`text-right font-mono ${isSent ? "text-error" : "text-success"}`}
+                      >
+                        {isSent ? "-" : "+"}
+                        {entry.amount.toLocaleString(locale)}
+                      </TableCell>
+                      <TableCell className="text-sm text-text-muted">
+                        {entry.reason || "-"}
+                      </TableCell>
+                      <TableCell className="text-right text-sm text-text-muted">
+                        {new Date(entry.createdAt).toLocaleDateString(locale)}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          )}
+        </DataTableShell>
       </Card>
 
       {/* Invite Panel */}
@@ -515,7 +521,7 @@ export default function TokensPage() {
                 value={serverUrl}
                 onChange={(e) => setServerUrl(e.target.value)}
                 placeholder="https://server.example.com"
-                aria-label="URL"
+                aria-label={t("tokensServerUrlLabel")}
                 required
               />
               <Input

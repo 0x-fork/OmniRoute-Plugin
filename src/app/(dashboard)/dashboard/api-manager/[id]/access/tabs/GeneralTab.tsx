@@ -5,8 +5,8 @@ import Icon from "@/shared/components/Icon";
 import Toggle from "@/shared/components/Toggle";
 
 import { useTranslations } from "next-intl";
+import { Checkbox, CheckboxGroup } from "@omniroute/ui-kit/checkbox";
 import Input from "@/shared/components/Input";
-import { cn } from "@/shared/utils/cn";
 import { ENDPOINT_CATEGORIES } from "@/shared/constants/endpointCategories";
 import { toLocalDateTimeInputValue } from "@/app/(dashboard)/dashboard/api-manager/apiManagerPageUtils";
 import RoutingEntryLink from "@/shared/components/routing/RoutingEntryLink";
@@ -249,38 +249,27 @@ function EndpointCategoryPicker({
   formState,
   toggleEndpoint,
 }: GeneralSectionProps<"toggleEndpoint">) {
+  const t = useTranslations("apiManager");
+
+  // Multi-select list: kit CheckboxGroup + card checkboxes (label + description per category).
+  // The visible section heading ("Endpoint restrictions") sits right above, so the group is
+  // named by aria-label instead of repeating it as a second visible label.
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 max-h-56 overflow-y-auto">
-      {ENDPOINT_CATEGORIES.map((cat) => {
-        const isSelected = formState.selectedEndpoints.includes(cat.id);
-        return (
-          <Button
-            key={cat.id}
-            variant="outline"
-            aria-pressed={isSelected}
-            onClick={() => toggleEndpoint(cat.id)}
-            className={cn(
-              "h-auto justify-start gap-2 p-2 text-left text-xs font-normal",
-              isSelected ? "bg-primary/10 border-primary/30" : "text-text-muted"
-            )}
-          >
-            <span
-              aria-hidden="true"
-              className={cn(
-                "w-4 h-4 rounded border flex items-center justify-center shrink-0",
-                isSelected ? "bg-primary border-primary text-accent-foreground" : "border-border"
-              )}
-            >
-              {isSelected && <Icon name="check" size={11} />}
-            </span>
-            <div className="flex flex-col min-w-0 flex-1">
-              <span className="font-medium truncate text-text-main">{cat.label}</span>
-              <span className="text-[10px] text-text-muted truncate">{cat.description}</span>
-            </div>
-          </Button>
-        );
-      })}
-    </div>
+    <CheckboxGroup
+      aria-label={t("endpointRestrictions")}
+      className="pt-1 [&_.ci-checkbox-group__items]:grid [&_.ci-checkbox-group__items]:max-h-56 [&_.ci-checkbox-group__items]:grid-cols-1 [&_.ci-checkbox-group__items]:gap-2 [&_.ci-checkbox-group__items]:overflow-y-auto sm:[&_.ci-checkbox-group__items]:grid-cols-2"
+    >
+      {ENDPOINT_CATEGORIES.map((cat) => (
+        <Checkbox
+          key={cat.id}
+          card
+          checked={formState.selectedEndpoints.includes(cat.id)}
+          onChange={() => toggleEndpoint(cat.id)}
+          label={<span className="text-xs font-medium">{cat.label}</span>}
+          description={<span className="text-[10px]">{cat.description}</span>}
+        />
+      ))}
+    </CheckboxGroup>
   );
 }
 

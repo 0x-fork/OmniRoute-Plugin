@@ -1567,8 +1567,8 @@ export default function APIPageClient({ machineId }: Readonly<APIPageClientProps
                           e.stopPropagation();
                           void copy(tailscaleIpUrl, "tailscale_ip_inline");
                         }}
-                        title={`Copy ${tailscaleIpUrl}`}
-                        aria-label={`Copy ${tailscaleIpUrl}`}
+                        title={`${tc("copy")} ${tailscaleIpUrl}`}
+                        aria-label={`${tc("copy")} ${tailscaleIpUrl}`}
                         className="h-auto min-h-0 gap-0.5 px-1 py-0 text-[10px] font-normal text-text-muted"
                       >
                         <code className="font-mono">
