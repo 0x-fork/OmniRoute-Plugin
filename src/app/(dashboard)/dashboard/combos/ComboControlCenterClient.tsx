@@ -355,15 +355,16 @@ export default function ComboControlCenterClient({ comboId }: { comboId: string 
             ← {t("backToCombos")}
           </Link>
         }
-        title={
-          <span className="inline-flex flex-wrap items-center gap-3">
-            {t("title")}
+        // Status badges sit above the h1 (eyebrow), so the heading's name is just the title.
+        eyebrow={
+          <span className="inline-flex flex-wrap items-center gap-2 normal-case tracking-normal">
             <Badge variant={STATE_VARIANT[summary.healthState]} className="font-medium">
               {stateLabel(summary.healthState, t)}
             </Badge>
             <Badge>{summary.isActive ? t("active") : t("disabled")}</Badge>
           </span>
         }
+        title={t("title")}
         description={t.rich("description", {
           combo: () => <code className="font-mono text-text-main">{combo.name}</code>,
         })}
@@ -398,7 +399,7 @@ export default function ComboControlCenterClient({ comboId }: { comboId: string 
           </div>
           <SegmentedControl
             size="sm"
-            aria-label={t("overview")}
+            aria-label={t("timeRange")}
             value={range}
             onChange={(item) => setRange(item as TimeRange)}
             options={TIME_RANGES.map((item) => ({ value: item, label: item }))}

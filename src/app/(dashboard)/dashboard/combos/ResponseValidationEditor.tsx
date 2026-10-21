@@ -128,7 +128,11 @@ export function ResponseValidationEditor({
         data-testid="rv-min-length"
       />
 
-      <Field label={tr(t, "responseValidationJsonPaths", "JSON-path checks")}>
+      {/* A group of rows, not one control: role="group" named by its heading. */}
+      <div role="group" aria-labelledby={`${fieldId}-jsonpaths`} className="flex flex-col gap-1.5">
+        <span id={`${fieldId}-jsonpaths`} className="ci-label">
+          {tr(t, "responseValidationJsonPaths", "JSON-path checks")}
+        </span>
         <div className="flex flex-col gap-1.5">
           {predicates.map((predicate, index) => (
             <div
@@ -141,7 +145,7 @@ export function ResponseValidationEditor({
                 value={predicate.path}
                 onChange={(e) => updatePredicate(index, { path: e.target.value })}
                 placeholder="choices[0].message.content"
-                aria-label={tr(t, "responseValidationJsonPaths", "JSON-path checks")}
+                aria-label={`${tr(t, "responseValidationPath", "JSON path")} ${index + 1}`}
                 data-testid="rv-predicate-path"
                 className="min-w-[140px] flex-1"
                 inputClassName="font-mono"
@@ -151,7 +155,7 @@ export function ResponseValidationEditor({
                 onChange={(e) =>
                   updatePredicate(index, { condition: e.target.value as JsonPathCondition })
                 }
-                aria-label={tr(t, "responseValidationJsonPaths", "JSON-path checks")}
+                aria-label={`${tr(t, "responseValidationCondition", "Condition")} ${index + 1}`}
                 data-testid="rv-predicate-condition"
                 className="w-auto"
                 options={CONDITIONS.map((c) => ({ value: c, label: c }))}
@@ -161,8 +165,8 @@ export function ResponseValidationEditor({
                   type="text"
                   value={predicate.value === undefined ? "" : String(predicate.value)}
                   onChange={(e) => updatePredicate(index, { value: e.target.value })}
-                  placeholder="value"
-                  aria-label="value"
+                  placeholder={tr(t, "responseValidationValue", "Expected value")}
+                  aria-label={`${tr(t, "responseValidationValue", "Expected value")} ${index + 1}`}
                   data-testid="rv-predicate-value"
                   className="w-auto"
                 />
@@ -197,7 +201,7 @@ export function ResponseValidationEditor({
             {tr(t, "responseValidationAddCheck", "+ Add check")}
           </Button>
         </div>
-      </Field>
+      </div>
     </div>
   );
 }

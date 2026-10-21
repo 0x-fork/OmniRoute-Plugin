@@ -30,8 +30,9 @@ export default function KimiComboPresetCard({
 
   if (alreadyCreated) return null;
 
-  // Kimi partner-brand blue (#1783FF family) on purpose — a brand accent, not a semantic colour
-  // (the tests pin it); the dark-theme tint keeps the bolt legible on the dark surface.
+  // Kimi partner-brand blue on purpose — a brand accent, not a semantic colour. The test pins the
+  // #1783FF hex on the card border/background; the bolt's dark: tint is a legibility exception
+  // (not pinned) so the glyph stays readable on the dark surface.
   return (
     <Card
       padding="sm"

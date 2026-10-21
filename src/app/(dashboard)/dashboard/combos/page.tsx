@@ -47,6 +47,7 @@ import { useComboProxyAssignments } from "./useComboProxyAssignments";
 import { ResponseValidationEditor, type ResponseValidationValue } from "./ResponseValidationEditor";
 import ReasoningTokenBufferToggle from "./ReasoningTokenBufferToggle";
 import ComboTimeoutFields from "./ComboTimeoutFields";
+import ComboContextLengthField from "./ComboContextLengthField";
 import ComboRrLegibilityFields from "./ComboRrLegibilityFields";
 import { persistConnectionAwareExpansion, persistStickyRoundRobinLimit } from "./comboRrLegibility";
 import { pickDisplayValue } from "@/shared/utils/maskEmail";
@@ -3338,10 +3339,8 @@ function ComboFormModal({
                   onChange={handleNameChange}
                   placeholder={t("comboNamePlaceholder")}
                   error={nameError}
+                  hint={!isExpertMode ? t("nameHint") : undefined}
                 />
-                {!isExpertMode && (
-                  <p className="text-[10px] text-text-muted mt-0.5">{t("nameHint")}</p>
-                )}
               </div>
 
               {/* Description (#5005) — optional free-text note for this combo */}
@@ -4781,51 +4780,14 @@ function ComboFormModal({
               />
 
               {/* Context Length */}
-              <div>
-                <Input
-                  label={getI18nOrFallback(t, "agentFeaturesContextLength", "Context length")}
-                  type="number"
-                  min="1000"
-                  max="2000000"
-                  step="1000"
-                  value={contextLength || ""}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setContextLengthError("");
-                    if (value === "") {
-                      setContextLength(undefined);
-                      return;
-                    }
-                    const num = Number(value);
-                    if (isNaN(num) || !Number.isInteger(num)) {
-                      setContextLengthError(t("agentFeaturesContextLengthErrorInteger"));
-                      // Keep the raw input value so the user can correct it
-                    } else if (num < 1000 || num > 2000000) {
-                      setContextLengthError(t("agentFeaturesContextLengthErrorRange"));
-                      setContextLength(num);
-                    } else {
-                      setContextLength(num);
-                    }
-                  }}
-                  placeholder={getI18nOrFallback(
-                    t,
-                    "agentFeaturesContextLengthPlaceholder",
-                    "e.g. 128000"
-                  )}
-                />
-                {contextLengthError && (
-                  <p className="text-[10px] text-error mt-0.5">{contextLengthError}</p>
-                )}
-                {!contextLengthError && !isExpertMode && (
-                  <p className="text-[10px] text-text-muted mt-0.5">
-                    {getI18nOrFallback(
-                      t,
-                      "agentFeaturesContextLengthHint",
-                      "Defines the context window for this combo in /v1/models."
-                    )}
-                  </p>
-                )}
-              </div>
+              <ComboContextLengthField
+                contextLength={contextLength}
+                setContextLength={setContextLength}
+                contextLengthError={contextLengthError}
+                setContextLengthError={setContextLengthError}
+                t={t}
+                showHint={!isExpertMode}
+              />
             </div>
           )}
 
