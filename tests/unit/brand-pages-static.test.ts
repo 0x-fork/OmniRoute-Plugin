@@ -17,6 +17,7 @@ test("standalone pages use the Keak lockup instead of the gradient hub glyph", (
     "src/app/not-found.tsx",
     "src/app/error.tsx",
     "src/app/global-error.tsx",
+    "src/app/forbidden/page.tsx",
   ]) {
     const src = read(p);
     // Exactly one rendered lockup per page: an unused import alone must not pass.
