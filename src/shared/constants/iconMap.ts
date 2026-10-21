@@ -66,6 +66,7 @@ import {
   Info,
   Key,
   KeyRound,
+  Landmark,
   Languages,
   Layers,
   Link,
@@ -298,7 +299,7 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   // null until the owning screen's lote maps it; the generator validates every name against
   // the Material Symbols vocabulary, so nothing here is a non-icon string. ──
   ac_unit: null,
-  account_balance: null,
+  account_balance: Landmark,
   account_circle: null,
   add_circle: null,
   add_task: null,
