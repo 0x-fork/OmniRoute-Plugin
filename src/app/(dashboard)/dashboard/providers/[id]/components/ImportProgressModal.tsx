@@ -76,7 +76,11 @@ export default function ImportProgressModal({
 
         {/* Fetching indeterminate bar */}
         {importProgress.phase === "fetching" && (
-          <Progress value={60} animate={false} className="animate-pulse" />
+          // Decorative: the fetch has no measurable progress, so keep the bar out of the a11y
+          // tree instead of announcing a fabricated value (the kit Progress has no indeterminate mode).
+          <div aria-hidden="true" data-testid="import-fetching-bar">
+            <Progress value={60} animate={false} className="animate-pulse" />
+          </div>
         )}
 
         {/* Error message */}

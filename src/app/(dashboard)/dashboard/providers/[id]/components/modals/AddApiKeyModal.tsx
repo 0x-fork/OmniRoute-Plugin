@@ -603,7 +603,7 @@ export default function AddApiKeyModal({
               value={bulkText}
               onChange={(e) => setBulkText(e.target.value)}
             />
-            <div className="flex items-center gap-4 flex-wrap">
+            <div className="flex items-end gap-4 flex-wrap">
               <Input
                 type="number"
                 label={t("priorityLabel")}
@@ -616,7 +616,7 @@ export default function AddApiKeyModal({
                     priority: Number.parseInt(e.target.value) || 1,
                   })
                 }
-                className="flex-row items-center gap-2"
+                className="w-auto min-w-0"
                 inputClassName="w-20"
               />
               <Checkbox
