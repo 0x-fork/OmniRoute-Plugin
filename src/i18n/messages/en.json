@@ -14599,7 +14599,9 @@
       "circuitBreakerState": "Provider Circuit Breaker State",
       "lastUpdate": "Last update: {timestamp}",
       "uptimeMinutes": "{minutes}m",
-      "uptimeHoursMinutes": "{hours}h {minutes}m"
+      "uptimeHoursMinutes": "{hours}h {minutes}m",
+      "breakerClosed": "Closed",
+      "breakerNotClosed": "Open or half-open"
     },
     "statusPages": {
       "400": {
@@ -14674,6 +14676,9 @@
         "primaryAction": "Maintenance Details",
         "secondaryAction": "System Status"
       }
+    },
+    "miniapp": {
+      "askAnything": "Ask anything…"
     }
   },
   "kiroAuthModal": {

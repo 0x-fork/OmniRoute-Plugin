@@ -14599,7 +14599,9 @@
       "circuitBreakerState": "Trạng thái circuit breaker của provider",
       "lastUpdate": "Cập nhật lần cuối: {timestamp}",
       "uptimeMinutes": "{minutes} phút",
-      "uptimeHoursMinutes": "{hours} giờ {minutes} phút"
+      "uptimeHoursMinutes": "{hours} giờ {minutes} phút",
+      "breakerClosed": "Đóng",
+      "breakerNotClosed": "Mở hoặc nửa mở"
     },
     "statusPages": {
       "400": {
@@ -14674,6 +14676,9 @@
         "primaryAction": "Chi tiết bảo trì",
         "secondaryAction": "Trạng thái hệ thống"
       }
+    },
+    "miniapp": {
+      "askAnything": "Hỏi bất cứ điều gì…"
     }
   },
   "kiroAuthModal": {
