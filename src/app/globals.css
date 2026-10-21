@@ -57,6 +57,11 @@
   /* Brand accent (lime) — the only accent; presets were retired (spec D4). */
   --color-primary: var(--ci-color-accent);
   --color-primary-hover: var(--ci-color-accent-hover);
+  /* Primary as TEXT (`text-primary` via @theme's --text-color-primary): lime is a surface that
+     carries dark ink, never ink on light (lime-400 on the background ≈ 1.1:1). The kit has no
+     accent-ink token yet (pendência), so light uses its lime-800 (≈ 7.1:1); dark flips back
+     to the lime below. */
+  --color-primary-ink: var(--ci-lime-800);
   --color-accent: var(--ci-color-accent);
   --color-accent-hover: var(--ci-color-accent-hover);
   --color-accent-light: var(--ci-color-accent-surface-strong);
@@ -145,6 +150,12 @@
   --table-row-selected: var(--ci-color-accent-surface-subtle);
 }
 
+/* Dark: lime reads on the dark background (≈ 17:1), so the primary ink is the accent itself.
+   Same `data-theme="dark"` hook the kit flips on. */
+:root[data-theme="dark"] {
+  --color-primary-ink: var(--ci-color-accent);
+}
+
 /* Dark: the kit flips every --ci-* value on `data-theme="dark"` (themeStore sets it with the
    class). Only what the kit does not own stays here. */
 .dark {
@@ -158,6 +169,11 @@
   /* Primary */
   --color-primary: var(--color-primary);
   --color-primary-hover: var(--color-primary-hover);
+  /* `text-*` reads --text-color-* before --color-*: text-primary → readable ink, while
+     bg-/border-/ring-primary keep the lime above. */
+  --text-color-primary: var(--color-primary-ink);
+  /* --color-accent is the same kit lime (var(--ci-color-accent)), so text-accent gets the ink. */
+  --text-color-accent: var(--color-primary-ink);
 
   /* Accent */
   --color-accent: var(--color-accent);
@@ -264,7 +280,7 @@ body.electron-macos {
 ::selection {
   background-color: rgba(229, 77, 94, 0.22);
   background-color: color-mix(in srgb, var(--color-primary) 22%, transparent);
-  color: var(--color-primary);
+  color: var(--color-primary-ink);
 }
 
 /* Global custom scrollbar — thin, minimal, theme-aware */
