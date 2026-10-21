@@ -2,7 +2,14 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useTranslations } from "next-intl";
+import { RadioGroup, RadioGroupItem } from "@omniroute/ui-kit/radio-group";
+import { Switch } from "@omniroute/ui-kit/switch";
 import { Card } from "@/shared/components";
+import Badge from "@/shared/components/Badge";
+import Button from "@/shared/components/Button";
+import EmptyState from "@/shared/components/EmptyState";
+import Icon from "@/shared/components/Icon";
+import { cn } from "@/shared/utils/cn";
 import { copyToClipboard } from "@/shared/utils/clipboard";
 import McpDashboardPage from "../endpoint/components/MCPDashboard";
 
@@ -28,60 +35,23 @@ function ServiceToggle({
 
   return (
     <div className="flex items-center gap-3">
-      <div
-        className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border"
-        style={{
-          borderColor: loading
-            ? "var(--color-border)"
-            : online
-              ? "rgba(34,197,94,0.3)"
-              : "rgba(239,68,68,0.3)",
-          background: loading
-            ? "transparent"
-            : online
-              ? "rgba(34,197,94,0.1)"
-              : "rgba(239,68,68,0.1)",
-          color: loading ? "var(--color-text-muted)" : online ? "rgb(34,197,94)" : "rgb(239,68,68)",
-        }}
-      >
-        <span
-          className="inline-block w-2 h-2 rounded-full"
-          style={{
-            background: loading
-              ? "var(--color-text-muted)"
-              : online
-                ? "rgb(34,197,94)"
-                : "rgb(239,68,68)",
-            animation: online ? "pulse 2s infinite" : "none",
-          }}
-        />
+      <Badge variant={loading ? "default" : online ? "success" : "error"} dot>
         {loading ? "..." : online ? t("online") : t("offline")}
-      </div>
+      </Badge>
 
-      <button
-        onClick={onToggle}
+      <Switch
+        checked={enabled}
+        onCheckedChange={onToggle}
         disabled={toggling}
-        className="relative inline-flex items-center h-7 w-[52px] rounded-full transition-all duration-300 focus:outline-none border"
-        style={{
-          background: enabled ? "rgb(34,197,94)" : "var(--color-bg-tertiary)",
-          borderColor: enabled ? "rgba(34,197,94,0.5)" : "var(--color-border)",
-          opacity: toggling ? 0.6 : 1,
-          cursor: toggling ? "wait" : "pointer",
-        }}
+        aria-label={enabled ? t("disableLabel", { label }) : t("enableLabel", { label })}
         title={enabled ? t("disableLabel", { label }) : t("enableLabel", { label })}
-      >
-        <span
-          className="inline-block w-5 h-5 rounded-full shadow-md transition-all duration-300"
-          style={{
-            transform: enabled ? "translateX(26px)" : "translateX(3px)",
-            background: enabled ? "#fff" : "var(--color-text-muted)",
-          }}
-        />
-      </button>
+      />
 
       <span
-        className="text-xs font-medium min-w-[24px]"
-        style={{ color: enabled ? "rgb(34,197,94)" : "var(--color-text-muted)" }}
+        className={cn(
+          "text-xs font-medium min-w-[24px]",
+          enabled ? "text-success" : "text-text-muted"
+        )}
       >
         {toggling ? "..." : enabled ? "ON" : "OFF"}
       </span>
@@ -118,112 +88,61 @@ function TransportSelector({
   };
 
   return (
-    <div
-      className="rounded-lg border p-4"
-      style={{ borderColor: "var(--color-border)", background: "var(--color-bg-secondary)" }}
-    >
-      <div className="flex items-center gap-2 mb-3">
-        <span
-          className="material-symbols-rounded text-base"
-          style={{ color: "var(--color-primary)" }}
-        >
-          swap_horiz
-        </span>
-        <span className="text-sm font-medium" style={{ color: "var(--color-text)" }}>
-          {t("transportMode")}
-        </span>
-      </div>
-
-      <div className="flex gap-2 flex-wrap">
-        {options.map((opt) => (
-          <button
-            key={opt.value}
-            onClick={() => onChange(opt.value)}
-            disabled={disabled}
-            className="flex flex-col items-start px-4 py-2.5 rounded-lg border transition-all duration-200 text-left"
-            style={{
-              borderColor: value === opt.value ? "var(--color-primary)" : "var(--color-border)",
-              background:
-                value === opt.value
-                  ? "rgba(var(--color-primary-rgb, 99,102,241), 0.1)"
-                  : "transparent",
-              opacity: disabled ? 0.5 : 1,
-              cursor: disabled ? "wait" : "pointer",
-            }}
-          >
-            <span
-              className="text-sm font-semibold"
-              style={{
-                color: value === opt.value ? "var(--color-primary)" : "var(--color-text)",
-              }}
-            >
-              {opt.label}
-            </span>
-            <span className="text-xs mt-0.5" style={{ color: "var(--color-text-muted)" }}>
-              {opt.desc}
-            </span>
-          </button>
-        ))}
-      </div>
-
-      <div
-        className="mt-3 rounded-md px-3 py-2 flex items-center gap-2"
-        style={{ background: "var(--color-bg-tertiary)" }}
+    <Card padding="sm" className="bg-bg-subtle">
+      <RadioGroup
+        label={
+          <span className="flex items-center gap-2">
+            <Icon name="swap_horiz" size={16} className="text-primary" />
+            {t("transportMode")}
+          </span>
+        }
+        orientation="horizontal"
+        value={value}
+        onValueChange={(next) => onChange(next as McpTransport)}
+        disabled={disabled}
       >
-        <span
-          className="material-symbols-rounded text-sm"
-          style={{ color: "var(--color-text-muted)" }}
-        >
-          {value === "stdio" ? "terminal" : "link"}
-        </span>
-        <code className="text-xs break-all" style={{ color: "var(--color-text-muted)" }}>
-          {urlMap[value]}
-        </code>
+        {options.map((opt) => (
+          <RadioGroupItem
+            key={opt.value}
+            value={opt.value}
+            card
+            label={opt.label}
+            description={opt.desc}
+          />
+        ))}
+      </RadioGroup>
+
+      <div className="mt-3 rounded-md bg-surface-2 px-3 py-2 flex items-center gap-2">
+        <Icon
+          name={value === "stdio" ? "terminal" : "link"}
+          size={14}
+          className="text-text-muted"
+        />
+        <code className="text-xs break-all text-text-muted">{urlMap[value]}</code>
         {value !== "stdio" && (
-          <button
-            className="ml-auto text-xs px-2 py-0.5 rounded border hover:opacity-80 transition-opacity"
-            style={{ borderColor: "var(--color-border)", color: "var(--color-text-muted)" }}
+          <Button
+            variant="outline"
+            size="sm"
+            className="ml-auto h-6 px-2 text-xs"
             onClick={() => void copyToClipboard(urlMap[value])}
             title={t("mcpDashboardCopyUrl")}
           >
             {t("copy")}
-          </button>
+          </Button>
         )}
       </div>
-    </div>
+    </Card>
   );
 }
 
 function DisabledPanel() {
   const t = useTranslations("mcpDashboard");
   return (
-    <Card className="p-6">
-      <div className="flex items-start gap-3">
-        <div
-          className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-lg"
-          style={{ background: "var(--color-bg-tertiary)" }}
-        >
-          <span
-            aria-hidden="true"
-            className="relative block size-5 rounded-full border-2"
-            style={{ borderColor: "var(--color-text-muted)" }}
-          >
-            <span
-              className="absolute left-1/2 top-[-3px] h-3 w-0.5 -translate-x-1/2 rounded-full"
-              style={{ background: "var(--color-text-muted)" }}
-            />
-          </span>
-        </div>
-        <div>
-          <h2 className="text-base font-semibold" style={{ color: "var(--color-text)" }}>
-            {t("mcpDisabledTitle")}
-          </h2>
-          <p className="text-sm mt-1" style={{ color: "var(--color-text-muted)" }}>
-            {t("mcpDisabledDesc")}
-          </p>
-        </div>
-      </div>
-    </Card>
+    <EmptyState
+      icon="power_settings_new"
+      title={t("mcpDisabledTitle")}
+      description={t("mcpDisabledDesc")}
+    />
   );
 }
 
@@ -318,13 +237,10 @@ export default function McpPage() {
       <Card>
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-sm" style={{ color: "var(--color-text-muted)" }}>
+            <p className="text-sm text-text-muted">
               {t("mcpIntro", { tools: 37, scopes: 13, transports: 3 })}
             </p>
-            <ol
-              className="mt-2 text-sm space-y-0.5 list-decimal list-inside"
-              style={{ color: "var(--color-text-muted)" }}
-            >
+            <ol className="mt-2 text-sm space-y-0.5 list-decimal list-inside text-text-muted">
               <li>
                 {t.rich("mcpStep1", {
                   code: (chunks) => <code className="text-xs">{chunks}</code>,
