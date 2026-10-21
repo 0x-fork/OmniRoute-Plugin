@@ -13316,7 +13316,8 @@
     "colReliabilityHelp": "Tỷ lệ lệnh gọi mà nhà cung cấp này thực sự trả lời trong 24 giờ qua. Dấu gạch ngang nghĩa là lưu lượng quá ít để đưa ra tỷ lệ.",
     "reliabilitySample": "{successes} trong {requests} lệnh gọi thành công trong {hours}h qua",
     "reliabilityTooFew": "Chỉ có {requests} lệnh gọi trong {hours}h qua — quá ít để đưa ra tỷ lệ",
-    "reliabilityNoTraffic": "Không ghi nhận lệnh gọi nào trong 24h qua"
+    "reliabilityNoTraffic": "Không ghi nhận lệnh gọi nào trong 24h qua",
+    "categoryFilter": "Danh mục tác vụ"
   },
   "discovery": {
     "title": "Khám phá nhà cung cấp",

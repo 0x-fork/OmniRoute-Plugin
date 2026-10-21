@@ -13316,7 +13316,8 @@
     "colReliabilityHelp": "Proporção de chamadas que este provedor realmente respondeu nas últimas 24 horas. Um traço significa que ele atendeu a um volume de tráfego insuficiente para determinar uma taxa.",
     "reliabilitySample": "{successes} de {requests} chamadas foram bem-sucedidas nas últimas {hours}h",
     "reliabilityTooFew": "Apenas {requests} chamadas nas últimas {hours}h — muito poucas para determinar uma taxa",
-    "reliabilityNoTraffic": "Nenhuma chamada registrada nas últimas 24h"
+    "reliabilityNoTraffic": "Nenhuma chamada registrada nas últimas 24h",
+    "categoryFilter": "Categoria de tarefa"
   },
   "discovery": {
     "title": "Descoberta de provedores",

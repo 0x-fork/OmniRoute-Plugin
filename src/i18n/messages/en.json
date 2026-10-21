@@ -13316,7 +13316,8 @@
     "colReliabilityHelp": "Share of calls this provider actually answered over the last 24 hours. A dash means it served too little traffic to state a rate.",
     "reliabilitySample": "{successes} of {requests} calls succeeded in the last {hours}h",
     "reliabilityTooFew": "Only {requests} calls in the last {hours}h — too few to state a rate",
-    "reliabilityNoTraffic": "No calls recorded in the last 24h"
+    "reliabilityNoTraffic": "No calls recorded in the last 24h",
+    "categoryFilter": "Task category"
   },
   "discovery": {
     "title": "Provider Discovery",
