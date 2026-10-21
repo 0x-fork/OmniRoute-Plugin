@@ -125,7 +125,7 @@ function DistributionBar({ label, value, meta }: { label: string; value: number;
         <span className="truncate font-medium text-text-main">{label}</span>
         <span className="shrink-0 text-xs text-text-muted">{meta}</span>
       </div>
-      <div className="h-2 overflow-hidden rounded-full bg-surface-2">
+      <div className="h-2 overflow-hidden rounded-full bg-border/60">
         <div className="h-full rounded-full bg-primary transition-all" style={{ width }} />
       </div>
     </div>
@@ -433,7 +433,7 @@ function ComboScoringInspectorPanel({ inspector }: { inspector: ComboScoringInsp
                           +{factor.contribution.toFixed(3)}
                         </span>
                       </div>
-                      <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-surface-2">
+                      <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-border/60">
                         <div
                           className="h-full rounded-full bg-primary"
                           style={{ width: `${Math.max(0, Math.min(100, factor.value * 100))}%` }}
@@ -587,7 +587,7 @@ function ComboHealthCard({
                       ) : null}
                     </div>
                   </div>
-                  <div className="mt-3 h-2 overflow-hidden rounded-full bg-surface-2">
+                  <div className="mt-3 h-2 overflow-hidden rounded-full bg-border/60">
                     <div
                       className="h-full rounded-full bg-primary transition-all"
                       style={{ width }}

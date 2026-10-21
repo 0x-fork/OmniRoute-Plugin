@@ -5,6 +5,7 @@
 import { useState, useEffect, useCallback } from "react";
 
 import { PageHeader, SectionHeader } from "@omniroute/ui-kit/page-header";
+import { Progress } from "@omniroute/ui-kit/progress";
 import Button from "@/shared/components/Button";
 import Icon from "@/shared/components/Icon";
 import { Card } from "@/shared/components";
@@ -52,10 +53,26 @@ const CB_STYLES = {
 };
 
 export default function HealthPage() {
+  return <HealthSnapshot />;
+}
+
+/**
+ * Page frame: the verdict header (once the snapshot has loaded) stays on top, then the queue
+ * card, then the snapshot body. Every HealthSnapshot branch returns this same component, so the
+ * queue card keeps its slot and state (it polls on its own, independently of /api/monitoring/health).
+ */
+function HealthLayout({
+  header,
+  children,
+}: {
+  header?: React.ReactNode;
+  children: React.ReactNode;
+}) {
   return (
     <div className="space-y-6">
+      {header ?? null}
       <ConcurrencyQueuesCard />
-      <HealthSnapshot />
+      {children}
     </div>
   );
 }
@@ -210,26 +227,30 @@ function HealthSnapshot() {
 
   if (!data && !error) {
     return (
-      <div className="flex items-center justify-center min-h-100">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-          <p className="text-text-muted mt-4">{t("loadingHealth")}</p>
+      <HealthLayout>
+        <div className="flex items-center justify-center min-h-100">
+          <div className="text-center">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+            <p className="text-text-muted mt-4">{t("loadingHealth")}</p>
+          </div>
         </div>
-      </div>
+      </HealthLayout>
     );
   }
 
   if (error && !data) {
     return (
-      <div>
-        <div className="bg-error/10 border border-error/30 rounded-xl p-6 text-center">
-          <Icon name="error" size={32} className="text-error mb-2" />
-          <p className="text-error">{t("failedToLoad", { error })}</p>
-          <Button variant="secondary" size="sm" onClick={fetchHealth} className="mt-4">
-            {t("retry")}
-          </Button>
+      <HealthLayout>
+        <div>
+          <div className="bg-error/10 border border-error/30 rounded-xl p-6 text-center">
+            <Icon name="error" size={32} className="text-error mb-2" />
+            <p className="text-error">{t("failedToLoad", { error })}</p>
+            <Button variant="secondary" size="sm" onClick={fetchHealth} className="mt-4">
+              {t("retry")}
+            </Button>
+          </div>
         </div>
-      </div>
+      </HealthLayout>
     );
   }
 
@@ -247,41 +268,42 @@ function HealthSnapshot() {
   const lockoutEntries = Object.entries(lockouts || {});
 
   return (
-    <div className="space-y-6">
-      {/* Verdict Header */}
-      <PageHeader
-        compact
-        title={
-          data.status === "healthy"
-            ? t("healthVerdictReady")
-            : data.status === "cooling"
-              ? t("healthVerdictCoolingDown")
-              : t("healthVerdictActionRequired")
-        }
-        description={t("healthSubtitle")}
-        actions={
-          <>
-            {lastRefresh && (
-              <span className="text-xs text-text-muted">
-                {t("updatedAt", { time: lastRefresh.toLocaleTimeString(locale) })}
-              </span>
-            )}
-            <Button
-              variant="ghost"
-              size="icon"
-              icon="refresh"
-              onClick={() => {
-                fetchHealth();
-                fetchExtras();
-                fetchDbHealth();
-              }}
-              title={tc("refresh")}
-              aria-label={tc("refresh")}
-            />
-          </>
-        }
-      />
-
+    <HealthLayout
+      header={
+        <PageHeader
+          compact
+          title={
+            data.status === "healthy"
+              ? t("healthVerdictReady")
+              : data.status === "cooling"
+                ? t("healthVerdictCoolingDown")
+                : t("healthVerdictActionRequired")
+          }
+          description={t("healthSubtitle")}
+          actions={
+            <>
+              {lastRefresh && (
+                <span className="text-xs text-text-muted">
+                  {t("updatedAt", { time: lastRefresh.toLocaleTimeString(locale) })}
+                </span>
+              )}
+              <Button
+                variant="ghost"
+                size="icon"
+                icon="refresh"
+                onClick={() => {
+                  fetchHealth();
+                  fetchExtras();
+                  fetchDbHealth();
+                }}
+                title={tc("refresh")}
+                aria-label={tc("refresh")}
+              />
+            </>
+          }
+        />
+      }
+    >
       {/* Status Details */}
       <div
         role="status"
@@ -1051,18 +1073,20 @@ function HealthSnapshot() {
                                 })}
                               </span>
                             </div>
-                            <div className="h-2 overflow-hidden rounded-full bg-surface/70">
-                              <div
-                                className={`h-full rounded-full ${
-                                  exhausted
-                                    ? "bg-error"
-                                    : lowRemaining
-                                      ? "bg-warning"
-                                      : "bg-success"
-                                }`}
-                                style={{ width: `${quotaProgress}%` }}
-                              />
-                            </div>
+                            {/* Kit Progress (role=progressbar); the kit has no tone prop, so the
+                                status colour is set on its indicator. */}
+                            <Progress
+                              value={quotaProgress}
+                              animate={false}
+                              aria-label={t("learnedFromHeaders")}
+                              className={
+                                exhausted
+                                  ? "[&_.ci-progress__indicator]:bg-none [&_.ci-progress__indicator]:bg-error"
+                                  : lowRemaining
+                                    ? "[&_.ci-progress__indicator]:bg-none [&_.ci-progress__indicator]:bg-warning"
+                                    : "[&_.ci-progress__indicator]:bg-none [&_.ci-progress__indicator]:bg-success"
+                              }
+                            />
                           </div>
                         )}
                         <div className="flex items-center gap-3 text-[11px] text-text-muted">
@@ -1156,6 +1180,6 @@ function HealthSnapshot() {
           </div>
         </Card>
       )}
-    </div>
+    </HealthLayout>
   );
 }

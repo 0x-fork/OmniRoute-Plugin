@@ -1,11 +1,10 @@
 "use client";
 
+import { useState, useRef, useEffect, useMemo, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import Button from "@/shared/components/Button";
 import Icon from "@/shared/components/Icon";
 import Input from "@/shared/components/Input";
-
-import { useState, useRef, useEffect, useMemo, useCallback } from "react";
-import { useTranslations } from "next-intl";
 
 interface ApiKeyInfo {
   id: string;
@@ -32,6 +31,7 @@ export default function ApiKeyFilterDropdown({
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const ref = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   // Close on click outside
   useEffect(() => {
@@ -49,7 +49,11 @@ export default function ApiKeyFilterDropdown({
   useEffect(() => {
     if (!open) return;
     function handleKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        setOpen(false);
+        // Focus goes back to the trigger (disclosure pattern).
+        triggerRef.current?.focus();
+      }
     }
     document.addEventListener("keydown", handleKey);
     return () => document.removeEventListener("keydown", handleKey);
@@ -98,8 +102,8 @@ export default function ApiKeyFilterDropdown({
         size="sm"
         variant={isAllSelected ? "outline" : "secondary"}
         onClick={() => setOpen((v) => !v)}
+        ref={triggerRef}
         aria-expanded={open}
-        aria-haspopup="menu"
         className={`h-8 min-h-8 gap-1.5 px-3 text-xs ${isAllSelected ? "text-text-muted" : ""}`}
       >
         <Icon name="vpn_key" size={14} />
@@ -128,13 +132,18 @@ export default function ApiKeyFilterDropdown({
             </div>
           )}
 
-          <div role="menu" aria-label={buttonLabel} className="max-h-[280px] overflow-y-auto p-1.5">
+          {/* A disclosure with a group of toggle buttons (aria-pressed), not an ARIA menu: Tab moves
+              through the keys, Escape closes and returns focus to the trigger. */}
+          <div
+            role="group"
+            aria-label={buttonLabel}
+            className="max-h-[280px] overflow-y-auto p-1.5"
+          >
             {/* All Keys option */}
             <Button
               variant="ghost"
               size="sm"
-              role="menuitemcheckbox"
-              aria-checked={isAllSelected}
+              aria-pressed={isAllSelected}
               onClick={selectAll}
               className={`h-auto min-h-0 w-full justify-start gap-2.5 px-2.5 py-2 text-left text-xs ${
                 isAllSelected ? "bg-accent-light font-semibold text-text-main" : "text-text-muted"
@@ -167,8 +176,7 @@ export default function ApiKeyFilterDropdown({
                   key={key.id}
                   variant="ghost"
                   size="sm"
-                  role="menuitemcheckbox"
-                  aria-checked={isChecked}
+                  aria-pressed={isChecked}
                   onClick={() => toggleKey(key.id)}
                   className={`h-auto min-h-0 w-full justify-start gap-2.5 px-2.5 py-2 text-left text-xs ${
                     isChecked ? "text-text-main" : "text-text-muted"
