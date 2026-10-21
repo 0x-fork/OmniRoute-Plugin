@@ -5293,7 +5293,8 @@
         "skipped": "já configurado",
         "failed": "falhou"
       }
-    }
+    },
+    "stepProgress": "Progresso da configuração"
   },
   "providers": {
     "tosAvoidNoticeTitle": "Este provedor é excluído do auto por padrão",

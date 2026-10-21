@@ -5293,7 +5293,8 @@
         "skipped": "already configured",
         "failed": "failed"
       }
-    }
+    },
+    "stepProgress": "Setup progress"
   },
   "providers": {
     "tosAvoidNoticeTitle": "This provider is excluded from auto by default",
