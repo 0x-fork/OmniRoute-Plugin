@@ -1422,7 +1422,7 @@ export default function EvalsTab() {
             return (
               <div key={suite.id} className="border border-border/30 rounded-lg overflow-hidden">
                 <div
-                  className="flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-surface/30 transition-colors"
+                  className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 cursor-pointer hover:bg-surface/30 transition-colors"
                   onClick={() => setExpanded(isExpanded ? null : suite.id)}
                 >
                   <div className="flex items-center gap-3">
@@ -1487,7 +1487,7 @@ export default function EvalsTab() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <Button
                       size="sm"
                       variant="secondary"
@@ -2033,7 +2033,7 @@ function SuiteBuilderModal({
                     {t("suiteBuilderCaseCardHint", { index: index + 1 })}
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <Button
                     size="sm"
                     variant="secondary"
