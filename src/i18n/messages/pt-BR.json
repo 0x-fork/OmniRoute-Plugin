@@ -13384,7 +13384,8 @@
     "ownProxy": "Proxy próprio",
     "freeTierPause": "Modelo {model} pausado (429), volta às {time}",
     "freeTierPauseProvider": "Pausado (429), volta às {time}",
-    "freeTierPauseNote": "Pausa interprocesso nesta instância"
+    "freeTierPauseNote": "Pausa interprocesso nesta instância",
+    "proxyType": "Tipo de proxy"
   },
   "gamification": {
     "leaderboardScopes": {

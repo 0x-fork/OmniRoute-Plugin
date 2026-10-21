@@ -13384,7 +13384,8 @@
     "ownProxy": "Own proxy",
     "freeTierPause": "Model {model} paused (429), back at {time}",
     "freeTierPauseProvider": "Paused (429), back at {time}",
-    "freeTierPauseNote": "In-process pause on this instance"
+    "freeTierPauseNote": "In-process pause on this instance",
+    "proxyType": "Proxy type"
   },
   "gamification": {
     "leaderboardScopes": {

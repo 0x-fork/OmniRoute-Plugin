@@ -261,7 +261,7 @@ describe("ModelSelectModal — Test Selected Providers", () => {
     ) as HTMLButtonElement | null;
     expect(selectWorking, "expected Unselect working after add").not.toBeNull();
     expect(selectWorking!.textContent).toMatch(/Unselect working/i);
-    expect(selectWorking!.className).toMatch(/emerald/);
+    expect(selectWorking!.className).toMatch(/\btext-success\b/);
 
     await act(async () => {
       selectWorking!.click();
