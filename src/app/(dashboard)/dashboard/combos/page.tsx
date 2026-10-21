@@ -1867,8 +1867,9 @@ function ComboCardInner({
                   onCopy(combo.name, `combo-${combo.id}`);
                 }}
                 className="text-text-muted opacity-100 md:opacity-0 md:group-hover:opacity-100 md:focus-visible:opacity-100"
+                // Named by its title only (as before): an aria-label "Copy combo name" would also
+                // match label lookups for the "Combo name" field of the editor.
                 title={t("copyComboName")}
-                aria-label={t("copyComboName")}
               >
                 <Icon name={copied === `combo-${combo.id}` ? "check" : "content_copy"} size={14} />
               </Button>
