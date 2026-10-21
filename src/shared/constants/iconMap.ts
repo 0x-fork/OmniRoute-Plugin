@@ -225,6 +225,8 @@ import {
   Tally3,
   Target,
 } from "lucide-react";
+// Auth, error, status, legal and docs pages (KEA-7886, lote 10).
+import { FolderOpen } from "lucide-react";
 
 /**
  * Material Symbols name → Lucide icon. `null` = still rendered with the Material ligature by
@@ -405,7 +407,7 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   battery_status_good: BatteryFull,
   blur_on: null,
   brush: null,
-  build: null,
+  build: Wrench,
   build_circle: Wrench,
   business: null,
   business_center: null,
@@ -469,7 +471,7 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   flight: null,
   flutter_dash: null,
   folder_off: null,
-  folder_open: null,
+  folder_open: FolderOpen,
   folder_zip: null,
   function: null,
   gate: null,
