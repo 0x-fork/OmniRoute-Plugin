@@ -244,7 +244,7 @@ export default function UsageAnalytics() {
           <Icon name="analytics" size={22} className="text-primary" />
           {t("usageAnalyticsTitle")}
         </h2>
-        <div className="flex items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2.5">
           {/* Token Display Mode Toggle (Compact vs Exact) */}
           <div
             role="radiogroup"
@@ -284,7 +284,7 @@ export default function UsageAnalytics() {
 
           {/* Period Selector + Custom */}
           <div
-            className="relative flex items-center gap-1 bg-surface-2 rounded-lg p-1 border border-border"
+            className="relative flex flex-wrap items-center gap-1 bg-surface-2 rounded-lg p-1 border border-border"
             ref={customPickerAnchorRef}
           >
             {ranges.map((r) => (
