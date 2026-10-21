@@ -252,7 +252,7 @@ export default function FreePoolTab() {
       <DataTableShell
         filterAlignment="end"
         filters={
-          <>
+          <div className="flex w-full flex-wrap items-center gap-3">
             <SourceToggleBar disabledSources={disabledSources} onToggle={handleToggleSource} />
             <Select
               compact
@@ -303,7 +303,7 @@ export default function FreePoolTab() {
                 ? translateOrFallback("syncing", "Syncing...")
                 : translateOrFallback("proxyFreePoolSyncAll", "Sync all")}
             </Button>
-          </>
+          </div>
         }
         pagination={
           totalPages > 1 ? (

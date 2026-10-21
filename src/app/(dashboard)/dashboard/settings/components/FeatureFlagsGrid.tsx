@@ -299,7 +299,7 @@ export default function FeatureFlagsGrid() {
       role="radio"
       aria-checked={descriptionMode === mode}
       onClick={() => setDescriptionMode(mode)}
-      className="h-7 px-2 text-xs"
+      className="h-7 whitespace-nowrap px-2 text-xs"
     >
       {label}
     </Button>

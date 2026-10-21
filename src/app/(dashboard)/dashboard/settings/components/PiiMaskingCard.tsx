@@ -164,9 +164,16 @@ export default function PiiMaskingCard() {
             data?.responseSanitizationEnabled,
           ],
         ].map(([labelKey, flag, on]) => (
-          <Badge key={String(flag)} variant={on ? "success" : "default"} className="gap-1">
-            {t(String(labelKey))}: <code>{String(flag)}</code>{" "}
-            <strong>{on ? tc("enabled") : tc("disabled")}</strong>
+          <Badge
+            key={String(flag)}
+            variant={on ? "success" : "default"}
+            className="h-auto whitespace-normal break-all"
+          >
+            {/* One inline run so the label, flag and state wrap as text at phone width. */}
+            <span>
+              {t(String(labelKey))}: <code>{String(flag)}</code>{" "}
+              <strong>{on ? tc("enabled") : tc("disabled")}</strong>
+            </span>
           </Badge>
         ))}
       </div>

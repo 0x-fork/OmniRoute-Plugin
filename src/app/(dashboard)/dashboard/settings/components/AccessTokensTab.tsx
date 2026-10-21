@@ -66,6 +66,8 @@ export default function AccessTokensTab() {
   const [expires, setExpires] = useState("");
   const [creating, setCreating] = useState(false);
   const [newSecret, setNewSecret] = useState<string | null>(null);
+  // Name + scope of the token just created, shown as the secret preview's header.
+  const [newSecretMeta, setNewSecretMeta] = useState({ name: "", scope: "read" });
 
   const [revokeTarget, setRevokeTarget] = useState<AccessTokenRow | null>(null);
 
@@ -120,6 +122,7 @@ export default function AccessTokensTab() {
         );
         return;
       }
+      setNewSecretMeta({ name: name.trim(), scope });
       setNewSecret(data.token);
       setName("");
       setExpires("");
@@ -210,8 +213,8 @@ export default function AccessTokensTab() {
           <CodePreview
             variant="surface"
             showLineNumbers={false}
-            filename={t("accessTokensTitle")}
-            language={t("accessTokensColPrefix")}
+            filename={newSecretMeta.name || t("accessTokensTitle")}
+            language={scopeLabels[newSecretMeta.scope] || newSecretMeta.scope}
             code={newSecret ?? ""}
             copyLabel={t("accessTokensCopy")}
             copiedLabel={t("accessTokensCopied")}
