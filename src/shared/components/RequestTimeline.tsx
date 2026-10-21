@@ -607,6 +607,7 @@ export default function RequestTimeline({
             onChange={(e) => setSelectedApiKey(e.target.value)}
             aria-label={t("apiKey")}
             compact
+            className="w-auto"
             data-testid="timeline-api-key-filter"
           >
             <option value="">{t("allApiKeys")}</option>
@@ -622,7 +623,7 @@ export default function RequestTimeline({
           {/* Conversation lane-reuse window: how long a lane stays reserved
               for its conversation before falling back to normal packing. */}
           <div
-            className="flex items-center gap-1 text-[11px] text-text-muted"
+            className="flex items-center gap-1 whitespace-nowrap text-[11px] text-text-muted"
             title={t("laneReuseHint")}
           >
             <span aria-hidden="true">{t("laneReuse")}</span>
@@ -639,13 +640,14 @@ export default function RequestTimeline({
                   localStorage.setItem(CONVERSATION_LANE_REUSE_STORAGE_KEY, String(next));
                 } catch {}
               }}
+              className="w-auto min-w-0 shrink-0"
               inputClassName="h-7 min-h-7 w-12 px-1 text-center font-mono text-[11px]"
             />
             <span aria-hidden="true">{t("laneReuseUnit")}</span>
           </div>
           {/* How often the timeline re-polls /api/usage/call-logs for new rows. */}
           <div
-            className="flex items-center gap-1 text-[11px] text-text-muted"
+            className="flex items-center gap-1 whitespace-nowrap text-[11px] text-text-muted"
             title={t("autoRefreshHint")}
           >
             <span aria-hidden="true">{t("autoRefresh")}</span>
@@ -662,6 +664,7 @@ export default function RequestTimeline({
                   localStorage.setItem(TIMELINE_LIST_POLL_STORAGE_KEY, String(next));
                 } catch {}
               }}
+              className="w-auto min-w-0 shrink-0"
               inputClassName="h-7 min-h-7 w-12 px-1 text-center font-mono text-[11px]"
             />
             <span aria-hidden="true">{t("autoRefreshUnit")}</span>

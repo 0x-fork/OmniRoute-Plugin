@@ -1023,6 +1023,7 @@ const RequestLoggerV2 = forwardRef<RequestLoggerV2Handle, RequestLoggerV2Initial
               }}
               title={t("interval.title")}
               aria-label={t("interval.title")}
+              className="w-auto min-w-0"
               inputClassName="h-8 min-h-8 w-14 px-1 text-center text-xs [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
             />
             <Button
@@ -1092,6 +1093,7 @@ const RequestLoggerV2 = forwardRef<RequestLoggerV2Handle, RequestLoggerV2Initial
 
               {/* Provider Dropdown */}
               <Select
+                className="w-auto"
                 value={selectedProvider}
                 onChange={(e) => setSelectedProvider(e.target.value)}
                 aria-label={t("columns.provider")}
@@ -1111,6 +1113,7 @@ const RequestLoggerV2 = forwardRef<RequestLoggerV2Handle, RequestLoggerV2Initial
 
               {/* Model Dropdown */}
               <Select
+                className="w-auto"
                 value={selectedModel}
                 onChange={(e) => setSelectedModel(e.target.value)}
                 aria-label={t("columns.model")}
@@ -1126,6 +1129,7 @@ const RequestLoggerV2 = forwardRef<RequestLoggerV2Handle, RequestLoggerV2Initial
 
               {/* Account Dropdown */}
               <Select
+                className="w-auto"
                 value={selectedAccount}
                 onChange={(e) => setSelectedAccount(e.target.value)}
                 aria-label={t("columns.account")}
@@ -1141,6 +1145,7 @@ const RequestLoggerV2 = forwardRef<RequestLoggerV2Handle, RequestLoggerV2Initial
 
               {/* API Key Dropdown */}
               <Select
+                className="w-auto"
                 value={selectedApiKey}
                 onChange={(e) => setSelectedApiKey(e.target.value)}
                 aria-label={t("columns.apiKey")}
@@ -1156,6 +1161,7 @@ const RequestLoggerV2 = forwardRef<RequestLoggerV2Handle, RequestLoggerV2Initial
 
               {/* Sort Dropdown */}
               <Select
+                className="w-auto"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
                 title={t("sortLogs")}

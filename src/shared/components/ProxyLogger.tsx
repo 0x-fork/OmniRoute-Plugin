@@ -334,6 +334,7 @@ export default function ProxyLogger() {
 
             {/* Type Dropdown */}
             <Select
+              className="w-auto"
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value)}
               aria-label={t("colType")}
@@ -349,6 +350,7 @@ export default function ProxyLogger() {
 
             {/* Level Dropdown */}
             <Select
+              className="w-auto"
               value={selectedLevel}
               onChange={(e) => setSelectedLevel(e.target.value)}
               aria-label={t("colLevel")}
@@ -364,6 +366,7 @@ export default function ProxyLogger() {
 
             {/* Provider Dropdown */}
             <Select
+              className="w-auto"
               value={selectedProvider}
               onChange={(e) => setSelectedProvider(e.target.value)}
               aria-label={t("colProvider")}
@@ -382,6 +385,7 @@ export default function ProxyLogger() {
 
             {/* Sort */}
             <Select
+              className="w-auto"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               aria-label={t("sortLogs")}
