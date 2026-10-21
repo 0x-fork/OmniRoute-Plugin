@@ -1,3 +1,4 @@
+import Icon from "@/shared/components/Icon";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
@@ -21,30 +22,26 @@ export default function PrivacyPage() {
           href="/"
           className="inline-flex items-center gap-1 text-sm text-text-muted hover:text-primary transition-colors mb-8"
         >
-          <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+          <Icon name="arrow_back" size={18} />
           {t("backToHome")}
         </Link>
 
-        <h1 className="text-3xl font-bold mb-2">{t("privacyPolicy")}</h1>
+        <h1 className="ci-heading text-3xl mb-2">{t("privacyPolicy")}</h1>
         <p className="text-sm text-text-muted mb-10">
           {t("lastUpdated", { date: t("policyLastUpdatedDate") })}
         </p>
 
         <div className="space-y-8 text-text-muted leading-relaxed">
           <section>
-            <h2 className="text-lg font-semibold text-text-main mb-3">
-              {t("privacySection1Title")}
-            </h2>
+            <h2 className="ci-heading text-lg mb-3">{t("privacySection1Title")}</h2>
             <p>{t("privacySection1Text")}</p>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-text-main mb-3">
-              {t("privacySection2Title")}
-            </h2>
+            <h2 className="ci-heading text-lg mb-3">{t("privacySection2Title")}</h2>
             <p className="mb-3">
               {t("privacyDataStoredIn")}{" "}
-              <code className="text-primary text-sm">~/.omniroute/storage.sqlite</code>:
+              <code className="font-mono text-sm text-text-main">~/.omniroute/storage.sqlite</code>:
             </p>
             <ul className="list-disc pl-6 space-y-2">
               <li>
@@ -67,16 +64,12 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-text-main mb-3">
-              {t("privacySection3Title")}
-            </h2>
+            <h2 className="ci-heading text-lg mb-3">{t("privacySection3Title")}</h2>
             <p>{t("privacySection3Text")}</p>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-text-main mb-3">
-              {t("privacySection4Title")}
-            </h2>
+            <h2 className="ci-heading text-lg mb-3">{t("privacySection4Title")}</h2>
             <p>{t("privacySection4Text")}</p>
             <ul className="list-disc pl-6 space-y-2 mt-3">
               <li>
@@ -113,16 +106,12 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-text-main mb-3">
-              {t("privacySection5Title")}
-            </h2>
+            <h2 className="ci-heading text-lg mb-3">{t("privacySection5Title")}</h2>
             <p>{t("privacySection5Text")}</p>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-text-main mb-3">
-              {t("privacySection6Title")}
-            </h2>
+            <h2 className="ci-heading text-lg mb-3">{t("privacySection6Title")}</h2>
             <p>{t("privacyLoggingIntro")}</p>
             <ul className="list-disc pl-6 space-y-2 mt-3">
               <li>{t("viewExportAnalytics")}</li>
@@ -133,18 +122,16 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-text-main mb-3">
-              {t("privacySection7Title")}
-            </h2>
+            <h2 className="ci-heading text-lg mb-3">{t("privacySection7Title")}</h2>
             <p>
               {t("privacySection7TextStart")}{" "}
-              <code className="text-primary text-sm">~/.omniroute/</code>{" "}
+              <code className="font-mono text-sm text-text-main">~/.omniroute/</code>{" "}
               {t("privacySection7TextEnd")}
             </p>
           </section>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-white/[0.06] text-sm text-text-muted">
+        <div className="mt-12 pt-8 border-t border-border text-sm text-text-muted">
           <p>
             {t("questionsVisit")}{" "}
             <a
