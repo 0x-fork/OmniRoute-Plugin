@@ -113,10 +113,7 @@ export function AdaptaTutorialModal({ isOpen, onClose }: AdaptaTutorialModalProp
           </li>
         </ol>
 
-        <div
-          className="rounded-lg p-3 text-xs text-text-muted"
-          style={{ backgroundColor: "rgba(110,58,211,0.08)", borderLeft: "3px solid #6E3AD3" }}
-        >
+        <div className="rounded-lg border-l-[3px] border-info bg-info/10 p-3 text-xs text-text-muted">
           <strong>{t("tipLabel")}</strong> {t("tipPrefix")}{" "}
           <code className="font-mono">__client</code> {t("tipSuffix")}
         </div>
