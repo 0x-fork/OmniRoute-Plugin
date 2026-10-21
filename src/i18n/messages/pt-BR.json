@@ -11815,7 +11815,8 @@
       "nextButton": "Próximo",
       "runButton": "Executar",
       "promptPlaceholder": "Digite sua mensagem… (Enter para enviar, Shift+Enter para nova linha)"
-    }
+    },
+    "playgroundTabs": "Modos do playground"
   },
   "miniPlayground": {
     "endpoint": "Endpoint",
