@@ -219,8 +219,13 @@ test("flow surfaces still express state with --orch-status-* tokens, not fixed h
   const engine = read("src/app/(dashboard)/dashboard/compression/studio/nodes/EngineNode.tsx");
   const edges = read("src/shared/components/flow/edgeStyles.ts");
   const badge = read("src/shared/components/TokenHealthBadge.tsx");
-  for (const [name, src] of Object.entries({ combo, engine, edges, badge })) {
+  for (const [name, src] of Object.entries({ combo, engine, edges })) {
     assert.ok(src.includes("var(--orch-status-"), `${name} reads the status tokens`);
+  }
+  // TokenHealthBadge moved onto the kit (KEA-7886, lote 10): its state reads the same kit
+  // status tokens through the semantic utilities (--color-success/warning/error → --ci-*).
+  for (const tone of ["text-success", "text-warning", "text-error"]) {
+    assert.ok(badge.includes(`"${tone}"`), `badge reads the ${tone} status token`);
   }
   // EngineNode keeps the categorical LAYER_COLORS palette (hex by design); its state colors
   // are the tokens above, so the forbidden literal there is the old warning hex.
