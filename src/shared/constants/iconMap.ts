@@ -274,8 +274,18 @@ import {
   Target,
 } from "lucide-react";
 // Cache, runtime, chaos, profile, conversations, webhooks (KEA-7886, lote 8).
-// Gift and Heart are imported by the base blocks above.
-import { ArrowDownToLine, CircleMinus, Flame, Merge, Rss, Shapes, Snowflake } from "lucide-react";
+// ArrowDownToLine, Gift, Heart, LayoutGrid and Medal are imported by the base blocks above.
+import {
+  CircleMinus,
+  Droplet,
+  Flame,
+  Infinity as InfinityIcon,
+  Merge,
+  Rss,
+  Shapes,
+  Snowflake,
+  Swords,
+} from "lucide-react";
 // Lote 9 — tools, system, resilience, rankings, changelog, provider-stats (KEA-7886).
 import {
   BadgePlus,
@@ -452,6 +462,7 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   add_task: ListPlus,
   air: null,
   alarm_add: null,
+  all_inclusive: InfinityIcon,
   alt_route: Split,
   article: FileText,
   assignment: ClipboardList,
@@ -582,6 +593,7 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   manage_history: ClockArrowUp,
   merge: Merge,
   mic: Mic,
+  military_tech: Medal,
   minimize: null,
   model_training: BrainCircuit,
   move_up: null,
@@ -651,6 +663,7 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   support: LifeBuoy,
   swap_horiz: ArrowLeftRight,
   swap_vert: ArrowDownUp,
+  swords: Swords,
   sync: RefreshCw,
   sync_alt: ArrowLeftRight,
   sync_disabled: null,
@@ -688,8 +701,10 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   volunteer_activism: HandHeart,
   vpn_key_off: ShieldOff,
   vpn_lock: GlobeLock,
+  water: Droplet,
   water_drop: null,
   web: AppWindow,
+  widgets: LayoutGrid,
   width_normal: MoveHorizontal,
   wifi: Wifi,
   wifi_off: WifiOff,

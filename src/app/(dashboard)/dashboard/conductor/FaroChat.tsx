@@ -222,9 +222,9 @@ export default function FaroChat() {
           </div>
         )}
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Input
-            className="flex-1"
+            className="min-w-48 flex-1"
             aria-label={t("faroPlaceholder")}
             placeholder={t("faroPlaceholder")}
             value={input}
