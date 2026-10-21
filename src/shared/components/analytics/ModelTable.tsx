@@ -82,7 +82,11 @@ export function ModelTable({ byModel, summary, displayMode = "compact" }: ModelT
           {t("chartModelBreakdown")}
         </h3>
       </div>
-      <Table className="text-sm" scrollbarLabel={t("chartModelBreakdown")}>
+      <Table
+        containerClassName="rounded-none border-0"
+        className="text-sm"
+        scrollbarLabel={t("chartModelBreakdown")}
+      >
         <TableHeader>
           <TableRow>
             {COLUMNS.map((col) => (

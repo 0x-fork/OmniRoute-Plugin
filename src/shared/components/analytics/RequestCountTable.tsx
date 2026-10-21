@@ -46,7 +46,11 @@ export default function RequestCountTable({
   displayMode = "compact",
 }: RequestCountTableProps) {
   return (
-    <Table className="text-sm" scrollbarLabel={requestsLabel}>
+    <Table
+      containerClassName="rounded-none border-0"
+      className="text-sm"
+      scrollbarLabel={requestsLabel}
+    >
       <TableHeader>
         <TableRow>
           <SortableTableHead

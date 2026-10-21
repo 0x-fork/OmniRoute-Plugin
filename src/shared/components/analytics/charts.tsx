@@ -428,7 +428,11 @@ export function ApiKeyTable({
           className="w-full max-w-[220px]"
         />
       </div>
-      <Table className="text-sm" scrollbarLabel={t("chartApiKeyBreakdown")}>
+      <Table
+        containerClassName="rounded-none border-0"
+        className="text-sm"
+        scrollbarLabel={t("chartApiKeyBreakdown")}
+      >
         <TableHeader>
           <TableRow>
             <SortableTableHead
@@ -892,7 +896,11 @@ export function ProviderTable({
           {t("chartProviderBreakdown")}
         </h3>
       </div>
-      <Table className="text-sm" scrollbarLabel={t("chartProviderBreakdown")}>
+      <Table
+        containerClassName="rounded-none border-0"
+        className="text-sm"
+        scrollbarLabel={t("chartProviderBreakdown")}
+      >
         <TableHeader>
           <TableRow>
             <SortableTableHead

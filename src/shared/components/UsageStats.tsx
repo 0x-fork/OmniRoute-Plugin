@@ -331,7 +331,7 @@ export default function UsageStats() {
         <div className="p-4 border-b border-border bg-bg-subtle/50">
           <h3 className="font-semibold">{t("usageByModel")}</h3>
         </div>
-        <Table className="text-sm text-left">
+        <Table containerClassName="rounded-none border-0" className="text-sm text-left">
           <TableHeader>
             <TableRow>
               <SortableTableHead
@@ -517,7 +517,7 @@ export default function UsageStats() {
         <div className="p-4 border-b border-border bg-bg-subtle/50">
           <h3 className="font-semibold">{t("usageByAccount")}</h3>
         </div>
-        <Table className="text-sm text-left">
+        <Table containerClassName="rounded-none border-0" className="text-sm text-left">
           <TableHeader>
             <TableRow>
               <SortableTableHead
