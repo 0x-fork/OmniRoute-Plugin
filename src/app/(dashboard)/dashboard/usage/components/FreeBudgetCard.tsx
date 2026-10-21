@@ -659,14 +659,14 @@ export default function FreeBudgetCard() {
           onChange={(e) => setHideAvoid(e.target.checked)}
           className="text-[11px]"
         />
-        <span className="ml-auto inline-flex items-center gap-1.5">
+        <span className="ml-auto inline-flex min-w-0 max-w-full items-center gap-1.5">
           {t("sort")}
           <Select
             compact
             value={sort}
             onChange={(e) => setSort(e.target.value as FreeBudgetSort)}
             aria-label={t("sort")}
-            className="w-auto"
+            className="w-auto min-w-0"
           >
             <option value="tokens">{t("tokensMonth")}</option>
             <option value="provider">{t("provider")}</option>
