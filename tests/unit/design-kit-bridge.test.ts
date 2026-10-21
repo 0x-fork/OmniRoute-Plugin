@@ -327,3 +327,83 @@ test("cn() still dedupes via tailwind-merge and DataTable paints an opaque surfa
   assert.match(read("src/shared/utils/cn.ts"), /twMerge\(clsx\(/);
   assert.ok(read("src/shared/components/DataTable.tsx").includes("var(--color-surface)"));
 });
+
+test("text-primary resolves to a readable primary ink; lime stays on bg/border/ring (KEA-7886)", () => {
+  // Tailwind 4 resolves `text-*` colors from `--text-color-*` BEFORE `--color-*`
+  // (tailwindcss/dist/lib.js: valueThemeKeys ["--text-color", "--color"]), so this one alias
+  // repaints every `text-primary` (+ hover:/group-hover:/`/80` variants) without touching
+  // `bg-primary`, `border-primary` or `ring-primary`, which keep reading `--color-primary`.
+  const theme = block("@theme inline {");
+  assert.match(theme, /--text-color-primary:\s*var\(--color-primary-ink\);/);
+  assert.match(theme, /--color-primary:\s*var\(--color-primary\);/, "bg/border/ring stay lime");
+  // `--color-accent` is the same lime, so `text-accent` reads the same ink (bg-accent stays lime).
+  assert.match(theme, /--text-color-accent:\s*var\(--color-primary-ink\);/);
+  assert.match(theme, /--color-accent:\s*var\(--color-accent\);/, "bg-accent stays lime");
+
+  const root = block(":root {\n  --desktop-safe-top");
+  const darkRoot = block(':root[data-theme="dark"] {');
+  const inkOf = (scope: string, theme: string) => {
+    const m = /--color-primary-ink:\s*var\((--ci-[\w-]+)\);/.exec(scope);
+    assert.ok(m, `--color-primary-ink is bridged to a --ci-* kit token in ${theme}`);
+    return m[1];
+  };
+  const lightInk = inkOf(root, "light");
+  const darkInk = inkOf(darkRoot, "dark");
+
+  // Resolve through the vendored kit like integration-wiring's "opaque theme colors" test.
+  const kitCss = read("packages/ui-kit/src/ci-tokens.css").replace(/\/\*[\s\S]*?\*\//g, "");
+  const kitBlock = (selector: RegExp) => {
+    const match = selector.exec(kitCss);
+    assert.ok(match, `ci-tokens.css declares ${selector}`);
+    const body = kitCss.slice(match.index + match[0].length, kitCss.indexOf("}", match.index));
+    return new Map([...body.matchAll(/(--[\w-]+):\s*([^;]+);/g)].map((m) => [m[1], m[2].trim()]));
+  };
+  const light = kitBlock(/^:root,\s*\.ci-theme\s*\{/m);
+  const dark = kitBlock(/^:root\[data-theme="dark"\][^{]*\{/m);
+  const resolve = (token: string, scopes: Map<string, string>[]) => {
+    let value = `var(${token})`;
+    for (let hops = 0; hops < 10; hops++) {
+      const ref = /^var\((--[\w-]+)\)$/.exec(value);
+      if (!ref) {
+        assert.match(value, /^#[0-9a-f]{6}$/i, `${token} resolves to a 6-digit hex`);
+        return value;
+      }
+      const next = scopes.map((scope) => scope.get(ref[1])).find((v) => v !== undefined);
+      assert.ok(next, `${ref[1]} is declared in ci-tokens.css`);
+      value = next;
+    }
+    return assert.fail(`${token} does not resolve to a literal colour`);
+  };
+  const luminance = (hex: string) => {
+    const [r, g, b] = [1, 3, 5]
+      .map((i) => parseInt(hex.slice(i, i + 2), 16) / 255)
+      .map((c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  const contrast = (a: string, b: string) => {
+    const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+    return (hi + 0.05) / (lo + 0.05);
+  };
+
+  const lightBg = resolve("--ci-color-background", [light]);
+  const darkBg = resolve("--ci-color-background", [dark, light]);
+  const lightRatio = contrast(resolve(lightInk, [light]), lightBg);
+  const darkRatio = contrast(resolve(darkInk, [dark, light]), darkBg);
+  assert.ok(
+    lightRatio >= 4.5,
+    `light ink ${lightInk} on the background: ${lightRatio.toFixed(2)}:1`
+  );
+  assert.ok(darkRatio >= 4.5, `dark ink ${darkInk} on the background: ${darkRatio.toFixed(2)}:1`);
+
+  // --color-primary itself is still the lime accent (the surface that carries dark ink).
+  assert.ok(root.includes("--color-primary: var(--ci-color-accent);"));
+  assert.ok(root.includes("--color-accent: var(--ci-color-accent);"), "accent is the same lime");
+  assert.equal(resolve("--ci-color-accent", [light]), resolve("--ci-lime-400", [light]));
+  assert.ok(
+    contrast(resolve("--ci-color-accent", [light]), lightBg) < 4.5,
+    "sanity: lime itself is unreadable as text on light — the reason for the ink"
+  );
+
+  // The inline ::selection rule colours TEXT, so it reads the ink too.
+  assert.match(css, /::selection \{[^}]*\n\s*color: var\(--color-primary-ink\);/);
+});
