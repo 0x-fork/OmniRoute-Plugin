@@ -764,7 +764,9 @@ export default function RequestTimeline({
               onMouseLeave={handleBarLeave}
             >
               <div className="w-full h-full flex items-center px-1.5 overflow-hidden">
-                <span className="text-[11px] font-mono text-white/90 truncate whitespace-nowrap">
+                {/* text-bg inverts with the theme: light ink on the deep light-mode fills, dark ink
+                    on the pastel dark-mode fills (white on the pastels is ~1.5:1). */}
+                <span className="text-[11px] font-mono text-bg truncate whitespace-nowrap">
                   {truncateModel(log.model)}
                 </span>
               </div>
@@ -823,7 +825,7 @@ export default function RequestTimeline({
           }}
         >
           <div className="w-px h-full bg-error shadow-[0_0_8px_var(--color-error)] -translate-x-1/2" />
-          <div className="absolute top-[2px] -translate-x-1/2 bg-error text-white text-[8px] font-mono px-1.5 py-0.5 rounded-b-sm font-bold tracking-wider">
+          <div className="absolute top-[2px] -translate-x-1/2 bg-error text-bg text-[8px] font-mono px-1.5 py-0.5 rounded-b-sm font-bold tracking-wider">
             NOW
           </div>
         </div>

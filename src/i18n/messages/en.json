@@ -12096,6 +12096,7 @@
       "goToBottom": "Go to bottom",
       "liveRefreshOn": "Live refresh: on",
       "liveRefreshOff": "Live refresh: off",
+      "liveRefresh": "Live refresh",
       "continuesFromParent": "continues from parent",
       "continuesFrom": "Continues from {id}",
       "viewConversation": "view conversation",

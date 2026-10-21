@@ -3,6 +3,7 @@
 // Direct module import: tests stub the barrel Button with a reduced prop set.
 import IconButton from "@/shared/components/Button";
 import Icon from "@/shared/components/Icon";
+import { cn } from "@/shared/utils/cn";
 
 import { useState, useCallback, useEffect, useMemo } from "react";
 import { useTranslations } from "next-intl";
@@ -296,16 +297,19 @@ export default function RawJsonPanel({
               <div className="p-4 flex flex-col sm:flex-row items-center gap-4">
                 {/* Source Format */}
                 <div className="flex-1 w-full">
-                  <label className="block text-xs font-medium text-text-muted mb-1.5 uppercase tracking-wider">
-                    {tr("source", "Source")}
-                  </label>
-                  <div className="flex items-center gap-2">
+                  {/* The label lives on the Select (associated with the kit trigger); the format
+                      icon and the auto badge sit beside the control, aligned to its baseline. */}
+                  <div className="flex items-end gap-2">
                     <Icon
                       name={srcMeta.icon}
                       size={20}
-                      className={FORMAT_ACCENT_CLASS[srcMeta.color] ?? "text-text-muted"}
+                      className={cn(
+                        "mb-2 shrink-0",
+                        FORMAT_ACCENT_CLASS[srcMeta.color] ?? "text-text-muted"
+                      )}
                     />
                     <Select
+                      label={tr("source", "Source")}
                       value={sourceFormat}
                       onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                         setSourceFormat(e.target.value);
@@ -315,7 +319,7 @@ export default function RawJsonPanel({
                       className="flex-1"
                     />
                     {detectedFormat && (
-                      <Badge variant="primary" size="sm" icon="auto_awesome">
+                      <Badge variant="primary" size="sm" icon="auto_awesome" className="mb-2">
                         {tr("auto", "auto")}
                       </Badge>
                     )}
@@ -336,16 +340,17 @@ export default function RawJsonPanel({
 
                 {/* Target Format */}
                 <div className="flex-1 w-full">
-                  <label className="block text-xs font-medium text-text-muted mb-1.5 uppercase tracking-wider">
-                    {tr("target", "Target")}
-                  </label>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-end gap-2">
                     <Icon
                       name={tgtMeta.icon}
                       size={20}
-                      className={FORMAT_ACCENT_CLASS[tgtMeta.color] ?? "text-text-muted"}
+                      className={cn(
+                        "mb-2 shrink-0",
+                        FORMAT_ACCENT_CLASS[tgtMeta.color] ?? "text-text-muted"
+                      )}
                     />
                     <Select
+                      label={tr("target", "Target")}
                       value={targetFormat}
                       onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                         setTargetFormat(e.target.value)

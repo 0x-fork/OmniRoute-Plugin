@@ -12096,6 +12096,7 @@
       "goToBottom": "Ir para o fim",
       "liveRefreshOn": "Atualização ao vivo: ligada",
       "liveRefreshOff": "Atualização ao vivo: desligada",
+      "liveRefresh": "Atualização ao vivo",
       "continuesFromParent": "continua da requisição pai",
       "continuesFrom": "Continua de {id}",
       "viewConversation": "ver conversa",

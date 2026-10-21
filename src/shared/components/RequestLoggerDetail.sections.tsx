@@ -360,7 +360,9 @@ export function ConversationContextSection({ log, detail }) {
                 size="icon-sm"
                 onClick={toggleLiveRefresh}
                 title={liveRefresh ? t("liveRefreshOn") : t("liveRefreshOff")}
-                aria-label={liveRefresh ? t("liveRefreshOn") : t("liveRefreshOff")}
+                // Static name + aria-pressed carries the on/off state ("Live refresh, pressed");
+                // the stateful wording stays in the tooltip.
+                aria-label={t("liveRefresh")}
                 className={cn("size-7 min-h-7", liveRefresh ? "text-primary" : "text-text-muted")}
                 aria-pressed={liveRefresh}
               >

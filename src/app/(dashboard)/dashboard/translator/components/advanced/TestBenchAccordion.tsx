@@ -231,10 +231,8 @@ function TestBenchContent() {
         <div className="p-4 flex flex-col gap-4">
           <div className="flex flex-col sm:flex-row items-end gap-4 min-w-0">
             <div className="flex-1 w-full">
-              <label className="block text-xs font-medium text-text-muted mb-1.5 uppercase tracking-wider">
-                {t("source")}
-              </label>
               <Select
+                label={t("source")}
                 value={sourceFormat}
                 onChange={(e) => {
                   setSourceFormat(e.target.value);
@@ -247,10 +245,8 @@ function TestBenchContent() {
               <Icon name="arrow_forward" size={22} className="text-text-muted" />
             </div>
             <div className="flex-1 w-full">
-              <label className="block text-xs font-medium text-text-muted mb-1.5 uppercase tracking-wider">
-                {t("targetProvider")}
-              </label>
               <Select
+                label={t("targetProvider")}
                 value={provider}
                 onChange={(e) => {
                   setProvider(e.target.value);

@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import React, { act } from "react";
 import { createRoot } from "react-dom/client";
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from "vitest";
 
 const containers: HTMLElement[] = [];
 const roots: Array<{ unmount: () => void }> = [];
@@ -92,6 +92,13 @@ function setupFetchMock() {
   return calls;
 }
 
+// Warm the page module once, outside the 5 s per-test budget: the first cold transform of the
+// page (Hub + dnd-kit editor + kit modules, KEA-7886) can take several seconds on a loaded
+// runner. Assertions are unchanged.
+beforeAll(async () => {
+  await import("../../../src/app/(dashboard)/dashboard/context/combos/CompressionCombosPageClient");
+}, 60_000);
+
 describe("CompressionCombosPageClient — routing-combo compression mode selector (#6760)", () => {
   async function render() {
     const { default: CompressionCombosPageClient } =
@@ -104,29 +111,23 @@ describe("CompressionCombosPageClient — routing-combo compression mode selecto
     return container;
   }
 
-  // The first test pays the cold dynamic import of the page (Hub + dnd-kit editor + kit
-  // modules, KEA-7886), which can exceed the 5 s default on a loaded runner.
-  it(
-    "renders a compression-mode select per routing combo, hydrated from combo.config",
-    { timeout: 20000 },
-    async () => {
-      setupFetchMock();
-      const container = await render();
-      expect(container.textContent).toContain("Routing Alpha");
-      expect(container.textContent).toContain("Routing Bravo");
-      const selects = Array.from(container.querySelectorAll("select")) as HTMLSelectElement[];
-      // one per routing combo (2) — the shared ComboCompressionModeSelect renders exactly
-      // the 7-option Default/Off/Lite/Standard/Aggressive/Ultra/Responses-tool-output set
-      // (#8010 added "codex-responses", unrelated to this file's original #6760 scope).
-      const modeSelects = selects.filter((s) => {
-        const values = Array.from(s.options).map((o) => o.value);
-        return values.join(",") === ",off,lite,standard,aggressive,ultra,codex-responses";
-      });
-      expect(modeSelects).toHaveLength(2);
-      expect(modeSelects[0].value).toBe("lite");
-      expect(modeSelects[1].value).toBe("");
-    }
-  );
+  it("renders a compression-mode select per routing combo, hydrated from combo.config", async () => {
+    setupFetchMock();
+    const container = await render();
+    expect(container.textContent).toContain("Routing Alpha");
+    expect(container.textContent).toContain("Routing Bravo");
+    const selects = Array.from(container.querySelectorAll("select")) as HTMLSelectElement[];
+    // one per routing combo (2) — the shared ComboCompressionModeSelect renders exactly
+    // the 7-option Default/Off/Lite/Standard/Aggressive/Ultra/Responses-tool-output set
+    // (#8010 added "codex-responses", unrelated to this file's original #6760 scope).
+    const modeSelects = selects.filter((s) => {
+      const values = Array.from(s.options).map((o) => o.value);
+      return values.join(",") === ",off,lite,standard,aggressive,ultra,codex-responses";
+    });
+    expect(modeSelects).toHaveLength(2);
+    expect(modeSelects[0].value).toBe("lite");
+    expect(modeSelects[1].value).toBe("");
+  });
 
   it("changing the routing combo's selector PUTs /api/combos/{id} independently of the assignment checkbox", async () => {
     const calls = setupFetchMock();

@@ -11,6 +11,7 @@ import Icon from "./Icon";
 import Input from "./Input";
 import { Skeleton } from "./Loading";
 import Select from "./Select";
+import Toggle from "./Toggle";
 import { matchesOnlyPaidModels } from "@/shared/utils/freeModels";
 
 export interface ModelMapping {
@@ -289,20 +290,17 @@ export default function ModelRoutingSection({ combos: externalCombos }: { combos
                 </Badge>
               </div>
               <div className="flex shrink-0 items-center gap-1">
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  onClick={() => handleToggle(m)}
+                {/* A switch with a static name ("Enabled") — the on/off state is its checked
+                    state, not part of the label (an action label + aria-pressed read as
+                    "Disable, pressed"). */}
+                <Toggle
+                  size="sm"
+                  checked={m.enabled}
+                  onChange={() => handleToggle(m)}
+                  ariaLabel={t("enabled")}
                   title={m.enabled ? t("disable") : t("enable")}
-                  aria-label={m.enabled ? t("disable") : t("enable")}
-                  aria-pressed={m.enabled}
-                >
-                  <Icon
-                    name={m.enabled ? "toggle_on" : "toggle_off"}
-                    size={16}
-                    className={m.enabled ? "text-success" : "text-text-muted"}
-                  />
-                </Button>
+                  className="mx-1"
+                />
                 <Button
                   variant="ghost"
                   size="icon-sm"

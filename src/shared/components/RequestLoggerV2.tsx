@@ -27,6 +27,7 @@ import { TableLoadingState } from "@omniroute/ui-kit/table-loading";
 import { cn } from "@/shared/utils/cn";
 import Badge from "./Badge";
 import Button from "./Button";
+import ColumnToggle from "./ColumnToggle";
 import EmptyState from "./EmptyState";
 import Input from "./Input";
 import Select from "./Select";
@@ -119,6 +120,7 @@ const RequestLoggerV2 = forwardRef<RequestLoggerV2Handle, RequestLoggerV2Initial
     const { initialSelectedId, initialCorrelationId } = props;
     const t = useTranslations("requestLogger");
     const tCache = useTranslations("cache");
+    const tCommon = useTranslations("common");
     const { emailsVisible } = useEmailPrivacyStore();
 
     // Get translated status filters
@@ -1179,11 +1181,18 @@ const RequestLoggerV2 = forwardRef<RequestLoggerV2Handle, RequestLoggerV2Initial
                 <option value="model_asc">{t("sortModelAsc")}</option>
                 <option value="model_desc">{t("sortModelDesc")}</option>
               </Select>
+
+              {/* Column visibility — kit DropdownMenu checkbox items via the adapter. */}
+              <ColumnToggle columns={columns} visible={visibleColumns} onToggle={toggleColumn} />
             </>
           }
         >
           {/* Quick Filters */}
-          <div className="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2.5">
+          <div
+            role="group"
+            aria-label={tCommon("filters")}
+            className="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2.5"
+          >
             {/* Status Filters */}
             {statusFilters.map((f) => (
               <Button
@@ -1248,30 +1257,6 @@ const RequestLoggerV2 = forwardRef<RequestLoggerV2Handle, RequestLoggerV2Initial
                 </Button>
               );
             })}
-          </div>
-
-          {/* Column Visibility Toggles */}
-          <div className="flex flex-wrap items-center gap-1.5 border-b border-border px-3 py-2">
-            <span className="mr-1 text-[10px] uppercase tracking-wider text-text-muted">
-              {t("columnsLabel")}
-            </span>
-            {columns.map((col) => (
-              <Button
-                key={col.key}
-                variant="outline"
-                size="sm"
-                aria-pressed={!!visibleColumns[col.key]}
-                onClick={() => toggleColumn(col.key)}
-                className={cn(
-                  "h-6 min-h-6 px-2 text-[10px]",
-                  visibleColumns[col.key]
-                    ? "bg-primary/15 text-primary border-primary/30"
-                    : "text-text-muted opacity-60 hover:opacity-90"
-                )}
-              >
-                {col.label}
-              </Button>
-            ))}
           </div>
 
           {/* Table */}

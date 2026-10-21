@@ -17,6 +17,7 @@ import { TableLoadingState } from "@omniroute/ui-kit/table-loading";
 import { cn } from "@/shared/utils/cn";
 import Badge from "./Badge";
 import Button from "./Button";
+import ColumnToggle from "./ColumnToggle";
 import EmptyState from "./EmptyState";
 import Input from "./Input";
 import Select from "./Select";
@@ -73,6 +74,7 @@ const DEFAULT_VISIBLE = Object.fromEntries(PROXY_COLUMN_KEYS.map((key) => [key, 
 
 export default function ProxyLogger() {
   const t = useTranslations("proxyLogger");
+  const tCommon = useTranslations("common");
   const { emailsVisible } = useEmailPrivacyStore();
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -396,11 +398,18 @@ export default function ProxyLogger() {
               <option value="latency_desc">{t("latencyDesc")}</option>
               <option value="latency_asc">{t("latencyAsc")}</option>
             </Select>
+
+            {/* Column visibility — kit DropdownMenu checkbox items via the adapter. */}
+            <ColumnToggle columns={columns} visible={visibleColumns} onToggle={toggleColumn} />
           </>
         }
       >
         {/* Quick Filters */}
-        <div className="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2.5">
+        <div
+          role="group"
+          aria-label={tCommon("filters")}
+          className="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2.5"
+        >
           {statusFilters.map((f) => (
             <Button
               key={f.key}
@@ -485,30 +494,6 @@ export default function ProxyLogger() {
               </Button>
             );
           })}
-        </div>
-
-        {/* Column Visibility Toggles */}
-        <div className="flex flex-wrap items-center gap-1.5 border-b border-border px-3 py-2">
-          <span className="mr-1 text-[10px] uppercase tracking-wider text-text-muted">
-            {t("columns")}
-          </span>
-          {columns.map((col) => (
-            <Button
-              key={col.key}
-              variant="outline"
-              size="sm"
-              aria-pressed={!!visibleColumns[col.key]}
-              onClick={() => toggleColumn(col.key)}
-              className={cn(
-                "h-6 min-h-6 px-2 text-[10px]",
-                visibleColumns[col.key]
-                  ? "bg-primary/15 text-primary border-primary/30"
-                  : "text-text-muted opacity-60 hover:opacity-90"
-              )}
-            >
-              {col.label}
-            </Button>
-          ))}
         </div>
 
         {/* Table */}

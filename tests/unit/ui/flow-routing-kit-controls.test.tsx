@@ -9,7 +9,7 @@ import React from "react";
 import axe from "axe-core";
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import ReorderControl from "@/shared/components/ReorderControl";
 import RoutingEntryLink from "@/shared/components/routing/RoutingEntryLink";
 import ModelRoutingSection from "@/shared/components/ModelRoutingSection";
@@ -41,6 +41,15 @@ async function runAxe(root: HTMLElement) {
     rules: { "color-contrast": { enabled: false } },
   });
 }
+
+// Warm the kit render path and axe once, outside the 5 s per-test budget: the first cold
+// render (NextIntl provider + kit Button) and axe's first run can take several seconds on a
+// loaded runner, which made whichever test ran first time out. Assertions are unchanged.
+beforeAll(async () => {
+  wrap(<ReorderControl onMoveUp={() => {}} onMoveDown={() => {}} upLabel="Up" downLabel="Down" />);
+  await runAxe(document.body);
+  cleanup();
+}, 60_000);
 
 describe("ReorderControl", () => {
   it("renders two named kit buttons and disables the edge one", () => {
@@ -99,5 +108,53 @@ describe("ModelRoutingSection", () => {
     expect((screen.getByRole("button", { name: s.save }) as HTMLButtonElement).disabled).toBe(
       false
     );
+  });
+
+  it("toggles a rule through a named kit switch, not an action label with aria-pressed", async () => {
+    const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url === "/api/model-combo-mappings/m1" && init?.method === "PUT") {
+        return Response.json({ ok: true });
+      }
+      if (url.startsWith("/api/model-combo-mappings")) {
+        return Response.json({
+          mappings: [
+            {
+              id: "m1",
+              pattern: "claude-*",
+              comboId: "c1",
+              comboName: "Fast",
+              priority: 1,
+              enabled: true,
+            },
+          ],
+        });
+      }
+      if (url.startsWith("/api/settings")) return Response.json({});
+      return Response.json({ combos: [] });
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const s = messages.settings;
+    wrap(<ModelRoutingSection combos={[{ id: "c1", name: "Fast" }]} />);
+
+    const toggle = (await screen.findByRole("switch", { name: s.enabled })) as HTMLInputElement;
+    expect(toggle.checked).toBe(true);
+    expect(toggle.hasAttribute("aria-pressed")).toBe(false);
+    expect(screen.queryByRole("button", { name: s.disable })).toBeNull();
+
+    await act(async () => {
+      fireEvent.click(toggle);
+    });
+    const put = fetchMock.mock.calls.find(
+      ([url, init]) => String(url) === "/api/model-combo-mappings/m1" && init?.method === "PUT"
+    );
+    expect(put).toBeTruthy();
+    expect(JSON.parse(String(put?.[1]?.body))).toEqual({ enabled: false });
+    expect(
+      ((await screen.findByRole("switch", { name: s.enabled })) as HTMLInputElement).checked
+    ).toBe(false);
+
+    const results = await runAxe(document.body);
+    expect(results.violations.map((v) => v.id)).toEqual([]);
   });
 });

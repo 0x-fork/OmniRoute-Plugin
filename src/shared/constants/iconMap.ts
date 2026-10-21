@@ -414,6 +414,7 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   psychology: Brain,
   radar: Radar,
   request_quote: Receipt,
+  robot: Bot,
   route: Route,
   route_off: RouteOff,
   savings: Coins,
@@ -554,6 +555,7 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   insert_drive_file: File,
   install_desktop: MonitorDown,
   inventory_2: null,
+  // Lucide has no key-off glyph; KeyRound is the closest key icon (the "no key" meaning comes from the label).
   key_off: KeyRound,
   key_vertical: KeyRound,
   keyboard_arrow_down: ChevronDown,
@@ -689,7 +691,6 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   width_normal: MoveHorizontal,
   wifi: Wifi,
   wifi_off: WifiOff,
-  robot: Bot,
   workspace_premium: Award,
 };
 

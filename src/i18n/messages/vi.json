@@ -12096,6 +12096,7 @@
       "goToBottom": "Xuống cuối",
       "liveRefreshOn": "Làm mới trực tiếp: bật",
       "liveRefreshOff": "Làm mới trực tiếp: tắt",
+      "liveRefresh": "Làm mới trực tiếp",
       "continuesFromParent": "tiếp nối từ yêu cầu cha",
       "continuesFrom": "Tiếp nối từ {id}",
       "viewConversation": "xem hội thoại",

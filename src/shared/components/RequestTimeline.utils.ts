@@ -101,8 +101,12 @@ export function getStatusColor(status: number, active: boolean | undefined): str
   return TIMELINE_BAR_COLORS.other;
 }
 
-/** Categorical chart green, distinct from the 2xx success tone used for LLM bars. */
-export const MCP_BAR_COLOR = "var(--color-chart-4)";
+/**
+ * Categorical chart blue for MCP rows. Not chart-4: the kit's chart-4 is the success green in
+ * both themes, which made MCP bars identical to 2xx LLM bars. chart-2 is unused by the other
+ * timeline categories.
+ */
+export const MCP_BAR_COLOR = "var(--color-chart-2)";
 
 export function getTimelineBarColor(log: TimelineLog): string {
   if (log.kind === "mcp" && (log.status || 0) < 400) return MCP_BAR_COLOR;

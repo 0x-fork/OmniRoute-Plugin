@@ -44,6 +44,15 @@ async function runAxe(root: HTMLElement) {
   });
 }
 
+// Warm the kit render path and axe once, outside the 5 s per-test budget: the first cold
+// render (NextIntl provider + kit Button/Badge) and axe's first run can take several seconds on
+// a loaded runner, which made whichever test ran first time out. Assertions are unchanged.
+beforeAll(async () => {
+  wrap(<JsonTreeExpandControls sectionId="lote6-warmup" />);
+  await runAxe(document.body);
+  cleanup();
+}, 60_000);
+
 const detail = messages.requestLogger.detail;
 
 describe("JsonTreeExpandControls", () => {

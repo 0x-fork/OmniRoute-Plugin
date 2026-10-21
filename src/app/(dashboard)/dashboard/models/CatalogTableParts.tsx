@@ -4,11 +4,10 @@ import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { DataTableFooter } from "@omniroute/ui-kit/data-table-shell";
 import { TableCell, TableHead } from "@omniroute/ui-kit/table";
-import { Checkbox as KitCheckbox } from "@omniroute/ui-kit/checkbox";
 import { Button, Checkbox } from "@/shared/components";
 
-// Cells and footer shared by the model and combo catalog tables (kit Table cells, kit
-// Checkbox, kit DataTableFooter).
+// Cells and footer shared by the model and combo catalog tables (kit Table cells, Checkbox
+// adapter, kit DataTableFooter).
 
 /** A column heading without sorting. */
 export function PlainHeading({ children }: { children: ReactNode }) {
@@ -43,8 +42,9 @@ export function SelectAllHeaderCell({
 }) {
   return (
     <TableHead scope="col" className="w-10 px-4">
-      {/* The kit prop, not a ref callback: the kit effect would overwrite a ref-set value. */}
-      <KitCheckbox
+      {/* The adapter forwards `indeterminate` as the kit prop (not a ref callback: the kit
+          effect would overwrite a ref-set value). */}
+      <Checkbox
         checked={checked}
         indeterminate={indeterminate}
         onChange={onToggle}

@@ -218,7 +218,6 @@ export default function MonitorTab({ onGoToTranslate }: MonitorTabProps) {
               variant="ghost"
               size="sm"
               onClick={() => setAutoRefresh((prev) => !prev)}
-              aria-pressed={autoRefresh}
               aria-label={
                 autoRefresh
                   ? translateOrFallback("pauseAutoRefresh", "Pause auto-refresh")
