@@ -131,6 +131,8 @@ export default function ResilienceConnectionsClient() {
 
   const errorBanner = pollError ? (
     <Alert
+      // Re-keyed on the stop reason: a dismissed banner re-appears when the state changes.
+      key={stopReason}
       variant="critical"
       dismissLabel={tc("close")}
       description={
@@ -178,6 +180,7 @@ export default function ResilienceConnectionsClient() {
       </div>
       {data.meta.degraded.length > 0 && (
         <Alert
+          key={data.meta.degraded.join(",")}
           variant="warning"
           dismissLabel={tc("close")}
           description={t("degraded.message", {

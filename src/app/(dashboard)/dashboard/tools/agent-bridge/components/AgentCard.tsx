@@ -7,8 +7,8 @@ import { buttonVariants } from "@omniroute/ui-kit/button";
 import Badge from "@/shared/components/Badge";
 import Button from "@/shared/components/Button";
 import Card from "@/shared/components/Card";
+import Collapsible from "@/shared/components/Collapsible";
 import Icon from "@/shared/components/Icon";
-import { AgentIcon } from "./shared/AgentIcon";
 import { DnsStatusBadge } from "./shared/DnsStatusBadge";
 import { ModelMappingTable } from "./ModelMappingTable";
 import { SetupWizard } from "./SetupWizard";
@@ -53,7 +53,6 @@ export function AgentCard({
 }: AgentCardProps) {
   const t = useTranslations("agentBridge");
   const tc = useTranslations("common");
-  const [expanded, setExpanded] = useState(false);
   const [wizardOpen, setWizardOpen] = useState(false);
   const [dnsLoading, setDnsLoading] = useState(false);
   const [riskModalOpen, setRiskModalOpen] = useState(false);
@@ -143,39 +142,28 @@ export function AgentCard({
         // The agent's brand colour (target registry data) marks the card edge.
         style={{ borderLeftWidth: 3, borderLeftColor: target.color }}
       >
-        {/* Card header — a full-width two-line disclosure row (icon, name, hosts, badges); the
-            kit Button is a fixed-height centred pill, so this stays a native token-styled button. */}
-        <button
-          type="button"
-          className="focus-ring flex w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors hover:bg-bg-subtle"
-          onClick={() => setExpanded((v) => !v)}
-          aria-expanded={expanded}
+        {/* Card header: the Collapsible adapter (kit Accordion) owns the single native trigger
+            (aria-expanded); the status badges sit outside it as `trailing`. */}
+        <Collapsible
+          variant="inline"
+          className="px-4 py-1"
+          icon={target.icon}
+          title={target.name}
+          subtitle={
+            <>
+              {target.hosts.slice(0, 2).join(", ")}
+              {target.hosts.length > 2 && ` +${target.hosts.length - 2}`}
+            </>
+          }
+          trailing={
+            <>
+              {getStatusBadge()}
+              <DnsStatusBadge enabled={dnsEnabled} />
+            </>
+          }
         >
-          <div className="flex items-center gap-3 min-w-0">
-            <AgentIcon icon={target.icon} color={target.color} size={18} />
-            <div className="min-w-0">
-              <p className="text-sm font-medium text-text-main truncate">{target.name}</p>
-              <p className="text-xs text-text-muted truncate">
-                {target.hosts.slice(0, 2).join(", ")}
-                {target.hosts.length > 2 && ` +${target.hosts.length - 2}`}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 shrink-0">
-            {getStatusBadge()}
-            <DnsStatusBadge enabled={dnsEnabled} />
-            <Icon
-              name={expanded ? "expand_less" : "expand_more"}
-              size={16}
-              className="text-text-muted"
-            />
-          </div>
-        </button>
-
-        {/* Expanded content */}
-        {expanded && (
-          <div className="flex flex-col gap-4 border-t border-border px-4 pt-4 pb-4">
+          {/* Expanded content */}
+          <div className="flex flex-col gap-4 border-t border-border pt-4 pb-4">
             {/* Hosts */}
             <div>
               <p className="text-xs font-medium text-text-muted mb-1.5">
@@ -321,7 +309,7 @@ export function AgentCard({
                 ))}
             </div>
           </div>
-        )}
+        </Collapsible>
       </Card>
 
       {wizardOpen && (

@@ -211,7 +211,7 @@ export function SetupWizard({
             <span
               className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-medium ${
                 i < stepIndex
-                  ? "bg-success text-white"
+                  ? "border border-success/40 bg-success-bg text-success"
                   : i === stepIndex
                     ? "bg-primary text-accent-foreground"
                     : "border border-border bg-bg-subtle text-text-muted"

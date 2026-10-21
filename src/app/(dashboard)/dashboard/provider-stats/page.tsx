@@ -171,19 +171,52 @@ export default function ProviderStatsPage() {
     );
   }
 
+  // Header (title + refresh) is shared by the error-only state and the data view, so a
+  // dismissed error never leaves a blank page.
+  const pageHeader = (
+    <PageHeader
+      compact
+      title={t("title")}
+      description={t("description")}
+      actions={
+        <div className="flex items-center gap-3">
+          {lastRefresh && (
+            <span className="text-xs text-text-muted">
+              {t("updated", { time: lastRefresh.toLocaleTimeString() })}
+            </span>
+          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            icon="refresh"
+            onClick={fetchData}
+            title={t("refresh")}
+            aria-label={t("refresh")}
+          />
+        </div>
+      }
+    />
+  );
+
   if (error && !data) {
     return (
-      <Alert
-        variant="critical"
-        icon={<Icon name="error" size={20} />}
-        title={t("loadFailed", { error })}
-        dismissLabel={tc("close")}
-        actions={
-          <Button variant="secondary" size="sm" icon="refresh" onClick={fetchData}>
-            {t("retry")}
-          </Button>
-        }
-      />
+      <div className="space-y-6">
+        {pageHeader}
+        {/* Re-keyed on the message: a new failure re-shows a dismissed alert. The header's
+            refresh button stays as the retry affordance after a dismiss. */}
+        <Alert
+          key={error}
+          variant="critical"
+          icon={<Icon name="error" size={20} />}
+          title={t("loadFailed", { error })}
+          dismissLabel={tc("close")}
+          actions={
+            <Button variant="secondary" size="sm" icon="refresh" onClick={fetchData}>
+              {t("retry")}
+            </Button>
+          }
+        />
+      </div>
     );
   }
 
@@ -203,28 +236,7 @@ export default function ProviderStatsPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader
-        compact
-        title={t("title")}
-        description={t("description")}
-        actions={
-          <div className="flex items-center gap-3">
-            {lastRefresh && (
-              <span className="text-xs text-text-muted">
-                {t("updated", { time: lastRefresh.toLocaleTimeString() })}
-              </span>
-            )}
-            <Button
-              variant="ghost"
-              size="icon"
-              icon="refresh"
-              onClick={fetchData}
-              title={t("refresh")}
-              aria-label={t("refresh")}
-            />
-          </div>
-        }
-      />
+      {pageHeader}
 
       {/* Summary */}
       <StatRow columns={4}>

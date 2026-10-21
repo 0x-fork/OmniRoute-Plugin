@@ -444,6 +444,7 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   call_split: null,
   casino: Dices,
   category: null,
+  celebration: PartyPopper,
   chat: MessageSquare,
   chat_bubble: MessageSquare,
   checklist: ListChecks,
@@ -491,6 +492,7 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   face: null,
   fact_check: ClipboardCheck,
   favorite: null,
+  fiber_manual_record: CircleDot,
   file_download: null,
   file_export: null,
   file_upload: null,
@@ -556,6 +558,7 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   network_node: Waypoints,
   network_ping: null,
   neurology: null,
+  new_releases: BadgePlus,
   notifications_off: BellOff,
   open_in_browser: null,
   output: ArrowRightFromLine,
@@ -658,9 +661,6 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   wifi: Wifi,
   wifi_off: WifiOff,
   workspace_premium: Award,
-  celebration: PartyPopper,
-  new_releases: BadgePlus,
-  fiber_manual_record: Circle,
 };
 
 export function resolveIcon(name: string | null | undefined): LucideIcon | null {

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Tabs, TabsList, TabsTrigger } from "@omniroute/ui-kit/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@omniroute/ui-kit/tabs";
 import type { InterceptedRequest } from "@/mitm/inspector/types";
 import EmptyState from "@/shared/components/EmptyState";
 import Icon from "@/shared/components/Icon";
@@ -59,38 +59,49 @@ export function DetailsPanel({ request, allRequests }: DetailsPanelProps) {
 
   return (
     <div data-testid="details-panel" className="h-full flex flex-col overflow-hidden">
-      {/* Tab bar — panels render below conditionally, so the triggers drop aria-controls. */}
+      {/* Tab bar + panels: kit Tabs; TabsContent renders only the selected panel, with
+          role="tabpanel" wired to its trigger. */}
       <Tabs
         variant="underline"
         value={currentTab}
         onValueChange={(next) => setActiveTab(next as TabId)}
-        className="shrink-0 border-b border-border bg-bg-subtle px-2 pt-1"
+        className="flex flex-1 flex-col overflow-hidden"
       >
-        <TabsList aria-label={t("requestDetails")} className="flex-wrap">
-          {visibleTabs.map((tab) => (
-            <TabsTrigger
-              key={tab.id}
-              value={tab.id}
-              aria-controls={undefined}
-              className="gap-1 text-xs"
-            >
-              <Icon name={tab.icon} size={13} />
-              {t(tab.labelKey)}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
+        <div className="shrink-0 border-b border-border bg-bg-subtle px-2 pt-1">
+          <TabsList aria-label={t("requestDetails")} className="flex-wrap">
+            {visibleTabs.map((tab) => (
+              <TabsTrigger key={tab.id} value={tab.id} className="gap-1 text-xs">
+                <Icon name={tab.icon} size={13} />
+                {t(tab.labelKey)}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </div>
 
-      {/* Tab content */}
-      <div className="flex-1 overflow-hidden">
-        {currentTab === "conversation" && <ConversationTab request={request} />}
-        {currentTab === "headers" && <HeadersTab request={request} />}
-        {currentTab === "request" && <RequestBodyTab request={request} />}
-        {currentTab === "response" && <ResponseBodyTab request={request} />}
-        {currentTab === "timing" && <TimingTab request={request} />}
-        {currentTab === "llm" && isLlm && <LlmDetailsTab request={request} />}
-        {currentTab === "stats" && <StatsTab requests={allRequests} />}
-      </div>
+        <TabsContent value="conversation" className="flex-1 overflow-hidden">
+          <ConversationTab request={request} />
+        </TabsContent>
+        <TabsContent value="headers" className="flex-1 overflow-hidden">
+          <HeadersTab request={request} />
+        </TabsContent>
+        <TabsContent value="request" className="flex-1 overflow-hidden">
+          <RequestBodyTab request={request} />
+        </TabsContent>
+        <TabsContent value="response" className="flex-1 overflow-hidden">
+          <ResponseBodyTab request={request} />
+        </TabsContent>
+        <TabsContent value="timing" className="flex-1 overflow-hidden">
+          <TimingTab request={request} />
+        </TabsContent>
+        {isLlm && (
+          <TabsContent value="llm" className="flex-1 overflow-hidden">
+            <LlmDetailsTab request={request} />
+          </TabsContent>
+        )}
+        <TabsContent value="stats" className="flex-1 overflow-hidden">
+          <StatsTab requests={allRequests} />
+        </TabsContent>
+      </Tabs>
 
       {/* Annotation footer */}
       <div className="shrink-0 border-t border-border px-3 py-2 bg-bg-subtle">

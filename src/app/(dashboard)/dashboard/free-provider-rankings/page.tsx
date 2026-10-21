@@ -341,9 +341,7 @@ export default function FreeProviderRankingsPage() {
           )}
 
           {displayedRankings.length === 0 && !error && (
-            <Card>
-              <EmptyState icon="leaderboard" title={t("emptyState")} />
-            </Card>
+            <EmptyState icon="leaderboard" title={t("emptyState")} />
           )}
         </>
       )}

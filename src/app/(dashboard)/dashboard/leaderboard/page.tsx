@@ -238,9 +238,7 @@ export default function LeaderboardPage() {
           )}
 
           {entries.length === 0 && !error && (
-            <Card>
-              <EmptyState icon="leaderboard" title={tg("leaderboardEmpty")} />
-            </Card>
+            <EmptyState icon="leaderboard" title={tg("leaderboardEmpty")} />
           )}
         </>
       )}
