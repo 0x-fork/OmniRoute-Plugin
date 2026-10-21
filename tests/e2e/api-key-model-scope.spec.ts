@@ -258,8 +258,10 @@ test.describe("API key model scope", () => {
 
     // Exact OpenAI model selection coexists with the provider scope.
     await modelSearch.fill("openai/gpt-4.1");
+    // exact: the selected-models summary chip has its own "Remove openai/gpt-4.1" button (KEA-7886).
     const openaiModelButton = permissionsEditor.getByRole("button", {
       name: "openai/gpt-4.1",
+      exact: true,
     });
     await expect(openaiModelButton).toBeVisible({ timeout: UI_STABILITY_TIMEOUT_MS });
     await openaiModelButton.click();
@@ -301,13 +303,16 @@ test.describe("API key model scope", () => {
 
     // Child models under the provider scope are inherited and not individually toggleable.
     for (const childId of ["ollamacloud/llama3", "ollamacloud/qwen"]) {
-      const child = reopened.getByRole("button", { name: childId });
+      const child = reopened.getByRole("button", { name: childId, exact: true });
       await expect(child).toBeVisible({ timeout: UI_STABILITY_TIMEOUT_MS });
       await expect(child).toBeDisabled();
     }
 
     // Exact OpenAI selection remains individually selected/toggleable.
-    const reopenedOpenAiModel = reopened.getByRole("button", { name: "openai/gpt-4.1" });
+    const reopenedOpenAiModel = reopened.getByRole("button", {
+      name: "openai/gpt-4.1",
+      exact: true,
+    });
     await expect(reopenedOpenAiModel).toBeEnabled();
 
     // Explicit Restrict with no provider/model selections is a persistent deny-all state.
