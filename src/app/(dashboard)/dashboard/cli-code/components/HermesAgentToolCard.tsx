@@ -350,7 +350,7 @@ export default function HermesAgentToolCard({
         className="flex items-center justify-between hover:cursor-pointer"
         onClick={handleToggle}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex min-w-0 items-center gap-3">
           <div className="size-8 flex items-center justify-center shrink-0">
             <Icon name="terminal" size={22} className="text-text-muted" />
           </div>

@@ -183,7 +183,7 @@ export default function CopilotToolCard({
         className={cn("flex items-center justify-between hover:cursor-pointer", CARD_TOGGLE_CLASS)}
         {...cardToggleProps(isExpanded, onToggle)}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex min-w-0 items-center gap-3">
           <div className="size-8 rounded-lg flex items-center justify-center shrink-0">
             <Image
               src={tool.image || "/providers/copilot.svg"}

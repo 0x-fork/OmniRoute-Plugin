@@ -419,7 +419,7 @@ openai_base_url = "${getEffectiveBaseUrl()}"
         className={cn("flex items-center justify-between hover:cursor-pointer", CARD_TOGGLE_CLASS)}
         {...cardToggleProps(isExpanded, onToggle)}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex min-w-0 items-center gap-3">
           <div className="size-8 flex items-center justify-center shrink-0">
             <ProviderIcon providerId="codex" size={32} type="color" />
           </div>
@@ -544,7 +544,7 @@ openai_base_url = "${getEffectiveBaseUrl()}"
                     onChange={(e) => setCustomBaseUrl(e.target.value)}
                     placeholder={t("baseUrlPlaceholder")}
                     aria-label={t("baseUrl")}
-                    className="flex-1"
+                    className="min-w-0 w-auto flex-1"
                     inputClassName="text-xs"
                   />
                   {customBaseUrl && getDisplayUrl() !== normalizeCodexBaseUrl(baseUrl, wireApi) && (
@@ -572,7 +572,7 @@ openai_base_url = "${getEffectiveBaseUrl()}"
                       value={effectiveApiKey}
                       onChange={(e) => setSelectedApiKey(e.target.value)}
                       aria-label={t("apiKey")}
-                      className="flex-1"
+                      className="min-w-0 w-auto flex-1"
                       selectClassName="text-xs"
                     >
                       {apiKeys.map((key) => (
@@ -611,7 +611,7 @@ openai_base_url = "${getEffectiveBaseUrl()}"
                     onChange={(e) => setSelectedModel(e.target.value)}
                     placeholder="gpt-5.6-sol"
                     aria-label={t("model")}
-                    className="flex-1"
+                    className="min-w-0 w-auto flex-1"
                     inputClassName="text-xs"
                   />
                   {selectedModel && (
@@ -638,7 +638,7 @@ openai_base_url = "${getEffectiveBaseUrl()}"
                     value={reasoningEffort}
                     onChange={(e) => setReasoningEffort(e.target.value)}
                     aria-label={t("reasoningEffort")}
-                    className="flex-1"
+                    className="min-w-0 w-auto flex-1"
                     selectClassName="text-xs"
                   >
                     <option value="none">{t("effortNone")}</option>
@@ -661,7 +661,7 @@ openai_base_url = "${getEffectiveBaseUrl()}"
                     value={wireApi}
                     onChange={(e) => setWireApi(e.target.value)}
                     aria-label={t("wireApi")}
-                    className="flex-1"
+                    className="min-w-0 w-auto flex-1"
                     selectClassName="text-xs"
                   >
                     <option value="chat">{t("wireApiChatCompletions")}</option>
@@ -712,7 +712,7 @@ openai_base_url = "${getEffectiveBaseUrl()}"
                       }
                       placeholder={t("routeModelPlaceholder", { model: defaultModel })}
                       aria-label={defaultModel}
-                      className="flex-1"
+                      className="min-w-0 w-auto flex-1"
                       inputClassName="text-xs"
                     />
                     {modelMappings[defaultModel] && (
@@ -863,7 +863,7 @@ openai_base_url = "${getEffectiveBaseUrl()}"
                       onChange={(e) => setNewProfileName(e.target.value)}
                       placeholder={t("profileNamePlaceholder")}
                       aria-label={t("profileNamePlaceholder")}
-                      className="flex-1"
+                      className="min-w-0 w-auto flex-1"
                       inputClassName="text-xs"
                       onKeyDown={(e) => e.key === "Enter" && handleSaveProfile()}
                     />

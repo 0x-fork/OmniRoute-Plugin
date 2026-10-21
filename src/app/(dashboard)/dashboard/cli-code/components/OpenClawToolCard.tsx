@@ -298,7 +298,7 @@ export default function OpenClawToolCard({
         className={cn("flex items-center justify-between hover:cursor-pointer", CARD_TOGGLE_CLASS)}
         {...cardToggleProps(isExpanded, onToggle)}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex min-w-0 items-center gap-3">
           <div className="size-8 flex items-center justify-center shrink-0">
             <Image
               src="/providers/openclaw.svg"
@@ -398,7 +398,7 @@ export default function OpenClawToolCard({
                     onChange={(e) => setCustomBaseUrl(e.target.value)}
                     placeholder={t("baseUrlPlaceholder")}
                     aria-label={t("baseUrl")}
-                    className="flex-1"
+                    className="min-w-0 w-auto flex-1"
                     inputClassName="text-xs"
                   />
                   {customBaseUrl && customBaseUrl !== baseUrl && (
@@ -426,7 +426,7 @@ export default function OpenClawToolCard({
                       value={effectiveApiKeyId}
                       onChange={(e) => setSelectedApiKeyId(e.target.value)}
                       aria-label={t("apiKey")}
-                      className="flex-1"
+                      className="min-w-0 w-auto flex-1"
                       selectClassName="text-xs"
                     >
                       {apiKeys.map((key) => (
@@ -453,7 +453,7 @@ export default function OpenClawToolCard({
                     onChange={(e) => setSelectedModel(e.target.value)}
                     placeholder={t("providerModelPlaceholder")}
                     aria-label={t("model")}
-                    className="flex-1"
+                    className="min-w-0 w-auto flex-1"
                     inputClassName="text-xs"
                   />
                   <Button

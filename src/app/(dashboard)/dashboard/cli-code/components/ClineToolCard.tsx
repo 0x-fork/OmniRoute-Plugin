@@ -255,7 +255,7 @@ export default function ClineToolCard({
         className={cn("flex items-center justify-between hover:cursor-pointer", CARD_TOGGLE_CLASS)}
         {...cardToggleProps(isExpanded, onToggle)}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex min-w-0 items-center gap-3">
           <div className="size-8 rounded-lg flex items-center justify-center shrink-0">
             <ProviderIcon providerId={tool.id || "cline"} size={32} type="color" />
           </div>
@@ -349,7 +349,7 @@ export default function ClineToolCard({
                         value={selectedModel}
                         onChange={(e) => setSelectedModel(e.target.value)}
                         placeholder={t("providerModelPlaceholder")}
-                        className="flex-1"
+                        className="min-w-0 w-auto flex-1"
                       />
                       <Button
                         variant="outline"

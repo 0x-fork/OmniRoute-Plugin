@@ -316,7 +316,7 @@ export default function ClaudeToolCard({
         className={cn("flex items-center justify-between hover:cursor-pointer", CARD_TOGGLE_CLASS)}
         {...cardToggleProps(isExpanded, onToggle)}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex min-w-0 items-center gap-3">
           <div className="size-8 flex items-center justify-center shrink-0">
             <ProviderIcon providerId="claude" size={32} type="color" />
           </div>
@@ -439,7 +439,7 @@ export default function ClaudeToolCard({
                     onChange={(e) => setCustomBaseUrl(e.target.value)}
                     placeholder={t("baseUrlPlaceholder")}
                     aria-label={t("baseUrl")}
-                    className="flex-1"
+                    className="min-w-0 w-auto flex-1"
                     inputClassName="text-xs"
                   />
                   {customBaseUrl && customBaseUrl !== baseUrl && (
@@ -467,7 +467,7 @@ export default function ClaudeToolCard({
                       value={effectiveApiKey}
                       onChange={(e) => setSelectedApiKey(e.target.value)}
                       aria-label={t("apiKey")}
-                      className="flex-1"
+                      className="min-w-0 w-auto flex-1"
                       selectClassName="text-xs"
                     >
                       {apiKeys.map((key) => (
@@ -504,7 +504,7 @@ export default function ClaudeToolCard({
                       onChange={(e) => onModelMappingChange(model.alias, e.target.value)}
                       placeholder={t("providerModelPlaceholder")}
                       aria-label={model.name}
-                      className="flex-1"
+                      className="min-w-0 w-auto flex-1"
                       inputClassName="text-xs"
                     />
                     {modelMappings[model.alias] && (

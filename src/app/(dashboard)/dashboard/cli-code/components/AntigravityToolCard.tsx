@@ -280,7 +280,7 @@ export default function AntigravityToolCard({
         className={cn("flex items-center justify-between hover:cursor-pointer", CARD_TOGGLE_CLASS)}
         {...cardToggleProps(isExpanded, onToggle)}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex min-w-0 items-center gap-3">
           <div className="size-8 flex items-center justify-center shrink-0">
             <ProviderIcon providerId={tool.id || "antigravity"} size={32} type="color" />
           </div>
@@ -349,7 +349,7 @@ export default function AntigravityToolCard({
                     value={effectiveApiKeyId}
                     onChange={(e) => setSelectedApiKeyId(e.target.value)}
                     aria-label={t("apiKey")}
-                    className="flex-1"
+                    className="min-w-0 w-auto flex-1"
                     selectClassName="text-xs"
                   >
                     {apiKeys.map((key) => (
@@ -378,7 +378,7 @@ export default function AntigravityToolCard({
                       onChange={(e) => handleModelMappingChange(model.alias, e.target.value)}
                       placeholder={t("modelPlaceholder")}
                       aria-label={model.name}
-                      className="flex-1"
+                      className="min-w-0 w-auto flex-1"
                       inputClassName="text-xs"
                     />
                     <Select

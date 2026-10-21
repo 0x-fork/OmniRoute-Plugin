@@ -33,7 +33,6 @@ const CLOUD_URL = process.env.NEXT_PUBLIC_CLOUD_URL;
 
 export default function ToolDetailClient({ toolId, category }: ToolDetailClientProps) {
   const t = useTranslations("cliCommon");
-  const tBreadcrumbs = useTranslations("breadcrumbs");
   const tool = CLI_TOOLS[toolId];
 
   const [connections, setConnections] = useState<any[]>([]);
@@ -294,22 +293,14 @@ export default function ToolDetailClient({ toolId, category }: ToolDetailClientP
     <div className="flex flex-col gap-4">
       <PageHeader
         compact
-        breadcrumbs={
-          <nav className="flex items-center gap-2 text-sm" aria-label={tBreadcrumbs("ariaLabel")}>
-            <Link
-              href={backCategory}
-              className="inline-flex items-center gap-1.5 text-text-muted hover:text-primary transition-colors"
-            >
-              <Icon name="arrow_back" size={16} />
-              {category === "code" ? t("concept.code.title") : t("concept.agent.title")}
-            </Link>
-            <span className="text-text-muted" aria-hidden="true">
-              /
-            </span>
-            <span className="font-medium" aria-current="page">
-              {tool.name}
-            </span>
-          </nav>
+        eyebrow={
+          <Link
+            href={backCategory}
+            className="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-primary transition-colors"
+          >
+            <Icon name="arrow_back" size={16} />
+            {category === "code" ? t("concept.code.title") : t("concept.agent.title")}
+          </Link>
         }
         title={tool.name}
         description={

@@ -371,7 +371,7 @@ export default function GrokBuildToolCard({
         className={cn("flex cursor-pointer items-center justify-between", CARD_TOGGLE_CLASS)}
         {...cardToggleProps(isExpanded, onToggle)}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex min-w-0 items-center gap-3">
           <div className="flex size-8 shrink-0 items-center justify-center">
             <ProviderIcon providerId="grok" size={32} type="color" />
           </div>
@@ -438,7 +438,7 @@ export default function GrokBuildToolCard({
             <Select
               id="grok-build-endpoint"
               aria-labelledby="grok-build-endpoint-label"
-              className="min-w-0 flex-1"
+              className="min-w-0 w-auto flex-1"
               selectClassName="text-xs"
               value={selectedEndpoint}
               onChange={(event) => setSelectedEndpoint(event.target.value)}
@@ -456,7 +456,7 @@ export default function GrokBuildToolCard({
               <Icon name="arrow_forward" size={14} className="text-text-muted" />
               <Input
                 aria-label="Custom endpoint"
-                className="min-w-0 flex-1"
+                className="min-w-0 w-auto flex-1"
                 inputClassName="text-xs"
                 type="url"
                 value={customEndpoint}
@@ -474,7 +474,7 @@ export default function GrokBuildToolCard({
             <Select
               id="grok-build-api-key"
               aria-labelledby="grok-build-api-key-label"
-              className="min-w-0 flex-1"
+              className="min-w-0 w-auto flex-1"
               selectClassName="text-xs"
               value={effectiveKeyId}
               onChange={(event) => setSelectedKeyId(event.target.value)}
@@ -501,7 +501,7 @@ export default function GrokBuildToolCard({
             </Button>
             <Input
               aria-label="Main model"
-              className="min-w-0 flex-1"
+              className="min-w-0 w-auto flex-1"
               inputClassName="text-xs"
               value={model}
               onChange={(event) => setModel(event.target.value)}
@@ -545,7 +545,7 @@ export default function GrokBuildToolCard({
               </Button>
               <Input
                 aria-label={`${modelLabel(type)} model`}
-                className="min-w-0 flex-1"
+                className="min-w-0 w-auto flex-1"
                 inputClassName="text-xs"
                 value={subagentModels[type] ?? ""}
                 onChange={(event) =>
