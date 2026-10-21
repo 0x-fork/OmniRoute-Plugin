@@ -91,7 +91,6 @@ import {
   Globe,
   GlobeLock,
   Grid2x2,
-  GripVertical,
   HardDriveDownload,
   Hash,
   HeartPulse,
@@ -195,7 +194,6 @@ import {
   Star,
   Sun,
   Tag,
-  Target,
   Terminal,
   Timer,
   ToggleLeft,
@@ -238,7 +236,6 @@ import {
   SquareFunction,
   SquarePen,
   Type,
-  Waves,
 } from "lucide-react";
 // Combos editor + routing strategies (KEA-7886, lote 4).
 import {
