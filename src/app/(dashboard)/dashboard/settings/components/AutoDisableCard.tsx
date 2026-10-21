@@ -148,7 +148,7 @@ export default function AutoDisableCard() {
                 <h3 className="text-xs font-bold uppercase tracking-wider mb-2 flex items-center gap-2">
                   {t("autoDisableThreshold")}
                 </h3>
-                <span className={`text-sm font-mono ${!data.enabled && "opacity-50"}`}>
+                <span className={`text-sm font-mono ${data.enabled ? "" : "text-text-muted"}`}>
                   {t("failures", { count: data.threshold })}
                 </span>
                 <p className="text-xs text-text-muted mt-2">{t("autoDisableThresholdDesc")}</p>
@@ -157,7 +157,7 @@ export default function AutoDisableCard() {
           </div>
         </div>
 
-        <div className={`mt-4 rounded-lg bg-bg-subtle p-4 ${!current.enabled ? "opacity-50" : ""}`}>
+        <div className="mt-4 rounded-lg bg-bg-subtle p-4">
           <RadioGroup
             name="auto-disable-banned-scope"
             label={t("autoDisableBannedScope")}

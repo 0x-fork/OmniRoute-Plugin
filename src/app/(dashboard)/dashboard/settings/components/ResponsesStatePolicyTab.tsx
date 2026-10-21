@@ -108,7 +108,7 @@ export default function ResponsesStatePolicyTab() {
         ]}
       />
 
-      <p className="mt-4 text-xs text-text-muted/80 flex items-start gap-1.5 leading-relaxed">
+      <p className="mt-4 text-xs text-text-muted flex items-start gap-1.5 leading-relaxed">
         <Icon name="info" size={14} className="mt-0.5" />
         <span>{t("responsesStateHint")}</span>
       </p>
