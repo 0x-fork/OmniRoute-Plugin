@@ -132,6 +132,7 @@ function AccountRoundRobinSection({ t, busy, settings, setSettings, run }: Secti
           </div>
           <Input
             type="number"
+            aria-label={t("stickyLimit")}
             min={1}
             max={1000}
             disabled={busy}
@@ -193,6 +194,7 @@ function ComboRoundRobinSection({ t, busy, settings, setSettings, run }: Section
           </div>
           <Input
             type="number"
+            aria-label={t("comboStickyLimit")}
             min={1}
             max={1000}
             disabled={busy}

@@ -145,13 +145,6 @@ export default function ThinkingBudgetTab() {
             onValueChange={(next) => save({ customBudget: next })}
             formatValue={(value) => `${value.toLocaleString()} ${t("tokens")}`}
           />
-          <div className="flex justify-between text-xs text-text-muted mt-1">
-            <span>{t("off")}</span>
-            <span>1K</span>
-            <span>10K</span>
-            <span>64K</span>
-            <span>128K</span>
-          </div>
         </div>
       )}
 

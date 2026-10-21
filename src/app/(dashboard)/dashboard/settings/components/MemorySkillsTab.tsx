@@ -381,13 +381,14 @@ export default function MemorySkillsTab() {
                 value={config.maxTokens}
                 onValueChange={(value) => save({ maxTokens: value })}
                 formatValue={(value) => `${value.toLocaleString()} ${t("tokens")}`}
+                presetsLabel={t("maxTokens")}
+                presets={[
+                  { value: 0, label: t("off") },
+                  { value: 4000, label: "4K" },
+                  { value: 8000, label: "8K" },
+                  { value: 16000, label: "16K" },
+                ]}
               />
-              <div className="flex justify-between text-xs text-text-muted mt-1">
-                <span>{t("off")}</span>
-                <span>4K</span>
-                <span>8K</span>
-                <span>16K</span>
-              </div>
             </div>
 
             {/* Retention days */}
@@ -401,18 +402,19 @@ export default function MemorySkillsTab() {
                 value={config.retentionDays}
                 onValueChange={(value) => save({ retentionDays: value })}
                 formatValue={(value) => `${value} ${t("days")}`}
+                presetsLabel={t("retentionDays")}
+                presets={[
+                  { value: 1, label: "1" },
+                  { value: 30, label: "30" },
+                  { value: 60, label: "60" },
+                  { value: 90, label: "90" },
+                ]}
               />
-              <div className="flex justify-between text-xs text-text-muted mt-1">
-                <span>1</span>
-                <span>30</span>
-                <span>60</span>
-                <span>90</span>
-              </div>
             </div>
 
             {/* Strategy selector */}
             <RadioGroup
-              aria-label={t("memoryTitle")}
+              aria-label={t("strategy")}
               orientation="horizontal"
               value={config.strategy}
               onValueChange={(next) => save({ strategy: next as "recent" | "semantic" | "hybrid" })}

@@ -404,16 +404,16 @@ export default function CacheSettingsTab() {
                           }))
                         : [{ value: semProvider, label: semProvider }]
                     }
+                    hint={
+                      selectedProviderOption
+                        ? selectedProviderOption.hasConnection
+                          ? t("semanticCacheConfiguredConnection", {
+                              url: selectedProviderOption.baseUrl || t("semanticCacheDefaultUrl"),
+                            })
+                          : t("semanticCacheConnectionRequired")
+                        : undefined
+                    }
                   />
-                  {selectedProviderOption && (
-                    <p className="text-xs text-text-muted mt-1">
-                      {selectedProviderOption.hasConnection
-                        ? t("semanticCacheConfiguredConnection", {
-                            url: selectedProviderOption.baseUrl || t("semanticCacheDefaultUrl"),
-                          })
-                        : t("semanticCacheConnectionRequired")}
-                    </p>
-                  )}
                 </div>
 
                 <div>
@@ -485,8 +485,11 @@ export default function CacheSettingsTab() {
                       })
                     }
                     disabled={semSaving}
+                    aria-describedby="sem-threshold-hint"
                   />
-                  <p className="text-xs text-text-muted mt-1">{t("semanticCacheThresholdHint")}</p>
+                  <p id="sem-threshold-hint" className="text-xs text-text-muted mt-1">
+                    {t("semanticCacheThresholdHint")}
+                  </p>
                 </div>
 
                 <Input
@@ -695,7 +698,7 @@ export default function CacheSettingsTab() {
             <p className="font-medium">{t("modelCatalogCacheTtl")}</p>
             <p className="text-sm text-text-muted mt-1">{t("modelCatalogCacheTtlDescription")}</p>
           </div>
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-start gap-3">
             <Input
               id="model-catalog-ttl-ms"
               type="number"
@@ -711,10 +714,12 @@ export default function CacheSettingsTab() {
               onKeyDown={(event) => {
                 if (event.key === "Enter" && catalogDirty) void saveCatalogTtl();
               }}
-              className="w-32 shrink-0"
+              error={catalogValidationError || undefined}
+              className="shrink-0"
+              inputClassName="w-32"
               disabled={catalogLoading || catalogSaving}
             />
-            <span className="text-xs text-text-muted">{t("semanticCacheMilliseconds")}</span>
+            <span className="py-2.5 text-xs text-text-muted">{t("semanticCacheMilliseconds")}</span>
             <Button
               size="sm"
               variant="primary"
@@ -724,12 +729,11 @@ export default function CacheSettingsTab() {
               {catalogSaving ? t("modelCatalogCacheTtlSaving") : t("modelCatalogCacheTtlSave")}
             </Button>
             {catalogDirty && (
-              <span className="text-xs text-text-muted">
+              <span className="py-2.5 text-xs text-text-muted">
                 {t("modelCatalogCacheTtlCurrent", { value: savedCatalogTtl })}
               </span>
             )}
           </div>
-          {catalogValidationError && <p className="text-xs text-error">{catalogValidationError}</p>}
           {catalogMessage && (
             <p
               className={`text-xs ${

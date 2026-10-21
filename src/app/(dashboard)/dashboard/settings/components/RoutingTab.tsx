@@ -308,6 +308,7 @@ function StringListEditor({
         <div key={idx} className="flex items-center gap-2">
           <Input
             className="flex-1"
+            aria-label={`${label} ${idx + 1}`}
             value={item}
             disabled={disabled}
             onChange={(e) => {
@@ -967,7 +968,13 @@ export default function RoutingTab() {
                 desc: t("routingDefaultAutoVariantSmartDesc"),
               },
             ].map((option) => (
-              <RadioGroupItem key={option.value} card value={option.value} label={option.label} />
+              <RadioGroupItem
+                key={option.value}
+                card
+                value={option.value}
+                label={option.label}
+                description={option.desc}
+              />
             ))}
           </RadioGroup>
         </div>
@@ -1088,7 +1095,7 @@ export default function RoutingTab() {
                   >
                     <span className="font-medium">{t("routingServerRejectedSave")}</span>{" "}
                     <span className="break-words font-mono">{providerSaveErrors[providerId]}</span>
-                    <p className="mt-1 text-[11px] text-error/80">{tCommon("error")}</p>
+                    <p className="mt-1 text-[11px] text-error">{tCommon("error")}</p>
                   </div>
                 )}
 
@@ -1198,25 +1205,38 @@ export default function RoutingTab() {
                     {isJsonOpen ? t("routingJsonEditorHide") : t("routingJsonEditorImportExport")}
                   </Button>
                   {isJsonOpen && (
-                    <Field
-                      className="mt-2"
-                      label={t("routingJsonEditorLabel")}
-                      htmlFor={`routing-json-editor-${providerId}`}
-                    >
-                      <Textarea
-                        id={`routing-json-editor-${providerId}`}
-                        value={draft}
-                        onChange={(e) =>
-                          setJsonDrafts((prev) => ({ ...prev, [providerId]: e.target.value }))
+                    <div className="mt-2">
+                      <Field
+                        label={t("routingJsonEditorLabel")}
+                        htmlFor={`routing-json-editor-${providerId}`}
+                        error={
+                          errorMsg ? (
+                            <span
+                              id={`routing-json-editor-${providerId}-error`}
+                              role="alert"
+                              className="break-words"
+                            >
+                              ⚠ {errorMsg}
+                            </span>
+                          ) : undefined
                         }
-                        rows={Math.min(40, Math.max(6, draft.split("\n").length))}
-                        disabled={loading}
-                        spellCheck={false}
-                        className="resize-y font-mono text-[11px]"
-                      />
-                      {errorMsg && (
-                        <p className="mt-1 text-xs text-error break-words">⚠ {errorMsg}</p>
-                      )}
+                      >
+                        <Textarea
+                          id={`routing-json-editor-${providerId}`}
+                          value={draft}
+                          onChange={(e) =>
+                            setJsonDrafts((prev) => ({ ...prev, [providerId]: e.target.value }))
+                          }
+                          rows={Math.min(40, Math.max(6, draft.split("\n").length))}
+                          disabled={loading}
+                          spellCheck={false}
+                          error={Boolean(errorMsg)}
+                          aria-describedby={
+                            errorMsg ? `routing-json-editor-${providerId}-error` : undefined
+                          }
+                          className="resize-y font-mono text-[11px]"
+                        />
+                      </Field>
                       <div className="flex flex-wrap items-center gap-2 mt-2">
                         <Button
                           onClick={() => applyProviderJson(providerId)}
@@ -1239,7 +1259,7 @@ export default function RoutingTab() {
                           </Button>
                         )}
                       </div>
-                    </Field>
+                    </div>
                   )}
                 </div>
               </Collapsible>
