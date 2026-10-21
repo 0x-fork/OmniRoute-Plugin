@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import Button from "@/shared/components/Button";
 
 export type EventCategory =
   "all" | "providers" | "combos" | "apikeys" | "settings" | "quota" | "auth" | "system";
@@ -55,20 +56,16 @@ export default function EventTypeFilter({ value, onChange }: EventTypeFilterProp
   return (
     <div className="flex flex-wrap gap-2" role="group" aria-label={t("filterAria")}>
       {CATEGORIES.map((cat) => (
-        <button
+        <Button
           key={cat}
-          type="button"
+          variant={value === cat ? "primary" : "outline"}
+          size="sm"
           onClick={() => onChange(cat)}
           aria-pressed={value === cat}
-          className={[
-            "px-3 py-1 rounded-full text-xs font-medium border transition-colors",
-            value === cat
-              ? "bg-[var(--color-accent)] text-white border-[var(--color-accent)]"
-              : "bg-[var(--color-surface)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:bg-[var(--color-bg-alt)]",
-          ].join(" ")}
+          className="h-7 min-h-7 rounded-full px-3 text-xs"
         >
           {t(labelKey[cat])}
-        </button>
+        </Button>
       ))}
     </div>
   );

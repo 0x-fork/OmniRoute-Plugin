@@ -12538,7 +12538,8 @@
       "settingsUpdateFailed": "Settings update failed",
       "serviceRevealApiKey": "{actor} revealed API key for {target}",
       "genericEvent": "{actor} {target}"
-    }
+    },
+    "dismissError": "Dismiss error"
   },
   "agentBridge": {
     "title": "AgentBridge",

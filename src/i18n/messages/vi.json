@@ -12538,7 +12538,8 @@
       "settingsUpdateFailed": "Cập nhật cài đặt thất bại",
       "serviceRevealApiKey": "{actor} đã hiển thị khóa API của {target}",
       "genericEvent": "{actor} {target}"
-    }
+    },
+    "dismissError": "Bỏ qua lỗi"
   },
   "agentBridge": {
     "title": "AgentBridge",
