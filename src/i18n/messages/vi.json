@@ -12672,7 +12672,21 @@
       "goNow": "Đi ngay",
       "message": "MITM Proxy hiện nằm trong AgentBridge.",
       "title": "Trang này đã được di chuyển"
-    }
+    },
+    "dnsOn": "DNS bật",
+    "dnsOff": "DNS tắt",
+    "showServerSettings": "Hiện cài đặt máy chủ",
+    "hideServerSettings": "Ẩn cài đặt máy chủ",
+    "upstreamCaTesting": "Đang kiểm tra…",
+    "removeMapping": "Xóa ánh xạ",
+    "mappingSourcePlaceholder": "vd: gemini-3.6-flash-medium, hoặc * cho tất cả chưa ánh xạ",
+    "mappingWildcardHint": "Dùng * làm nguồn để định tuyến mọi mô hình chưa có ánh xạ qua OmniRoute tới đích đã chọn. Khớp chính xác luôn ưu tiên hơn *.",
+    "wizardDetectingModels": "Đang phát hiện mô hình từ lưu lượng bị chặn...",
+    "wizardDetectedModels": "Tìm thấy {count} mô hình trong lưu lượng bị chặn. Chọn những mô hình bạn muốn thêm:",
+    "wizardSelectedModels": "Đã chọn {count} mô hình. Bạn sẽ ánh xạ chúng tới mô hình OmniRoute ở màn hình tiếp theo.",
+    "wizardAddModels": "Thêm {count} mô hình",
+    "wizardNoModelsDetected": "Chưa phát hiện mô hình nào. Dùng {agent} để gửi một yêu cầu, rồi chạy lại trình hướng dẫn này để tự phát hiện mô hình từ lưu lượng.",
+    "wizardNoModelsHint": "Hoặc đóng trình hướng dẫn này và thêm ánh xạ thủ công trong thẻ tác nhân."
   },
   "providerStats": {
     "unknownError": "Lỗi không xác định",
@@ -12702,7 +12716,11 @@
     "avgTtft": "TTFT trung bình",
     "avgTotal": "Tổng thời gian trung bình",
     "requestTelemetry": "Phân tích từ xa yêu cầu",
-    "requestTelemetryDescription": "Phân tích quy trình 7 giai đoạn trong 5 phút qua"
+    "requestTelemetryDescription": "Phân tích quy trình 7 giai đoạn trong 5 phút qua",
+    "title": "Thống kê nhà cung cấp",
+    "description": "Lưu lượng, độ trễ và tỷ lệ thành công theo nhà cung cấp và mô hình",
+    "combo": "Combo",
+    "toggleModels": "Hiện các mô hình của {provider}"
   },
   "relay": {
     "title": "Relay Proxy không máy chủ",
@@ -12863,7 +12881,18 @@
     "noRequestBody": "Không có phần thân yêu cầu.",
     "noResponseBody": "Không có phần thân phản hồi.",
     "formatted": "Đã định dạng",
-    "raw": "Dữ liệu thô"
+    "raw": "Dữ liệu thô",
+    "requestCount": "{count} yêu cầu",
+    "expandList": "Mở rộng danh sách",
+    "collapseList": "Thu gọn danh sách",
+    "snippetLanguage": "Ngôn ngữ đoạn mã",
+    "headersTable": "Tiêu đề",
+    "showSecrets": "Hiện bí mật",
+    "maskSecrets": "Ẩn bí mật",
+    "llmNotAvailable": "Không có siêu dữ liệu LLM cho yêu cầu này.",
+    "llmStreamYes": "có (SSE)",
+    "llmStreamNo": "không",
+    "llmTotalTokens": "Tổng: {count} token"
   },
   "cliCommon": {
     "companion": {
@@ -13322,7 +13351,8 @@
     "colReliabilityHelp": "Tỷ lệ lệnh gọi mà nhà cung cấp này thực sự trả lời trong 24 giờ qua. Dấu gạch ngang nghĩa là lưu lượng quá ít để đưa ra tỷ lệ.",
     "reliabilitySample": "{successes} trong {requests} lệnh gọi thành công trong {hours}h qua",
     "reliabilityTooFew": "Chỉ có {requests} lệnh gọi trong {hours}h qua — quá ít để đưa ra tỷ lệ",
-    "reliabilityNoTraffic": "Không ghi nhận lệnh gọi nào trong 24h qua"
+    "reliabilityNoTraffic": "Không ghi nhận lệnh gọi nào trong 24h qua",
+    "categoryFilter": "Danh mục tác vụ"
   },
   "discovery": {
     "title": "Khám phá nhà cung cấp",
@@ -13569,7 +13599,9 @@
         "description": "Một thành tích ẩn đang chờ bạn...",
         "criteria": "Hoàn thành thành tích ẩn để mở huy hiệu này."
       }
-    }
+    },
+    "leaderboardTitle": "Bảng xếp hạng",
+    "leaderboardDescription": "Xếp hạng và thành tích giữa các khóa API của bạn"
   },
   "featureFlags": {
     "title": "Cờ tính năng",
@@ -14012,7 +14044,11 @@
     "learnMore": "Tìm hiểu thêm",
     "changelogLoadFailed": "Không thể tải lịch sử thay đổi. Vui lòng thử lại sau.",
     "retry": "Thử lại",
-    "viewFullHistory": "Xem toàn bộ lịch sử trên GitHub"
+    "viewFullHistory": "Xem toàn bộ lịch sử trên GitHub",
+    "title": "Tin tức và nhật ký thay đổi",
+    "description": "Thông báo từ nhóm OmniRoute và ghi chú phát hành mới nhất",
+    "viewLabel": "Chế độ xem",
+    "loadingNews": "Đang tải thông báo..."
   },
   "reasoningRouting": {
     "editor": {

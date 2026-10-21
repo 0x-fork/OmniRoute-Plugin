@@ -878,11 +878,6 @@
       "count": 3
     }
   },
-  "src/app/(dashboard)/dashboard/tools/traffic-inspector/components/RequestStreamingList.tsx": {
-    "@typescript-eslint/no-unused-vars": {
-      "count": 1
-    }
-  },
   "src/app/(dashboard)/dashboard/tools/traffic-inspector/components/TopBarControls.tsx": {
     "@typescript-eslint/no-unused-vars": {
       "count": 1

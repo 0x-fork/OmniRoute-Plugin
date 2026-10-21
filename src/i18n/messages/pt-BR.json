@@ -12672,7 +12672,21 @@
       "goNow": "Ir agora",
       "message": "O MITM Proxy agora vive no AgentBridge.",
       "title": "Esta página foi movida"
-    }
+    },
+    "dnsOn": "DNS ativo",
+    "dnsOff": "DNS desativado",
+    "showServerSettings": "Mostrar configurações do servidor",
+    "hideServerSettings": "Ocultar configurações do servidor",
+    "upstreamCaTesting": "Testando…",
+    "removeMapping": "Remover mapeamento",
+    "mappingSourcePlaceholder": "ex.: gemini-3.6-flash-medium, ou * para todos os não mapeados",
+    "mappingWildcardHint": "Use * como origem para rotear pelo OmniRoute, para o destino escolhido, todo modelo sem mapeamento explícito. Correspondências exatas sempre vencem o *.",
+    "wizardDetectingModels": "Detectando modelos no tráfego interceptado...",
+    "wizardDetectedModels": "{count, plural, one {# modelo encontrado} other {# modelos encontrados}} no tráfego interceptado. Selecione os que deseja adicionar:",
+    "wizardSelectedModels": "{count, plural, one {# modelo selecionado} other {# modelos selecionados}}. Você vai mapeá-los para modelos do OmniRoute na próxima tela.",
+    "wizardAddModels": "Adicionar {count, plural, one {# modelo} other {# modelos}}",
+    "wizardNoModelsDetected": "Nenhum modelo detectado ainda. Use o {agent} para fazer uma requisição e rode este assistente de novo para detectar os modelos pelo tráfego.",
+    "wizardNoModelsHint": "Ou feche este assistente e adicione os mapeamentos manualmente no cartão do agente."
   },
   "providerStats": {
     "unknownError": "Erro desconhecido",
@@ -12702,7 +12716,11 @@
     "avgTtft": "TTFT Médio",
     "avgTotal": "Total Médio",
     "requestTelemetry": "Telemetria de Solicitações",
-    "requestTelemetryDescription": "Detalhamento do pipeline de 7 fases (últimos 5 minutos)"
+    "requestTelemetryDescription": "Detalhamento do pipeline de 7 fases (últimos 5 minutos)",
+    "title": "Estatísticas de provedores",
+    "description": "Tráfego, latência e taxa de sucesso por provedor e por modelo",
+    "combo": "Combo",
+    "toggleModels": "Mostrar modelos de {provider}"
   },
   "relay": {
     "title": "Proxies de Relay Serverless",
@@ -12863,7 +12881,18 @@
     "noRequestBody": "Sem corpo de solicitação.",
     "noResponseBody": "Sem corpo de resposta.",
     "formatted": "Formatado",
-    "raw": "Bruto"
+    "raw": "Bruto",
+    "requestCount": "{count, plural, one {# requisição} other {# requisições}}",
+    "expandList": "Expandir lista",
+    "collapseList": "Recolher lista",
+    "snippetLanguage": "Linguagem do snippet",
+    "headersTable": "Cabeçalhos",
+    "showSecrets": "Mostrar segredos",
+    "maskSecrets": "Ocultar segredos",
+    "llmNotAvailable": "Metadados de LLM indisponíveis para esta requisição.",
+    "llmStreamYes": "sim (SSE)",
+    "llmStreamNo": "não",
+    "llmTotalTokens": "Total: {count} tokens"
   },
   "cliCommon": {
     "companion": {
@@ -13322,7 +13351,8 @@
     "colReliabilityHelp": "Proporção de chamadas que este provedor realmente respondeu nas últimas 24 horas. Um traço significa que ele atendeu a um volume de tráfego insuficiente para determinar uma taxa.",
     "reliabilitySample": "{successes} de {requests} chamadas foram bem-sucedidas nas últimas {hours}h",
     "reliabilityTooFew": "Apenas {requests} chamadas nas últimas {hours}h — muito poucas para determinar uma taxa",
-    "reliabilityNoTraffic": "Nenhuma chamada registrada nas últimas 24h"
+    "reliabilityNoTraffic": "Nenhuma chamada registrada nas últimas 24h",
+    "categoryFilter": "Categoria de tarefa"
   },
   "discovery": {
     "title": "Descoberta de provedores",
@@ -13569,7 +13599,9 @@
         "description": "Uma conquista oculta espera...",
         "criteria": "Complete a conquista oculta para revelar este emblema."
       }
-    }
+    },
+    "leaderboardTitle": "Ranking",
+    "leaderboardDescription": "Classificação e conquistas entre as suas chaves de API"
   },
   "featureFlags": {
     "title": "Sinalizadores de recursos",
@@ -14012,7 +14044,11 @@
     "learnMore": "Saiba mais",
     "changelogLoadFailed": "Não foi possível carregar o changelog. Tente novamente mais tarde.",
     "retry": "Nova tentativa",
-    "viewFullHistory": "Ver histórico completo no GitHub"
+    "viewFullHistory": "Ver histórico completo no GitHub",
+    "title": "Novidades e changelog",
+    "description": "Anúncios da equipe do OmniRoute e as notas das últimas versões",
+    "viewLabel": "Visualização",
+    "loadingNews": "Carregando anúncios..."
   },
   "reasoningRouting": {
     "editor": {
