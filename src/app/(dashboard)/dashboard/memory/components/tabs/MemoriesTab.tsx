@@ -411,9 +411,9 @@ export default function MemoriesTab() {
       {/* Memories table */}
       <Card>
         <div className="p-4">
-          <div className="flex items-center justify-between mb-4">
+          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <h2 className="text-lg font-semibold">{t("memories")}</h2>
-            <div className="flex gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row">
               <Input
                 icon="search"
                 placeholder={t("search")}
@@ -423,7 +423,7 @@ export default function MemoriesTab() {
                   setSearchQuery(e.target.value);
                   setPage(1);
                 }}
-                className="w-64"
+                className="sm:w-64"
               />
               <Select
                 value={filterType}

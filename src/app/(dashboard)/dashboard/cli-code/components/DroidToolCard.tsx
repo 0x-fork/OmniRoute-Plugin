@@ -502,6 +502,7 @@ export default function DroidToolCard({
                         onClick={() => addModel()}
                         disabled={!modelInput.trim() || modelList.includes(modelInput.trim())}
                         title={t("addModel")}
+                        aria-label={t("addModel")}
                         className="shrink-0 text-xs"
                       >
                         <Icon name="add" size={14} />

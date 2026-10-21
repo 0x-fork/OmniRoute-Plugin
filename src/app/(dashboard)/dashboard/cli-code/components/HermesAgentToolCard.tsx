@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import Icon from "@/shared/components/Icon";
 import { Card, Button, ModelSelectModal } from "@/shared/components";
 import { cn } from "@/shared/utils/cn";
+import { CARD_TOGGLE_CLASS, cardToggleProps } from "./cardToggle";
 
 interface Role {
   id: string;
@@ -90,7 +91,7 @@ const HERMES_ROLES: Role[] = [
 export default function HermesAgentToolCard({
   tool,
   isExpanded = false,
-  onToggle = () => {},
+  onToggle,
   baseUrl,
   apiKeys,
   activeProviders = [],
@@ -192,7 +193,7 @@ export default function HermesAgentToolCard({
       setPreviewYaml(null);
       setFirstSetupAt(null);
     }
-    onToggle();
+    onToggle?.();
   };
 
   const setRoleSelection = (roleId: string, model: string, provider = "OmniRoute") => {
@@ -347,8 +348,8 @@ export default function HermesAgentToolCard({
     <Card padding="sm" className="overflow-hidden">
       {/* Collapsed header — exact match to OpenClaw / Kilo / other Auto-Configured entries */}
       <div
-        className="flex items-center justify-between hover:cursor-pointer"
-        onClick={handleToggle}
+        className={cn("flex items-center justify-between hover:cursor-pointer", CARD_TOGGLE_CLASS)}
+        {...cardToggleProps(isExpanded, onToggle ? handleToggle : undefined)}
       >
         <div className="flex min-w-0 items-center gap-3">
           <div className="size-8 flex items-center justify-center shrink-0">

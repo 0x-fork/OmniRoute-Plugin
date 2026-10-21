@@ -3287,7 +3287,8 @@
     "cliproxyapiUnknown": "Unknown",
     "cliproxyapiUpdate": "Update",
     "cliproxyapiUpdateAvailable": "Update available: v{current} → v{latest}",
-    "cliproxyapiVersion": "Version"
+    "cliproxyapiVersion": "Version",
+    "removeMapping": "Remove mapping"
   },
   "modelCatalog": {
     "title": "Models & Combos",

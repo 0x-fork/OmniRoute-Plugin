@@ -8,9 +8,10 @@ import Button from "./Button";
 import Input from "./Input";
 import Select from "./Select";
 
-// Method choice rows: full-width outline buttons carrying an icon, a heading and a description.
+// Method choice rows: full-width outline buttons carrying an icon, a heading and a description
+// (card radius, not the kit button pill: the rows wrap to 2-3 lines).
 const METHOD_CARD_CLASS =
-  "h-auto w-full justify-start whitespace-normal p-4 text-left font-normal hover:bg-bg-subtle";
+  "h-auto w-full justify-start whitespace-normal rounded-card p-4 text-left font-normal hover:bg-bg-subtle";
 
 type KiroAuthModalProps = {
   isOpen: boolean;

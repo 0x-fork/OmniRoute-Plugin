@@ -17,8 +17,9 @@ export interface RiskNoticeModalProps {
 /**
  * Generic risk notice modal (D16).
  * Persists "don't show again" preference to localStorage using `dontShowAgainKey`.
- * Escape, the overlay click and the focus trap come from the Modal adapter (kit Dialog);
- * all three cancel, as the legacy Escape handler did.
+ * Escape and the focus trap come from the Modal adapter (kit Dialog); Escape cancels, as the
+ * legacy Escape handler did. An overlay click does nothing (closeOnOverlay={false}): the legacy
+ * backdrop had no click handler, and a stray click outside must not count as a decision.
  */
 export function RiskNoticeModal({
   open,
@@ -47,6 +48,7 @@ export function RiskNoticeModal({
       onClose={onCancel}
       size="md"
       showCloseButton={false}
+      closeOnOverlay={false}
       title={
         <span className="flex items-center gap-3">
           <span className="shrink-0 rounded-lg bg-warning/10 p-2 text-warning">

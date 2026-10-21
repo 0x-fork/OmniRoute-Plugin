@@ -93,7 +93,7 @@ export default function CliToolCard({
         <span
           className={cn(
             "inline-flex items-center gap-1 text-[11px] font-medium px-1.5 py-0.5 rounded",
-            installed ? "text-success " : "text-text-muted "
+            installed ? "text-success" : "text-text-muted"
           )}
         >
           <span aria-hidden="true">{installed ? "✓" : "✗"}</span>

@@ -301,6 +301,8 @@ export default function CustomCliCard({
                         variant="ghost"
                         size="sm"
                         onClick={() => handleRemoveMapping(mapping.id)}
+                        aria-label={translateOrFallback("removeMapping", "Remove mapping")}
+                        title={translateOrFallback("removeMapping", "Remove mapping")}
                       >
                         <Icon name="delete" size={16} />
                       </Button>

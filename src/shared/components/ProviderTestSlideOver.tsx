@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
@@ -69,8 +69,13 @@ function ProviderTestSlideOverPanel({
   const { models } = useProviderModels(providerId);
   const firstModel = models[0]?.id ?? "";
 
-  // Escape, the overlay click, focus trap/restore and the body scroll lock are the kit Sheet's
+  // Escape, the overlay click, the focus trap and the body scroll lock are the kit Sheet's
   // (Radix Dialog); the panel only renders while open, so it mounts already open.
+  // Focus return is ours, as in the Modal adapter: Radix only refocuses its own SheetTrigger,
+  // which a controlled panel never has, so remember the opener when the sheet takes focus and
+  // put focus back on it when the sheet closes. Radix fires onCloseAutoFocus after the panel
+  // unmounts too, so this also covers the parent dropping the panel (`isOpen` → false).
+  const openerRef = useRef<HTMLElement | null>(null);
   const color = provider.color || "#64748b";
   const modelOptions = models.length > 0 ? models : [];
 
@@ -86,6 +91,16 @@ function ProviderTestSlideOverPanel({
         showClose={false}
         aria-describedby={undefined}
         className="w-full sm:w-[640px] md:w-[720px] lg:w-[820px] max-w-full bg-surface p-0"
+        onOpenAutoFocus={() => {
+          const active = document.activeElement;
+          openerRef.current = active instanceof HTMLElement ? active : null;
+        }}
+        onCloseAutoFocus={(e) => {
+          e.preventDefault();
+          const opener = openerRef.current;
+          openerRef.current = null;
+          if (opener?.isConnected) opener.focus();
+        }}
       >
         <SheetTitle className="ci-sr-only">
           {t("dialogLabel", { provider: provider.name })}
@@ -453,7 +468,7 @@ function LogsTab({ providerId }: { providerId: string }) {
           const isExpanded = expanded === key;
           const statusOk = typeof log.status === "number" && log.status >= 200 && log.status < 400;
           const statusColor = statusOk
-            ? "text-success "
+            ? "text-success"
             : typeof log.status === "number"
               ? "text-error"
               : "text-text-muted";
