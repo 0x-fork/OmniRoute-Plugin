@@ -326,7 +326,6 @@ export default function ModalityBridgeVideoTab({
             />
             <Select
               label={t("modalityBridgeAdvanced")}
-              aria-label={t("modalityBridgeAdvanced")}
               value={settings.modalityBridgeVideoSamplingPolicy}
               onChange={(event) =>
                 void update({

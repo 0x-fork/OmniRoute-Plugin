@@ -396,6 +396,7 @@ export default function ComboDefaultsTab() {
             </div>
             <Input
               type="number"
+              aria-label={t("stickyLimit")}
               min="1"
               max="1000"
               value={comboDefaults.stickyRoundRobinLimit || 3}
@@ -857,7 +858,6 @@ export default function ComboDefaultsTab() {
               size="sm"
               onClick={() => setDropdownOpen(!dropdownOpen)}
               aria-expanded={dropdownOpen}
-              aria-haspopup="listbox"
               className="mt-2 w-full justify-between font-normal text-text-muted"
             >
               <span className="flex-1 text-left">

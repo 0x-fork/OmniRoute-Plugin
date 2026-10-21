@@ -536,7 +536,9 @@ export default function AppearanceTab() {
                 </Button>
               </div>
               {uploadError?.target === "logo" && (
-                <p className="text-sm text-error">{uploadError.message}</p>
+                <p role="alert" className="text-sm text-error">
+                  {uploadError.message}
+                </p>
               )}
               {(settings.customLogoBase64 || settings.customLogoUrl) && (
                 <div className="mt-2 p-3 bg-bg-subtle rounded-lg">
@@ -643,7 +645,9 @@ export default function AppearanceTab() {
                 </Button>
               </div>
               {uploadError?.target === "favicon" && (
-                <p className="text-sm text-error">{uploadError.message}</p>
+                <p role="alert" className="text-sm text-error">
+                  {uploadError.message}
+                </p>
               )}
               {(settings.customFaviconBase64 || settings.customFaviconUrl) && (
                 <div className="mt-2 p-3 bg-bg-subtle rounded-lg">

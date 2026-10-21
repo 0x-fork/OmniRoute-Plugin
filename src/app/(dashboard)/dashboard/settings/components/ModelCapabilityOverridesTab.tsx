@@ -332,7 +332,7 @@ function ModelOverrideForm({
   return (
     <div className="flex flex-col sm:flex-row gap-2">
       <Select
-        aria-label={t("modelOverridesTitle")}
+        aria-label={t("modelOverrideKey")}
         value={key}
         onChange={(event) => setKey(event.target.value as ModelOverrideKey)}
         className="sm:w-44"
