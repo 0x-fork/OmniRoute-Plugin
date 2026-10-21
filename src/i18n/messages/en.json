@@ -1488,7 +1488,11 @@
       "chatIdPlaceholder": "-100123456789 or @channelname",
       "chatIdHint": "The unique numerical identifier or public username of the chat/channel.",
       "tutorial": "How to configure Telegram webhook:"
-    }
+    },
+    "copy": "Copy",
+    "copied": "Copied!",
+    "expandDetails": "Show details",
+    "collapseDetails": "Hide details"
   },
   "compliance": {
     "auditTitle": "Audit",

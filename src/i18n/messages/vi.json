@@ -1488,7 +1488,11 @@
       "chatIdPlaceholder": "-100123456789 hoặc @channelname",
       "chatIdHint": "Mã định danh số duy nhất hoặc tên người dùng công khai của cuộc trò chuyện/kênh.",
       "tutorial": "Cách cấu hình webhook Telegram:"
-    }
+    },
+    "copy": "Sao chép",
+    "copied": "Đã sao chép!",
+    "expandDetails": "Hiện chi tiết",
+    "collapseDetails": "Ẩn chi tiết"
   },
   "compliance": {
     "auditTitle": "Kiểm toán",

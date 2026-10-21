@@ -1488,7 +1488,11 @@
       "chatIdPlaceholder": "-100123456789 ou @nomecanal",
       "chatIdHint": "O identificador numérico único ou nome de usuário público do chat/canal.",
       "tutorial": "Tutorial"
-    }
+    },
+    "copy": "Copiar",
+    "copied": "Copiado!",
+    "expandDetails": "Mostrar detalhes",
+    "collapseDetails": "Ocultar detalhes"
   },
   "compliance": {
     "auditTitle": "Auditoria",
