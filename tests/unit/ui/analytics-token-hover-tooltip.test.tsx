@@ -2,7 +2,7 @@
 import React from "react";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   StatCard,
   CompactStatGrid,
@@ -13,6 +13,16 @@ import {
 import { ModelTable } from "@/shared/components/analytics/ModelTable";
 import RequestCountTable from "@/shared/components/analytics/RequestCountTable";
 import { fmtFull } from "@/shared/utils/formatting";
+
+// The kit Table (KEA-7886) mounts a persistent horizontal scrollbar that measures the table
+// with ResizeObserver, which jsdom does not implement.
+beforeAll(() => {
+  globalThis.ResizeObserver ??= class {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  } as unknown as typeof ResizeObserver;
+});
 
 // The shared Tooltip is a kit Tooltip (Radix) since KEA-7886: it opens on `pointermove`
 // over the trigger element (the Tooltip's child), after `delayMs`, and portals its
