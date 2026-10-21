@@ -21,9 +21,10 @@ test("provider connection actions fill the row width and wrap on mobile", () => 
     /className="contents"/,
     "icon-only actions must join the same flex line so they are spread with the other actions"
   );
+  // KEA-7886: icon-only actions are kit icon buttons pinned to the same 28px square.
   assert.match(
     source,
-    /className="inline-flex size-7 items-center justify-center/,
+    /size="icon-sm"[\s\S]{0,160}?className="size-7 min-h-7 rounded/,
     "icon-only actions must use the same square touch target"
   );
   assert.match(
