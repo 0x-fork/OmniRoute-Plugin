@@ -220,7 +220,7 @@ import {
   Wrench,
   X,
   Zap,
-  // lote 3 (KEA-7886),
+  // lote 3 (KEA-7886)
   Brackets,
   Cable,
   CalendarX,
