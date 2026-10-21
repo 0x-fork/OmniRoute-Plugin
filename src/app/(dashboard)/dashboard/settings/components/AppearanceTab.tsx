@@ -396,7 +396,7 @@ export default function AppearanceTab() {
                     await updateSetting("autoRefreshProviderQuotaInterval", next);
                   }}
                   disabled={loading || !autoRefreshProviderQuota}
-                  inputClassName="w-28"
+                  className="w-28 shrink-0"
                 />
                 <span className="text-xs text-text-muted">{t("seconds")}</span>
               </div>
@@ -445,7 +445,7 @@ export default function AppearanceTab() {
                 onChange={(e) => updateSetting("instanceName", e.target.value)}
                 placeholder="OmniRoute"
                 maxLength={100}
-                inputClassName="w-48"
+                className="w-48 shrink-0"
               />
             </div>
 

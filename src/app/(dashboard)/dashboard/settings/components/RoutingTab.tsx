@@ -1464,7 +1464,7 @@ export default function RoutingTab() {
                   if (parsed !== undefined && Number.isNaN(parsed)) return;
                   updateSetting({ searchTimeoutMs: parsed });
                 }}
-                inputClassName="w-32"
+                className="w-32 shrink-0"
               />
               {["exa-search", "tavily-search", "firecrawl", "context7", "jina-search"].map((id) => (
                 <Input
@@ -1484,7 +1484,7 @@ export default function RoutingTab() {
                     else next[id] = parsed;
                     updateSetting({ searchProviderTimeoutsMs: next });
                   }}
-                  inputClassName="w-32"
+                  className="w-32 shrink-0"
                 />
               ))}
             </div>

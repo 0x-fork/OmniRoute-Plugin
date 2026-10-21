@@ -86,7 +86,7 @@ export default function UsageTokenBufferTab() {
           onKeyDown={(e) => {
             if (e.key === "Enter") void updateUsageTokenBuffer();
           }}
-          inputClassName="w-36"
+          className="w-36 shrink-0"
           disabled={loading}
         />
         <Button
