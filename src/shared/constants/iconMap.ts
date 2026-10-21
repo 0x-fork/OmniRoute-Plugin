@@ -225,6 +225,8 @@ import {
   Tally3,
   Target,
 } from "lucide-react";
+// Lote 9 — tools, system, resilience, rankings, changelog, provider-stats (KEA-7886).
+import { BellOff, PartyPopper, BadgePlus } from "lucide-react";
 
 /**
  * Material Symbols name → Lucide icon. `null` = still rendered with the Material ligature by
@@ -524,7 +526,7 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   network_node: Waypoints,
   network_ping: null,
   neurology: null,
-  notifications_off: null,
+  notifications_off: BellOff,
   open_in_browser: null,
   output: ArrowRightFromLine,
   paid: CircleDollarSign,
@@ -563,7 +565,7 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   score: Award,
   search_off: SearchX,
   select_all: null,
-  sell: null,
+  sell: Tag,
   send: null,
   sensors: null,
   settings_backup_restore: RotateCcw,
@@ -626,6 +628,8 @@ export const ICON_MAP: Record<string, LucideIcon | null> = {
   wifi: Wifi,
   wifi_off: WifiOff,
   workspace_premium: Award,
+  celebration: PartyPopper,
+  new_releases: BadgePlus,
 };
 
 export function resolveIcon(name: string | null | undefined): LucideIcon | null {

@@ -14009,7 +14009,11 @@
     "learnMore": "Learn more",
     "changelogLoadFailed": "Could not load the changelog. Please try again later.",
     "retry": "Retry",
-    "viewFullHistory": "View full history on GitHub"
+    "viewFullHistory": "View full history on GitHub",
+    "title": "News & changelog",
+    "description": "Announcements from the OmniRoute team and the latest release notes",
+    "viewLabel": "View",
+    "loadingNews": "Loading announcements..."
   },
   "reasoningRouting": {
     "editor": {

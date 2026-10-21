@@ -14009,7 +14009,11 @@
     "learnMore": "Tìm hiểu thêm",
     "changelogLoadFailed": "Không thể tải lịch sử thay đổi. Vui lòng thử lại sau.",
     "retry": "Thử lại",
-    "viewFullHistory": "Xem toàn bộ lịch sử trên GitHub"
+    "viewFullHistory": "Xem toàn bộ lịch sử trên GitHub",
+    "title": "Tin tức và nhật ký thay đổi",
+    "description": "Thông báo từ nhóm OmniRoute và ghi chú phát hành mới nhất",
+    "viewLabel": "Chế độ xem",
+    "loadingNews": "Đang tải thông báo..."
   },
   "reasoningRouting": {
     "editor": {
