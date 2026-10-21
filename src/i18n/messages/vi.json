@@ -9040,7 +9040,8 @@
     "tomlTestPassed": "Đạt",
     "tomlTestFailed": "Không đạt",
     "tomlImportError": "Không thể xử lý tệp RTK TOML.",
-    "tomlFileReadError": "Không thể đọc tệp TOML đã chọn."
+    "tomlFileReadError": "Không thể đọc tệp TOML đã chọn.",
+    "viewMode": "Chế độ xem"
   },
   "compressionEngineConfig": {
     "loading": "Đang tải…",
@@ -9262,7 +9263,8 @@
     "languagePacksList": "Gói ngôn ngữ: {packs}",
     "dragToReorder": "Kéo để sắp xếp lại bước",
     "engine": "Bộ máy",
-    "intensity": "Cường độ"
+    "intensity": "Cường độ",
+    "compressionOverride": "Ghi đè nén"
   },
   "compressionStudio": {
     "noRun": "Chưa có lượt nén nào.",
@@ -9528,7 +9530,9 @@
     "tooltipMinLength": "Tin nhắn ngắn hơn mức này sẽ không được nén. Thấp hơn = nén nhiều hơn.",
     "tooltipMinSavings": "Chỉ nén nếu tiết kiệm được ít nhất ngần này token.",
     "ultraSettings": "Cài đặt tối đa",
-    "ultraSettingsDesc": "Nén ngữ nghĩa sử dụng SLM"
+    "ultraSettingsDesc": "Nén ngữ nghĩa sử dụng SLM",
+    "defaultLanguage": "Ngôn ngữ mặc định",
+    "viewMode": "Chế độ xem"
   },
   "translator": {
     "title": "Trình dịch",

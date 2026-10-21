@@ -9040,7 +9040,8 @@
     "tomlTestPassed": "Passed",
     "tomlTestFailed": "Failed",
     "tomlImportError": "Could not process the RTK TOML file.",
-    "tomlFileReadError": "Could not read the selected TOML file."
+    "tomlFileReadError": "Could not read the selected TOML file.",
+    "viewMode": "View mode"
   },
   "compressionEngineConfig": {
     "loading": "Loading…",
@@ -9262,7 +9263,8 @@
     "languagePacksList": "Language packs: {packs}",
     "dragToReorder": "Drag to reorder step",
     "engine": "Engine",
-    "intensity": "Intensity"
+    "intensity": "Intensity",
+    "compressionOverride": "Compression override"
   },
   "compressionStudio": {
     "noRun": "No compression run available.",
@@ -9528,7 +9530,9 @@
     "tooltipMinLength": "Messages shorter than this are not compressed. Lower = more compression.",
     "tooltipMinSavings": "Only compress if it saves at least this many tokens.",
     "ultraSettings": "Ultra Settings",
-    "ultraSettingsDesc": "SLM-powered semantic compression"
+    "ultraSettingsDesc": "SLM-powered semantic compression",
+    "defaultLanguage": "Default language",
+    "viewMode": "View mode"
   },
   "translator": {
     "title": "Translator",
