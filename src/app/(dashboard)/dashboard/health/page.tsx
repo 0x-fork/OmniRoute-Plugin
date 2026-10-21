@@ -1073,20 +1073,23 @@ function HealthSnapshot() {
                                 })}
                               </span>
                             </div>
-                            {/* Kit Progress (role=progressbar); the kit has no tone prop, so the
-                                status colour is set on its indicator. */}
-                            <Progress
-                              value={quotaProgress}
-                              animate={false}
-                              aria-label={t("learnedFromHeaders")}
-                              className={
-                                exhausted
-                                  ? "[&_.ci-progress__indicator]:bg-none [&_.ci-progress__indicator]:bg-error"
-                                  : lowRemaining
-                                    ? "[&_.ci-progress__indicator]:bg-none [&_.ci-progress__indicator]:bg-warning"
-                                    : "[&_.ci-progress__indicator]:bg-none [&_.ci-progress__indicator]:bg-success"
-                              }
-                            />
+                            {/* Kit Progress, decorative: the kit spreads aria-* onto its outer div and
+                                never names the inner role="progressbar" (no label forwarding), so the
+                                bar is hidden from assistive tech — the remaining/limit text above
+                                carries the value. No tone prop either: status colour on the indicator. */}
+                            <div aria-hidden="true" data-testid="health-pool-bar">
+                              <Progress
+                                value={quotaProgress}
+                                animate={false}
+                                className={
+                                  exhausted
+                                    ? "[&_.ci-progress__indicator]:bg-none [&_.ci-progress__indicator]:bg-error"
+                                    : lowRemaining
+                                      ? "[&_.ci-progress__indicator]:bg-none [&_.ci-progress__indicator]:bg-warning"
+                                      : "[&_.ci-progress__indicator]:bg-none [&_.ci-progress__indicator]:bg-success"
+                                }
+                              />
+                            </div>
                           </div>
                         )}
                         <div className="flex items-center gap-3 text-[11px] text-text-muted">
