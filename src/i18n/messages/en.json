@@ -1000,7 +1000,10 @@
     "batchFileUsedByCount": "Used by {count, plural, one {# batch} other {# batches}}",
     "batchFilePreview": "Preview",
     "batchFilePreviewTruncated": "Showing first {shown} lines ({total} total lines)",
-    "batchFileDownloadFull": "Download Full File"
+    "batchFileDownloadFull": "Download Full File",
+    "tokensPageTitle": "Tokens",
+    "tokensPageDescription": "Send tokens between API keys, share invite codes and connect community servers.",
+    "tokensServerUrlLabel": "Server URL"
   },
   "disabled": "Disabled",
   "featureFlagOmnirouteEmergencyFallbackDescription": "Route budget-exhausted requests to the emergency free fallback provider/model.",
@@ -2501,7 +2504,8 @@
     "onlySelectedConnections": "Only selected connections",
     "selectAtLeastOneConnection": "Select at least one connection or choose All connections.",
     "allConnectionsDesc": "This key can use any active connection.",
-    "restrictedToConnections": "Restricted to {count, plural, one {# connection} other {# connections}}."
+    "restrictedToConnections": "Restricted to {count, plural, one {# connection} other {# connections}}.",
+    "removeSelection": "Remove {name}"
   },
   "auditLog": {
     "title": "Audit Log",
@@ -3565,6 +3569,7 @@
     "playgroundNoCombosYet": "No combos configured yet.",
     "playgroundCreateFirst": "Create one first",
     "weighted": "Weighted",
+    "weightPercent": "Weight (%)",
     "leastUsed": "Least-Used",
     "costOpt": "Cost-Opt",
     "strategyGuideTitle": "How to use this strategy",
@@ -3726,6 +3731,7 @@
     "builderGlobalAccountCount": "{count, plural, one {# account} other {# accounts}}",
     "builderGlobalAdded": "Added",
     "builderGlobalAdd": "Add",
+    "clearSearch": "Clear search",
     "manualModel": "Manual model",
     "manualModelInvalid": "Enter a model as provider/model.",
     "manualModelUnknownProvider": "Unknown provider prefix.",
@@ -3979,6 +3985,10 @@
     "responseValidationMinLength": "Minimum content length (chars)",
     "responseValidationJsonPaths": "JSON-path checks",
     "responseValidationAddCheck": "+ Add check",
+    "responseValidationRemoveCheck": "Remove check",
+    "responseValidationPath": "JSON path",
+    "responseValidationCondition": "Condition",
+    "responseValidationValue": "Expected value",
     "agentFeaturesSystemMessageOverride": "Override system message",
     "agentFeaturesSystemMessagePlaceholder": "You are an expert assistant...",
     "agentFeaturesSystemMessageHint": "System message override for agents",
@@ -5294,7 +5304,8 @@
         "skipped": "already configured",
         "failed": "failed"
       }
-    }
+    },
+    "stepProgress": "Setup progress"
   },
   "providers": {
     "tosAvoidNoticeTitle": "This provider is excluded from auto by default",
@@ -11819,7 +11830,8 @@
       "nextButton": "Next",
       "runButton": "Run",
       "promptPlaceholder": "Enter your message… (Enter to send, Shift+Enter for newline)"
-    }
+    },
+    "playgroundTabs": "Playground modes"
   },
   "miniPlayground": {
     "endpoint": "Endpoint",
@@ -13819,6 +13831,7 @@
     "latency": "Latency",
     "quota": "Quota",
     "rangeWindow": "{range} window",
+    "timeRange": "Time range",
     "runtimeHealthBlend": "runtime/health blend",
     "averageResponseTime": "average response time",
     "worstQuota": "Worst quota",
