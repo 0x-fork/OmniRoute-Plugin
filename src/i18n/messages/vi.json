@@ -12215,7 +12215,8 @@
     "statusExhausted": "ĐÃ CẠN KIỆT",
     "statusAlerting": "ĐANG CẢNH BÁO",
     "statusError": "LỖI",
-    "moreSuffix": "+{count} nữa"
+    "moreSuffix": "+{count} nữa",
+    "feedFilterLabel": "Lọc sự kiện"
   },
   "quotaShare": {
     "weightPercent": "Trọng số %",

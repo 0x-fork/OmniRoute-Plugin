@@ -12215,7 +12215,8 @@
     "statusExhausted": "ESGOTADO",
     "statusAlerting": "ALERTANDO",
     "statusError": "ERRO",
-    "moreSuffix": "+{count} mais"
+    "moreSuffix": "+{count} mais",
+    "feedFilterLabel": "Filtrar eventos"
   },
   "quotaShare": {
     "weightPercent": "Peso %",

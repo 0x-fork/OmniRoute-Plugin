@@ -12215,7 +12215,8 @@
     "statusExhausted": "EXHAUSTED",
     "statusAlerting": "ALERTING",
     "statusError": "ERROR",
-    "moreSuffix": "+{count} more"
+    "moreSuffix": "+{count} more",
+    "feedFilterLabel": "Filter events"
   },
   "quotaShare": {
     "weightPercent": "Weight %",
