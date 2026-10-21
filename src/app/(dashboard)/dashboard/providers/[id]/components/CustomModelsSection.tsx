@@ -684,7 +684,7 @@ export default function CustomModelsSection({
                   </div>
 
                   {editingModelId === model.id && (
-                    <div className="mt-3 min-w-0 max-w-full rounded-lg border border-border bg-muted p-3">
+                    <div className="mt-3 min-w-0 max-w-full rounded-lg border border-border bg-bg-subtle p-3">
                       <div className={FORMAT_FIELDS_GRID}>
                         <div className="min-w-0 lg:w-[11rem] lg:shrink-0">
                           <Select
@@ -858,6 +858,11 @@ export default function CustomModelsSection({
                       onClick={() => handleResetToUpstreamDefaults(model.id!)}
                       className="size-6 min-h-6 rounded text-warning hover:bg-warning-bg"
                       title={providerText(
+                        t,
+                        "resetToUpstreamDefaults",
+                        "Restore upstream defaults"
+                      )}
+                      aria-label={providerText(
                         t,
                         "resetToUpstreamDefaults",
                         "Restore upstream defaults"

@@ -2,7 +2,7 @@
 
 import Icon from "@/shared/components/Icon";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
@@ -325,6 +325,7 @@ export default function ProviderOnboardingWizard() {
   const [step, setStep] = useState<WizardStep>("type");
   const [query, setQuery] = useState("");
   const [selectedProvider, setSelectedProvider] = useState<WizardProviderOption | null>(null);
+  const providerListHeadingId = useId();
   const [apiKeyForm, setApiKeyForm] = useState<ApiKeyFormState>(EMPTY_API_KEY_FORM);
   const [customForm, setCustomForm] = useState<CustomFormState>(DEFAULT_CUSTOM_FORM);
   const [status, setStatus] = useState("");
@@ -639,7 +640,7 @@ export default function ProviderOnboardingWizard() {
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
               <div>
-                <h2 className="text-xl font-semibold text-text-main">
+                <h2 id={providerListHeadingId} className="text-xl font-semibold text-text-main">
                   {kind === "oauth"
                     ? text("onboardingChooseOAuthProvider", "Choose an OAuth provider")
                     : text("onboardingChooseApiKeyProvider", "Choose an API-key provider")}
@@ -661,7 +662,11 @@ export default function ProviderOnboardingWizard() {
               placeholder={text("onboardingSearchProviders", "Search providers…")}
               icon="search"
             />
-            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+            <div
+              role="group"
+              aria-labelledby={providerListHeadingId}
+              className="grid gap-3 md:grid-cols-2 xl:grid-cols-3"
+            >
               {filteredOptions.map((option) => (
                 <ProviderOptionCard
                   key={option.id}

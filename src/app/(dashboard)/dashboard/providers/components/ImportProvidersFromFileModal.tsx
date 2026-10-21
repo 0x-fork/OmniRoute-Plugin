@@ -78,35 +78,37 @@ function EntriesTable({ entries, selected, onToggleRow, onToggleAll, t }: Entrie
       <div className="text-xs text-text-muted">
         {t("importFromFileSelectHint", { count: selected.size, total: entries.length })}
       </div>
-      <div className="max-h-64 overflow-y-auto rounded border border-border">
-        <Table className="text-xs" scrollbarLabel={t("importFromFileTitle")}>
-          <TableHeader className="sticky top-0">
-            <TableRow>
-              <TableHead>
-                <Checkbox
-                  checked={selected.size === entries.length}
-                  onChange={(e) => onToggleAll(e.target.checked)}
-                />
-              </TableHead>
-              <TableHead>{t("importFromFileColProvider")}</TableHead>
-              <TableHead>{t("importFromFileColName")}</TableHead>
-              <TableHead>{t("importFromFileColBaseUrl")}</TableHead>
+      <Table
+        className="text-xs"
+        containerClassName="max-h-64 overflow-y-auto"
+        scrollbarLabel={t("importFromFileTitle")}
+      >
+        <TableHeader className="sticky top-0">
+          <TableRow>
+            <TableHead>
+              <Checkbox
+                checked={selected.size === entries.length}
+                onChange={(e) => onToggleAll(e.target.checked)}
+              />
+            </TableHead>
+            <TableHead>{t("importFromFileColProvider")}</TableHead>
+            <TableHead>{t("importFromFileColName")}</TableHead>
+            <TableHead>{t("importFromFileColBaseUrl")}</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {entries.map((entry, idx) => (
+            <TableRow key={idx}>
+              <TableCell>
+                <Checkbox checked={selected.has(idx)} onChange={() => onToggleRow(idx)} />
+              </TableCell>
+              <TableCell className="font-mono text-text-muted">{entry.provider}</TableCell>
+              <TableCell className="font-medium text-text-main">{entry.name}</TableCell>
+              <TableCell className="text-text-muted">{entry.baseUrl || "—"}</TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {entries.map((entry, idx) => (
-              <TableRow key={idx}>
-                <TableCell>
-                  <Checkbox checked={selected.has(idx)} onChange={() => onToggleRow(idx)} />
-                </TableCell>
-                <TableCell className="font-mono text-text-muted">{entry.provider}</TableCell>
-                <TableCell className="font-medium text-text-main">{entry.name}</TableCell>
-                <TableCell className="text-text-muted">{entry.baseUrl || "—"}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+          ))}
+        </TableBody>
+      </Table>
     </>
   );
 }

@@ -157,7 +157,7 @@ export default function CoolingConnectionsPanel(props: CoolingConnectionsPanelPr
           return (
             <li
               key={c.id ?? label}
-              className="flex items-center justify-between gap-2 rounded border border-warning/30 bg-background/40 px-3 py-2 text-sm"
+              className="flex items-center justify-between gap-2 rounded border border-warning/30 bg-bg/40 px-3 py-2 text-sm"
             >
               <span className="min-w-0">
                 <span className="font-medium">{label}</span>

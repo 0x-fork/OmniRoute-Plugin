@@ -371,6 +371,17 @@ export default function PassthroughModelRow({
                         ? providerText(t, "errorShort", "Error")
                         : t("testModel")
               }
+              aria-label={
+                testingModel
+                  ? t("testingModel")
+                  : testStatus === "ok"
+                    ? "OK"
+                    : testStatus === "quota"
+                      ? t("modelTestQuotaTooltip")
+                      : testStatus === "error"
+                        ? providerText(t, "errorShort", "Error")
+                        : t("testModel")
+              }
             >
               {testingModel ? (
                 <Icon name="progress_activity" size={14} className="animate-spin" />
@@ -394,6 +405,11 @@ export default function PassthroughModelRow({
               disabled={togglingHidden}
               className="size-6 min-h-6 rounded text-text-muted disabled:cursor-not-allowed disabled:opacity-40"
               title={
+                isHidden
+                  ? providerText(t, "showModel", "Show model")
+                  : providerText(t, "hideModel", "Hide model")
+              }
+              aria-label={
                 isHidden
                   ? providerText(t, "showModel", "Show model")
                   : providerText(t, "hideModel", "Hide model")

@@ -337,9 +337,7 @@ export default function ConnectionsListPanel({
           <div className="flex w-full items-center gap-2 flex-wrap sm:w-auto">
             <Checkbox
               checked={allSelectedPage}
-              ref={(el) => {
-                if (el) el.indeterminate = someSelectedPage;
-              }}
+              indeterminate={someSelectedPage && !allSelectedPage}
               onChange={() => {
                 if (allSelectedPage) {
                   const toRemove = new Set(pageConnections.map((c) => c.id));
@@ -526,9 +524,7 @@ export default function ConnectionsListPanel({
           <div className="flex w-full items-center gap-2 flex-wrap sm:w-auto">
             <Checkbox
               checked={allSelected}
-              ref={(el) => {
-                if (el) el.indeterminate = someSelected;
-              }}
+              indeterminate={someSelected}
               onChange={handleToggleSelectAll}
               label={
                 <span className="text-sm font-medium text-text-muted">
