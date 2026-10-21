@@ -235,9 +235,10 @@ test.describe("API key model scope", () => {
     const permissionsEditor = await openKeyAccessEditor(page, "Provider Scope Key");
     await permissionsEditor.getByRole("tab", { name: "Models", exact: true }).click();
 
-    // Enter Restrict mode via the primary Access Mode toggle (accessible name includes the lock icon text).
+    // Enter Restrict mode via the primary Access Mode toggle (KEA-7886: the lock icon is an
+    // aria-hidden Lucide svg, so the accessible name is just "Restrict").
     const accessModeRestrict = permissionsEditor.getByRole("button", {
-      name: /^lock\s+restrict$/i,
+      name: /^restrict$/i,
     });
     await expect(accessModeRestrict).toBeVisible({ timeout: UI_STABILITY_TIMEOUT_MS });
     await accessModeRestrict.click();
@@ -288,8 +289,9 @@ test.describe("API key model scope", () => {
     await reopened.getByRole("tab", { name: "Models", exact: true }).click();
 
     // Restrict mode should remain selected after reopen.
-    await expect(reopened.getByRole("button", { name: /^lock\s+restrict$/i })).toHaveClass(
-      /bg-primary/
+    await expect(reopened.getByRole("button", { name: /^restrict$/i })).toHaveAttribute(
+      "aria-pressed",
+      "true"
     );
 
     const reopenedProviderCheckbox = reopened.getByRole("checkbox", {
@@ -320,8 +322,9 @@ test.describe("API key model scope", () => {
     await returnToKeyList(page);
     const denyAllReopened = await openKeyAccessEditor(page, "Provider Scope Key");
     await denyAllReopened.getByRole("tab", { name: "Models", exact: true }).click();
-    await expect(denyAllReopened.getByRole("button", { name: /^lock\s+restrict$/i })).toHaveClass(
-      /bg-primary/
+    await expect(denyAllReopened.getByRole("button", { name: /^restrict$/i })).toHaveAttribute(
+      "aria-pressed",
+      "true"
     );
     await expect(
       denyAllReopened.getByRole("checkbox", { name: /ollama[- ]?cloud/i })

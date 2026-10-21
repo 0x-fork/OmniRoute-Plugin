@@ -2500,7 +2500,8 @@
     "onlySelectedConnections": "Only selected connections",
     "selectAtLeastOneConnection": "Select at least one connection or choose All connections.",
     "allConnectionsDesc": "This key can use any active connection.",
-    "restrictedToConnections": "Restricted to {count, plural, one {# connection} other {# connections}}."
+    "restrictedToConnections": "Restricted to {count, plural, one {# connection} other {# connections}}.",
+    "removeSelection": "Remove {name}"
   },
   "auditLog": {
     "title": "Audit Log",
