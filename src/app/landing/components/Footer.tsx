@@ -16,7 +16,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 lg:col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <OmniRouteLockup className="text-white" />
+              <OmniRouteLockup className="text-white [&_.ci-keak-logo]:text-white" />
             </div>
             <p className="text-gray-500 text-sm max-w-xs mb-6 break-words">{t("footerTagline")}</p>
             <div className="flex gap-4">

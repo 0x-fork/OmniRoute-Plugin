@@ -22,8 +22,8 @@ export default function Navigation() {
           onClick={() => router.push("/")}
           aria-label={t("navigateHome")}
         >
-          {/* The landing is a fixed dark surface: the lockup takes white ink in both themes. */}
-          <OmniRouteLockup className="text-white" />
+          {/* Fixed dark surface: white ink in both themes (the kit wordmark sets its own color). */}
+          <OmniRouteLockup className="text-white [&_.ci-keak-logo]:text-white" />
         </button>
 
         {/* Desktop menu */}
