@@ -65,7 +65,7 @@ function SliderRow({ label, value, min, max, step, onChange }: SliderRowProps) {
             const v = parseFloat(e.target.value);
             if (!isNaN(v)) onChange(Math.min(max, Math.max(min, v)));
           }}
-          className="w-20"
+          className="w-20 min-w-0"
           inputClassName="text-xs text-right"
         />
       </div>

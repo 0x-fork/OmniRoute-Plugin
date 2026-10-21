@@ -409,7 +409,7 @@ export default function CompareTab({ configState }: CompareTabProps) {
             disabled={atColumnLimit}
             aria-label={t("newColumnModelName")}
             inputClassName="text-xs"
-            className="w-40"
+            className="w-40 min-w-0"
           />
           <Button
             variant="outline"
