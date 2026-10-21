@@ -12071,8 +12071,17 @@
       "resilienceRotations": "{count} rotações de conta",
       "resilienceRetried": "Turno vazio repetido",
       "resilienceContinued": "Retomado no meio do fluxo",
-      "resilienceRecovered": "Recuperado por uma ação de resiliência"
-    }
+      "resilienceRecovered": "Recuperado por uma ação de resiliência",
+      "conversationContext": "Contexto da conversa",
+      "goToBottom": "Ir para o fim",
+      "liveRefreshOn": "Atualização ao vivo: ligada",
+      "liveRefreshOff": "Atualização ao vivo: desligada",
+      "continuesFromParent": "continua da requisição pai",
+      "continuesFrom": "Continua de {id}",
+      "viewConversation": "ver conversa",
+      "openConversation": "Abrir conversa {id}"
+    },
+    "tableLabel": "Logs de requisições"
   },
   "proxyLogger": {
     "filterAll": "Todos",
@@ -12117,7 +12126,9 @@
     "colServedBy": "Atendido por",
     "filterTraffic": "Tráfego",
     "filterTests": "Testes",
-    "filterSource": "Fonte"
+    "filterSource": "Fonte",
+    "tableLabel": "Logs de proxy",
+    "sortLogs": "Ordenar logs"
   },
   "endpointOptions": {
     "speech": "Fala",
@@ -14815,7 +14826,20 @@
     "mcp": "MCP",
     "mcpTool": "MCP tool",
     "scope": "Scope",
-    "apiKey": "API key"
+    "apiKey": "API key",
+    "visibleCount": "{visible} visíveis / {total} no total",
+    "modeLabel": "Modo de visualização",
+    "jumpToNow": "Ir para o horário atual; a linha AGORA volta para a posição {position}%",
+    "laneReuse": "Reúso de faixa",
+    "laneReuseLabel": "Janela de reúso de faixa (minutos)",
+    "laneReuseHint": "Requisições com o mesmo id de conversa ficam na mesma linha da timeline enquanto o intervalo entre elas for menor que estes minutos.",
+    "laneReuseUnit": "min",
+    "autoRefresh": "Atualização automática",
+    "autoRefreshLabel": "Intervalo de atualização automática (segundos)",
+    "autoRefreshHint": "Com que frequência a timeline busca de novo a lista de requisições no servidor.",
+    "autoRefreshUnit": "s",
+    "zoomOut": "Diminuir zoom",
+    "zoomIn": "Aumentar zoom"
   },
   "metadata": {
     "compressionTitle": "Compressão",

@@ -12071,8 +12071,17 @@
       "resilienceRotations": "{count} lần chuyển tài khoản",
       "resilienceRetried": "Đã thử lại lượt trống",
       "resilienceContinued": "Đã tiếp tục giữa luồng",
-      "resilienceRecovered": "Đã khôi phục bằng hành động phục hồi"
-    }
+      "resilienceRecovered": "Đã khôi phục bằng hành động phục hồi",
+      "conversationContext": "Ngữ cảnh hội thoại",
+      "goToBottom": "Xuống cuối",
+      "liveRefreshOn": "Làm mới trực tiếp: bật",
+      "liveRefreshOff": "Làm mới trực tiếp: tắt",
+      "continuesFromParent": "tiếp nối từ yêu cầu cha",
+      "continuesFrom": "Tiếp nối từ {id}",
+      "viewConversation": "xem hội thoại",
+      "openConversation": "Mở hội thoại {id}"
+    },
+    "tableLabel": "Nhật ký yêu cầu"
   },
   "proxyLogger": {
     "filterAll": "Tất cả",
@@ -12117,7 +12126,9 @@
     "colServedBy": "Được phục vụ bởi",
     "filterTraffic": "Lưu lượng",
     "filterTests": "Bài kiểm tra",
-    "filterSource": "Nguồn"
+    "filterSource": "Nguồn",
+    "tableLabel": "Nhật ký proxy",
+    "sortLogs": "Sắp xếp nhật ký"
   },
   "endpointOptions": {
     "speech": "Giọng nói",
@@ -14815,7 +14826,20 @@
     "mcp": "MCP",
     "mcpTool": "Công cụ MCP",
     "scope": "Phạm vi",
-    "apiKey": "Khóa API"
+    "apiKey": "Khóa API",
+    "visibleCount": "{visible} hiển thị / {total} tổng",
+    "modeLabel": "Chế độ xem",
+    "jumpToNow": "Về thời điểm hiện tại, vạch HIỆN TẠI trở về vị trí {position}%",
+    "laneReuse": "Tái dùng làn",
+    "laneReuseLabel": "Khoảng tái dùng làn (phút)",
+    "laneReuseHint": "Các yêu cầu cùng mã hội thoại ở lại cùng một hàng trên dòng thời gian khi khoảng cách giữa chúng nhỏ hơn số phút này.",
+    "laneReuseUnit": "phút",
+    "autoRefresh": "Tự động làm mới",
+    "autoRefreshLabel": "Chu kỳ tự động làm mới (giây)",
+    "autoRefreshHint": "Tần suất dòng thời gian tải lại danh sách yêu cầu từ máy chủ.",
+    "autoRefreshUnit": "giây",
+    "zoomOut": "Thu nhỏ",
+    "zoomIn": "Phóng to"
   },
   "metadata": {
     "compressionTitle": "Nén",
