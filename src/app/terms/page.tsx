@@ -79,7 +79,7 @@ export default function TermsPage() {
             {t("questionsVisit")}{" "}
             <a
               href="https://github.com/diegosouzapw/OmniRoute"
-              className="text-primary hover:underline"
+              className="text-primary underline underline-offset-2"
               target="_blank"
               rel="noopener noreferrer"
             >

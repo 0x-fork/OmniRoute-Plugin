@@ -17,12 +17,13 @@ import Textarea from "@/shared/components/Textarea";
 import { cn } from "@/shared/utils/cn";
 
 // HTTP method → status tone of the Badge adapter (kit badge `data-tone`).
-const METHOD_TONES: Record<string, "success" | "info" | "warning" | "error" | "primary"> = {
+const METHOD_TONES: Record<string, "success" | "info" | "warning" | "error" | "default"> = {
   GET: "success",
   POST: "info",
   PUT: "warning",
   DELETE: "error",
-  PATCH: "primary",
+  // Lime-tinted "primary" fails contrast on the dark surface; PATCH reads as the neutral tone.
+  PATCH: "default",
 };
 
 /**

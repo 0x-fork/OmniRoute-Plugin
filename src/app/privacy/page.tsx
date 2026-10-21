@@ -75,7 +75,7 @@ export default function PrivacyPage() {
               <li>
                 <a
                   href="https://openai.com/policies/privacy-policy"
-                  className="text-primary hover:underline"
+                  className="text-primary underline underline-offset-2"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -85,7 +85,7 @@ export default function PrivacyPage() {
               <li>
                 <a
                   href="https://www.anthropic.com/privacy"
-                  className="text-primary hover:underline"
+                  className="text-primary underline underline-offset-2"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -95,7 +95,7 @@ export default function PrivacyPage() {
               <li>
                 <a
                   href="https://policies.google.com/privacy"
-                  className="text-primary hover:underline"
+                  className="text-primary underline underline-offset-2"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -136,7 +136,7 @@ export default function PrivacyPage() {
             {t("questionsVisit")}{" "}
             <a
               href="https://github.com/diegosouzapw/OmniRoute"
-              className="text-primary hover:underline"
+              className="text-primary underline underline-offset-2"
               target="_blank"
               rel="noopener noreferrer"
             >
