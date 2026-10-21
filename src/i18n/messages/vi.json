@@ -13563,7 +13563,9 @@
         "description": "Một thành tích ẩn đang chờ bạn...",
         "criteria": "Hoàn thành thành tích ẩn để mở huy hiệu này."
       }
-    }
+    },
+    "leaderboardTitle": "Bảng xếp hạng",
+    "leaderboardDescription": "Xếp hạng và thành tích giữa các khóa API của bạn"
   },
   "featureFlags": {
     "title": "Cờ tính năng",

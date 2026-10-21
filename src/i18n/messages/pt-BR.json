@@ -13563,7 +13563,9 @@
         "description": "Uma conquista oculta espera...",
         "criteria": "Complete a conquista oculta para revelar este emblema."
       }
-    }
+    },
+    "leaderboardTitle": "Ranking",
+    "leaderboardDescription": "Classificação e conquistas entre as suas chaves de API"
   },
   "featureFlags": {
     "title": "Sinalizadores de recursos",

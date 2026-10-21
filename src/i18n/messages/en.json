@@ -13563,7 +13563,9 @@
         "description": "A hidden achievement awaits...",
         "criteria": "Complete the hidden achievement to reveal this badge."
       }
-    }
+    },
+    "leaderboardTitle": "Leaderboard",
+    "leaderboardDescription": "Rankings and achievements across your API keys"
   },
   "featureFlags": {
     "title": "Feature Flags",
