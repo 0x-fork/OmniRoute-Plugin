@@ -292,7 +292,8 @@ test.describe("API keys flow", () => {
     await expect(inlineError).toBeInViewport();
 
     // No page-level error banner should appear behind the modal
-    const pageErrorBanner = page.locator('.flex.flex-col.gap-8 > [class~="bg-red-500/10"]');
+    // KEA-7886: the page-level banner is the kit Alert (critical variant).
+    const pageErrorBanner = page.locator('.flex.flex-col.gap-8 > [data-slot="alert"]');
     await expect(pageErrorBanner).not.toBeVisible();
 
     // Typing should clear the error
