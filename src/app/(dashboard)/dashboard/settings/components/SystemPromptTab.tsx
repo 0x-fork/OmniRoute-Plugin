@@ -107,7 +107,7 @@ export default function SystemPromptTab() {
                 className="min-h-[220px] resize-y"
                 disabled={loading}
               />
-              <div className="absolute bottom-2 right-3 text-xs text-text-muted/60 tabular-nums">
+              <div className="absolute bottom-2 right-3 text-xs text-text-muted tabular-nums">
                 {t("chars", { count: config.prefixPrompt.length })}
               </div>
             </div>
@@ -134,7 +134,7 @@ export default function SystemPromptTab() {
                 className="min-h-[220px] resize-y"
                 disabled={loading}
               />
-              <div className="absolute bottom-2 right-3 text-xs text-text-muted/60 tabular-nums">
+              <div className="absolute bottom-2 right-3 text-xs text-text-muted tabular-nums">
                 {t("chars", { count: config.suffixPrompt.length })}
               </div>
             </div>
