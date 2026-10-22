@@ -277,6 +277,34 @@ describe("EndpointPageClient", () => {
     );
   });
 
+  // F4 (wave-1 checkpoint): the whole destination line was break-all, so at 390 px the label
+  // split mid-word ("Cloud sync d|estination"). Only the URL may break anywhere now, and the
+  // row wraps instead of squeezing the text block.
+  it("breaks only the cloud destination URL, never the label words", async () => {
+    fetchMock.mockImplementation((input: RequestInfo | URL) => {
+      if (getRequestPath(input) === "/api/settings")
+        return Promise.resolve(
+          jsonResponse({
+            cloudEnabled: false,
+            cloudConfigured: true,
+            cloudUrl: "https://cloud.example",
+            hideEndpointCloudflaredTunnel: true,
+            hideEndpointTailscaleFunnel: true,
+            hideEndpointNgrokTunnel: true,
+          })
+        );
+      return Promise.resolve(jsonResponse({ data: [], providers: [], keys: [] }));
+    });
+    renderEndpointPage();
+    await waitForText("https://cloud.example");
+    const line = document.querySelector<HTMLElement>('[data-testid="cloud-sync-destination"]')!;
+    expect(line).not.toBeNull();
+    expect(line.className).not.toMatch(/\bbreak-all\b/);
+    expect(line.className).toMatch(/\bbreak-words\b/);
+    expect(line.querySelector("span.break-all")?.textContent).toContain("https://cloud.example");
+    expect(line.parentElement!.parentElement!.className).toMatch(/\bflex-wrap\b/);
+  });
+
   it("renders the endpoint shell before models finish and skips hidden tunnel probes", async () => {
     const modelsDeferred = createDeferred<Response>();
 

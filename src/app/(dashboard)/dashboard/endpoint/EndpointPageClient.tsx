@@ -1415,17 +1415,22 @@ export default function APIPageClient({ machineId }: Readonly<APIPageClientProps
             </span>
           </div>
 
-          {/* Cloud OmniRoute */}
-          <div className="flex items-center gap-3 py-3">
+          {/* Cloud OmniRoute — wraps below sm: the text block keeps a minimum width so the
+              status pill and the action move to the next line instead of squeezing it; only
+              the URL may break anywhere ("Cloud sync d|estination" at 390 px, F4). */}
+          <div className="flex flex-wrap items-center gap-3 py-3">
             <Icon name="cloud" size={18} className="text-info" />
-            <div className="flex-1 min-w-0">
+            <div className="flex-1 min-w-[12rem]">
               <span className="text-sm font-medium">{t("cloudOmniroute")}</span>
-              <p className="text-xs text-text-muted break-all">
+              <p
+                className="text-xs text-text-muted break-words"
+                data-testid="cloud-sync-destination"
+              >
                 {translateOrFallback(
                   "cloudUploadDestination",
                   "Cloud sync destination (not local backups):"
                 )}{" "}
-                {cloudBaseUrl || tc("notConfigured")}
+                <span className="break-all">{cloudBaseUrl || tc("notConfigured")}</span>
               </p>
             </div>
             <span
