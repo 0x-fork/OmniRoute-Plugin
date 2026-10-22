@@ -39,7 +39,9 @@ it("clears the saved-status timer on unmount", async () => {
       await import("../../../src/app/(dashboard)/dashboard/context/settings/CompressionPanel");
     const container = mount(<CompressionPanel />);
     await flush();
-    const toggle = container.querySelector("button[role='switch']") as HTMLButtonElement;
+    // The Toggle adapter renders the kit Switch, an <input type="checkbox" role="switch">
+    // (KEA-7886), so the switch is matched by role rather than by <button>.
+    const toggle = container.querySelector("[role='switch']") as HTMLInputElement;
     expect(toggle).not.toBeNull();
     await act(async () => toggle.click());
     await flush();
