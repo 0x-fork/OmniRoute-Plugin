@@ -31,7 +31,7 @@ import OmniRouteLogo, { OmniRouteLockup } from "./OmniRouteLogo";
 import Icon from "./Icon";
 import Button from "./Button";
 import Input from "./Input";
-import { ConfirmModal } from "./Modal";
+import Modal, { ConfirmModal } from "./Modal";
 import CloudSyncStatus from "./CloudSyncStatus";
 import { useTranslations } from "next-intl";
 import {
@@ -570,6 +570,8 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
           )}
         </SidebarMenuButton>
         {showPin && (
+          // Native button on kit tokens (track F): the pin overlays the kit SidebarMenuButton
+          // (absolute, hover-revealed); the kit has no SidebarMenuAction slot.
           <button
             type="button"
             onClick={(e) => {
@@ -608,6 +610,7 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
     return (
       <SidebarMenuItem key={child.id} className="mt-1">
         {!separatorHidden && (
+          // Native disclosure button on kit tokens (track F): full-width subgroup header row.
           <button
             type="button"
             aria-expanded={groupExpanded}
@@ -755,6 +758,8 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
             return (
               <SidebarGroup key={section.id}>
                 <SidebarGroupLabel className="group/header h-auto gap-1 px-0">
+                  {/* Native disclosure button on kit tokens (track F): a full-width section header
+                      inside the kit SidebarGroupLabel (the kit Button is a fixed-height pill). */}
                   <button
                     type="button"
                     onClick={() => toggleSection(sectionId)}
@@ -770,6 +775,8 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
                     />
                   </button>
                   {sectionId !== "pinned" && (
+                    // Native button on kit tokens (track F): a hover-revealed pin inside the kit
+                    // SidebarGroupLabel; the kit has no SidebarGroupAction slot.
                     <button
                       type="button"
                       onClick={() => togglePin(sectionId)}
@@ -866,20 +873,26 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
         loading={isRestarting}
       />
 
-      {isDisconnected && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
-          <div className="text-center p-8">
-            <div className="flex items-center justify-center size-16 rounded-full bg-red-500/20 text-red-500 mx-auto mb-4">
-              <Icon name="power_off" size={32} />
-            </div>
-            <h2 className="text-xl font-semibold text-white mb-2">{t("serverDisconnected")}</h2>
-            <p className="text-text-muted mb-6">{t("serverDisconnectedMsg")}</p>
-            <Button variant="secondary" onClick={() => globalThis.location.reload()}>
-              {t("reloadPage")}
-            </Button>
+      {/* Blocking notice after shutdown: a kit dialog (focus trap, aria-modal) that cannot be
+          dismissed — Escape and the overlay are no-ops, reloading is the only way out. */}
+      <Modal
+        isOpen={isDisconnected}
+        onClose={() => {}}
+        title={t("serverDisconnected")}
+        closeOnOverlay={false}
+        showCloseButton={false}
+        size="sm"
+      >
+        <div className="text-center">
+          <div className="flex items-center justify-center size-16 rounded-full bg-error-bg text-error mx-auto mb-4">
+            <Icon name="power_off" size={32} />
           </div>
+          <p className="text-text-muted mb-6">{t("serverDisconnectedMsg")}</p>
+          <Button variant="secondary" onClick={() => globalThis.location.reload()}>
+            {t("reloadPage")}
+          </Button>
         </div>
-      )}
+      </Modal>
     </>
   );
 }
