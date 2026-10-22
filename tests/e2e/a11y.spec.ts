@@ -79,11 +79,14 @@ try {
 // wcag2a/2aa/21a/21aa). Each value is the actual `axeViolationCount` for that page —
 // existing violations are grandfathered; a NEW violation (count grows) fails the gate.
 // Lower a value (and re-run) whenever a violation is fixed.
+// Lowered 2026-10-22 after the Keak CI UI Kit migration (KEA-7886): measured 0 / 1 / 0 / 0 with
+// REQUIRE_AXE=1 (login was 1, /dashboard 4, providers 3, settings 5). The one /dashboard violation
+// left is color-contrast on the partner banners (brand colours, owner decision).
 const VIOLATION_BASELINES: Record<string, number> = {
-  "/login": 1,
-  "/dashboard": 4,
-  "/dashboard/providers": 3,
-  "/dashboard/settings": 5,
+  "/login": 0,
+  "/dashboard": 1,
+  "/dashboard/providers": 0,
+  "/dashboard/settings": 0,
 };
 
 // ---------------------------------------------------------------------------
