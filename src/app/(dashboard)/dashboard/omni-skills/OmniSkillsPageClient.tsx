@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
+import { PageHeader } from "@omniroute/ui-kit/page-header";
 import { Tabs, TabsList, TabsTrigger } from "@omniroute/ui-kit/tabs";
 import { Card } from "@/shared/components";
 import { SkillsConceptCard } from "@/shared/components";
@@ -54,6 +55,7 @@ export function OmniSkillsPageClient(): JSX.Element {
   const [skillsProvider, setSkillsProvider] = useState<SkillsProvider>("skillsmp");
 
   const t = useTranslations("skills");
+  const tSidebar = useTranslations("sidebar");
   // NOTE: commonT is intentionally unused here but retained for potential future use
   useTranslations("common");
 
@@ -207,6 +209,12 @@ export function OmniSkillsPageClient(): JSX.Element {
 
   return (
     <div className="flex flex-col gap-6">
+      {/* Page title (lote 7 pendência 12): the shell title hides when a PageHeader is present. */}
+      <PageHeader
+        compact
+        title={tSidebar("omniSkills")}
+        description={tSidebar("omniSkillsSubtitle")}
+      />
       {/* Concept card */}
       <SkillsConceptCard variant="omni" />
 
@@ -323,7 +331,7 @@ export function OmniSkillsPageClient(): JSX.Element {
           className="h-48 resize-none font-mono text-sm"
         />
         <div className="flex flex-wrap items-center gap-3 mt-3">
-          {/* Native file picker for the JSON upload (driven by the button; adapters have none). */}
+          {/* kit-exception: Native file picker for the JSON upload (driven by the button; adapters have none). */}
           <input
             ref={fileInputRef}
             type="file"

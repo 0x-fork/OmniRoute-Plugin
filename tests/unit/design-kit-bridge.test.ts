@@ -412,3 +412,17 @@ test("text-primary resolves to a readable primary ink; lime stays on bg/border/r
   // The inline ::selection rule colours TEXT, so it reads the ink too.
   assert.match(css, /::selection \{[^}]*\n\s*color: var\(--color-primary-ink\);/);
 });
+
+test("the primary Badge tone keeps dark ink in light and takes the lime ink in dark (F4)", () => {
+  // Light: near-black ink on lime-100. Dark: the kit keeps --ci-color-accent-foreground near-black
+  // while the surface becomes a 14 % lime tint over the dark background, so the "8 features"
+  // translator badge read near-black on near-black. Dark flips the ink to the lime itself.
+  assert.match(
+    css,
+    /\.ci-badge\[data-tone="primary"\] \{\s*color: var\(--ci-color-accent-foreground\);\s*background: var\(--ci-color-accent-surface-strong\);/
+  );
+  assert.match(
+    css,
+    /:root\[data-theme="dark"\] \.ci-badge\[data-tone="primary"\] \{\s*color: var\(--ci-color-accent\);/
+  );
+});

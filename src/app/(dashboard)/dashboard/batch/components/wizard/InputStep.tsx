@@ -170,7 +170,7 @@ export default function InputStep({ input, onChange, destination }: InputStepPro
         ) : (
           <span className="text-sm text-text-muted">{t("wizardDropOrPick")}</span>
         )}
-        {/* Native file picker, hidden behind the drop zone (the adapters have no file input). */}
+        {/* kit-exception: Native file picker, hidden behind the drop zone (the adapters have no file input). */}
         <input
           ref={fileInputRef}
           type="file"

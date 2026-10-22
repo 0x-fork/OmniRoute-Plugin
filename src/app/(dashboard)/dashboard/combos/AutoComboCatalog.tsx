@@ -309,7 +309,7 @@ export default function AutoComboCatalog({
 
   return (
     <Card className="p-4">
-      {/* Raw <button> on purpose: a full-width disclosure header that carries the section
+      {/* kit-exception: Raw <button> on purpose: a full-width disclosure header that carries the section
           heading — the kit Button is a fixed-height control, not a disclosure region. Focus
           ring comes from the global :focus-visible rule (globals.css). */}
       <button

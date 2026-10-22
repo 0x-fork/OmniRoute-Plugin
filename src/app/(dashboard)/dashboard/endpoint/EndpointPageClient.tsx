@@ -1415,17 +1415,25 @@ export default function APIPageClient({ machineId }: Readonly<APIPageClientProps
             </span>
           </div>
 
-          {/* Cloud OmniRoute */}
-          <div className="flex items-center gap-3 py-3">
+          {/* Cloud OmniRoute — wraps below sm: the text block keeps a minimum width so the
+              status pill and the action move to the next line instead of squeezing it; only
+              the URL may break anywhere ("Cloud sync d|estination" at 390 px, F4). */}
+          <div className="flex flex-wrap items-center gap-3 py-3">
             <Icon name="cloud" size={18} className="text-info" />
-            <div className="flex-1 min-w-0">
+            <div className="flex-1 min-w-[12rem]">
               <span className="text-sm font-medium">{t("cloudOmniroute")}</span>
-              <p className="text-xs text-text-muted break-all">
+              <p
+                className="text-xs text-text-muted break-words"
+                data-testid="cloud-sync-destination"
+              >
                 {translateOrFallback(
                   "cloudUploadDestination",
                   "Cloud sync destination (not local backups):"
                 )}{" "}
-                {cloudBaseUrl || tc("notConfigured")}
+                {/* break-all only for a URL: the "Not configured" fallback is words (review I-1). */}
+                <span className={cloudBaseUrl ? "break-all" : undefined}>
+                  {cloudBaseUrl || tc("notConfigured")}
+                </span>
               </p>
             </div>
             <span
@@ -2134,7 +2142,9 @@ export default function APIPageClient({ machineId }: Readonly<APIPageClientProps
           </div>
 
           <div className="rounded-lg border border-error/40 bg-error/10 p-4">
-            <p className="text-sm break-all">{cloudBaseUrl || tc("notConfigured")}</p>
+            <p className={cloudBaseUrl ? "text-sm break-all" : "text-sm"}>
+              {cloudBaseUrl || tc("notConfigured")}
+            </p>
             <p className="text-sm mt-2">
               {translateOrFallback(
                 "cloudUploadWarning",

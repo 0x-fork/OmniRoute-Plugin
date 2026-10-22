@@ -163,7 +163,7 @@ export default function UploadFileModal({ onClose, onUploaded }: Props) {
           />
           <span className="text-sm text-text-main text-center">{t("uploadModalDropOrPick")}</span>
           <span className="text-xs text-text-muted text-center">{t("uploadModalSizeLimit")}</span>
-          {/* Native file picker, hidden behind the drop zone: the adapters have no file
+          {/* kit-exception: Native file picker, hidden behind the drop zone: the adapters have no file
                   input, and this one is driven by the zone's click/keyboard handlers. */}
           <input
             ref={inputRef}

@@ -324,7 +324,7 @@ function HistoryGridTable({
                     )}`;
                     const isSelected = compareMode && selectedIds.has(item.id);
                     return (
-                      // 12px heatmap cell: far below the kit Button's minimum size, so it stays
+                      // kit-exception: 12px heatmap cell: far below the kit Button's minimum size, so it stays
                       // a native <button> (named by aria-label, state in aria-pressed).
                       <button
                         key={item.id}

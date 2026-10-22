@@ -13642,7 +13642,8 @@
       }
     },
     "leaderboardTitle": "Leaderboard",
-    "leaderboardDescription": "Rankings and achievements across your API keys"
+    "leaderboardDescription": "Rankings and achievements across your API keys",
+    "badgeLocked": "Locked"
   },
   "featureFlags": {
     "title": "Feature Flags",

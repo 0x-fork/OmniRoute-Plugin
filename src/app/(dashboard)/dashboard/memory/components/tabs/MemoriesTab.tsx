@@ -341,7 +341,7 @@ export default function MemoriesTab() {
           </Button>
         </div>
         <div className="flex gap-2 flex-wrap">
-          {/* Native file picker for Import (driven by the Import button; adapters have none). */}
+          {/* kit-exception: Native file picker for Import (driven by the Import button; adapters have none). */}
           <input
             type="file"
             ref={fileInputRef}

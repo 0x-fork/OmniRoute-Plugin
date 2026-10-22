@@ -22,7 +22,7 @@ function JsonNode({ data, depth = 0 }: { data: unknown; depth?: number }) {
     if (data.length === 0) return <span className="text-text-muted">[]</span>;
     return (
       <span>
-        {/* Inline tree toggle inside a monospace line: a kit Button (fixed-height pill)
+        {/* kit-exception: Inline tree toggle inside a monospace line: a kit Button (fixed-height pill)
             would break the line box, so this stays a native token-styled button. */}
         <button
           type="button"
@@ -52,7 +52,7 @@ function JsonNode({ data, depth = 0 }: { data: unknown; depth?: number }) {
     if (entries.length === 0) return <span className="text-text-muted">{"{}"}</span>;
     return (
       <span>
-        {/* Inline tree toggle inside a monospace line: a kit Button (fixed-height pill)
+        {/* kit-exception: Inline tree toggle inside a monospace line: a kit Button (fixed-height pill)
             would break the line box, so this stays a native token-styled button. */}
         <button
           type="button"

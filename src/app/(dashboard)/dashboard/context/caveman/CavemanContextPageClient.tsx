@@ -288,7 +288,12 @@ export default function CavemanContextPageClient() {
               onChange={(event) => updateOutputMode({ autoClarity: event.target.checked })}
             />
           </div>
-          <pre className="mt-3 overflow-auto rounded-lg border border-border bg-bg p-3 text-xs text-text-main">
+          <pre
+            // Scrollable region: keyboard users must be able to focus it (axe scrollable-region-focusable).
+            tabIndex={0}
+            aria-label={t("outputModeTitle")}
+            className="mt-3 overflow-auto rounded-lg border border-border bg-bg p-3 text-xs text-text-main"
+          >
             {previewPrompt}
           </pre>
           <p className="mt-3 text-xs text-text-muted">

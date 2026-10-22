@@ -293,7 +293,7 @@ export default function ConsoleLogViewer() {
             <div className="text-[#8b949e] text-center py-12">
               <Icon name="terminal" size={40} className="block mb-2 opacity-30" />
               <p>{t("noLogEntries")}</p>
-              <p className="text-[10px] mt-1 opacity-60">{tv("emptyFileLoggingHint")}</p>
+              <p className="text-[10px] mt-1">{tv("emptyFileLoggingHint")}</p>
             </div>
           ) : (
             filteredLogs.map((entry, idx) => {
@@ -312,7 +312,7 @@ export default function ConsoleLogViewer() {
                   }`}
                 >
                   {/* Timestamp */}
-                  <span className="text-[#484f58] whitespace-nowrap shrink-0 select-none">
+                  <span className="text-[#8b949e] whitespace-nowrap shrink-0 select-none">
                     {formatTime(entry.timestamp)}
                   </span>
 
@@ -331,7 +331,7 @@ export default function ConsoleLogViewer() {
                     {msg}
                     {/* Extra meta */}
                     {correlationId && (
-                      <span className="text-[#484f58] ml-2">cid:{correlationId.slice(0, 8)}</span>
+                      <span className="text-[#8b949e] ml-2">cid:{correlationId.slice(0, 8)}</span>
                     )}
                   </span>
 

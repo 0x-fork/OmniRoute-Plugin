@@ -308,7 +308,7 @@ export function AgentBridgeMaintenanceCard({
               ? t("importing") || "Importing…"
               : t("importConfig") || "Import config"}
           </Button>
-          {/* Hidden native file picker driven by the Import button above (no visible control). */}
+          {/* kit-exception: Hidden native file picker driven by the Import button above (no visible control). */}
           <input
             ref={fileInputRef}
             type="file"
