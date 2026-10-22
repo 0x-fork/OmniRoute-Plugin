@@ -26,7 +26,10 @@ test("every icon name used in src/ maps to a Lucide icon in ICON_MAP", async () 
   assert.deepEqual(
     unmapped,
     [],
-    `names without a Lucide icon in ICON_MAP (run: npm run gen:icon-map):\n${unmapped.join("\n")}`
+    `names without a Lucide icon in ICON_MAP:\n${unmapped.join("\n")}\n` +
+      "Real icon → map it to a Lucide component in src/shared/constants/iconMap.ts (npm run gen:icon-map). " +
+      "Not an icon (a logo key, a size key… in an `icon:` slot that never reaches <Icon>) → add it to " +
+      "NOT_ICON_NAMES in scripts/dev/gen-icon-map.mjs with the proof, never map it to a fake glyph."
   );
 });
 
@@ -66,4 +69,12 @@ test("the scanner sees names in <Icon name>, icon props and ternaries, but not d
     "settings",
     "tune",
   ]);
+});
+
+test("resolveIcon only resolves own ICON_MAP keys (no Object.prototype members)", async () => {
+  const { resolveIcon } = await import("../../src/shared/constants/iconMap.ts");
+  for (const name of ["constructor", "toString", "hasOwnProperty", "__proto__"]) {
+    assert.equal(resolveIcon(name), null, `${name} is not an icon`);
+  }
+  assert.ok(resolveIcon("settings"), "a real key still resolves");
 });

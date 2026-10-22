@@ -1,7 +1,7 @@
 "use client";
 
 import { createElement } from "react";
-import { CircleDashed, type LucideIcon, type LucideProps } from "lucide-react";
+import { SquareDashedBottom, type LucideIcon, type LucideProps } from "lucide-react";
 import { cn } from "@/shared/utils/cn";
 import { resolveIcon } from "@/shared/constants/iconMap";
 
@@ -21,8 +21,15 @@ export interface IconProps {
 const warned = new Set<string>();
 
 /**
+ * Glyph drawn for a name missing from ICON_MAP. It must not be any ICON_MAP value, so a gap never
+ * reads as a real icon or status (CircleDashed, for instance, is `pending`) — pinned by
+ * tests/unit/ui/adapters/icon.test.tsx.
+ */
+export const MISSING_ICON_GLYPH: LucideIcon = SquareDashedBottom;
+
+/**
  * Every icon renders Lucide (KEA-7886): the Material Symbols font is gone. A name missing from
- * ICON_MAP draws a neutral placeholder glyph (never ligature text, never a crash) and, outside
+ * ICON_MAP draws a neutral placeholder glyph (MISSING_ICON_GLYPH) (never ligature text, never a crash) and, outside
  * production, warns once so the gap is visible — tests/unit/icon-map-coverage.test.ts keeps the
  * names used in src/ mapped.
  */
@@ -42,7 +49,7 @@ export default function Icon({
       `[Icon] "${name}" is not in ICON_MAP — rendering a placeholder glyph (map it in src/shared/constants/iconMap.ts)`
     );
   }
-  const Lucide: LucideIcon = mapped ?? CircleDashed;
+  const Lucide: LucideIcon = mapped ?? MISSING_ICON_GLYPH;
   const a11y = ariaLabel
     ? { role: "img" as const, "aria-label": ariaLabel }
     : { "aria-hidden": true as const };

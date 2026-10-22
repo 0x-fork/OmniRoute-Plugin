@@ -61,3 +61,15 @@ test("the legacy shell, its CSS hooks and the UI_KIT_SHELL flag are removed", ()
     );
   }
 });
+
+test("no font is loaded from the Google Fonts CDN (#3695: unreachable in some regions)", () => {
+  // Carried over from the deleted material-icons-self-hosted.test.ts: the guard is about the CDN,
+  // not about Material — every font (Inter, Instrument Serif, IBM Plex Mono) stays self-hosted.
+  for (const file of ["src/app/layout.tsx", "src/app/globals.css"]) {
+    assert.doesNotMatch(
+      read(file),
+      /fonts\.(googleapis|gstatic)\.com/,
+      `${file} must not load fonts from fonts.googleapis.com / fonts.gstatic.com`
+    );
+  }
+});

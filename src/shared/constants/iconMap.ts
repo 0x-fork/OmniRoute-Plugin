@@ -758,6 +758,7 @@ export const ICON_MAP: Record<string, LucideIcon> = {
 };
 
 export function resolveIcon(name: string | null | undefined): LucideIcon | null {
-  if (!name) return null;
-  return ICON_MAP[name] ?? null;
+  // Own keys only: `constructor`/`toString` must not resolve to Object.prototype members.
+  if (!name || !Object.hasOwn(ICON_MAP, name)) return null;
+  return ICON_MAP[name];
 }

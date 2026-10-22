@@ -3,7 +3,7 @@ import React from "react";
 import { cleanup, render } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-const { default: Icon } = await import("@/shared/components/Icon");
+const { default: Icon, MISSING_ICON_GLYPH } = await import("@/shared/components/Icon");
 const { ICON_MAP } = await import("@/shared/constants/iconMap");
 
 afterEach(() => cleanup());
@@ -59,6 +59,25 @@ describe("<Icon> adapter (icon name → Lucide only; no Material fallback)", () 
       (process.env as Record<string, string>).NODE_ENV = env as string;
       warn.mockRestore();
     }
+  });
+
+  it("the placeholder glyph is no ICON_MAP icon, so a gap never reads as a real icon/status", async () => {
+    const { createElement } = await import("react");
+    const { renderToStaticMarkup } = await import("react-dom/server");
+    expect(Object.values(ICON_MAP)).not.toContain(MISSING_ICON_GLYPH);
+    // Same drawing too (aliases are distinct objects): compare the rendered SVG paths.
+    const paths = (C: unknown) =>
+      renderToStaticMarkup(createElement(C as React.ComponentType)).replace(/class="[^"]*"/g, "");
+    const placeholder = paths(MISSING_ICON_GLYPH);
+    const clash = Object.entries(ICON_MAP).filter(([, C]) => paths(C) === placeholder);
+    expect(clash.map(([name]) => name)).toEqual([]);
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const { container } = render(<Icon name="unmapped_glyph_check_xyz" />);
+    warn.mockRestore();
+    // The unmapped name really draws MISSING_ICON_GLYPH.
+    expect(container.querySelector("svg")!.innerHTML.replace(/class="[^"]*"/g, "")).toBe(
+      placeholder.replace(/^<svg[^>]*>|<\/svg>$/g, "")
+    );
   });
 
   it("a mapped icon never carries the missing marker", () => {

@@ -95,7 +95,10 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const have = existingMap();
   const missing = names.filter((n) => !have.has(n));
   console.log(
-    `// ${names.length} icon names in use; ${missing.length} missing from ICON_MAP. Map each one to a Lucide import in iconMap.ts.`
+    `// ${names.length} icon names in use; ${missing.length} missing from ICON_MAP. Map each real icon to a Lucide import in iconMap.ts;`
+  );
+  console.log(
+    "// not an icon (logo key, size key… that never reaches <Icon>)? add it to NOT_ICON_NAMES above, with the proof."
   );
   for (const n of missing) console.log(`  ${n}: /* Lucide */,`);
 }

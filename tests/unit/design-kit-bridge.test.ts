@@ -235,17 +235,16 @@ test("flow surfaces still express state with --orch-status-* tokens, not fixed h
 // stay true after the bridge; the grid/14px/gradient/STATUS_HEX ones were obsolete by design.
 test("DashboardLayout content shell is fluid up to ~4K before centering", () => {
   // The content wrapper lives in the kit shell (DashboardShell), the only shell since KEA-7886 F4.
-  for (const file of ["src/shared/components/layouts/DashboardShell.tsx"]) {
-    const dashboardLayout = read(file);
-    assert.ok(
-      dashboardLayout.includes("max-w-[3840px] mx-auto"),
-      `${file}: content wrapper caps at 3840px (4K) and centers only beyond that`
-    );
-    assert.ok(
-      !dashboardLayout.includes("max-w-7xl"),
-      `${file}: the old 1280px max-w-7xl cap is gone`
-    );
-  }
+  const file = "src/shared/components/layouts/DashboardShell.tsx";
+  const dashboardLayout = read(file);
+  assert.ok(
+    dashboardLayout.includes("max-w-[3840px] mx-auto"),
+    `${file}: content wrapper caps at 3840px (4K) and centers only beyond that`
+  );
+  assert.ok(
+    !dashboardLayout.includes("max-w-7xl"),
+    `${file}: the old 1280px max-w-7xl cap is gone`
+  );
 });
 
 test("DataTable is theme-aware via --table-* tokens, no color literal, no dead fallbacks", () => {
