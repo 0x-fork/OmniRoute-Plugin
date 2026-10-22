@@ -421,3 +421,16 @@ test("token aliases with no consumer are gone (KEA-7886 F4)", () => {
   }
   assert.doesNotMatch(css, /\.traffic-lights?\b/, "the unused .traffic-light(s) chrome is gone");
 });
+
+test("the primary Badge tone keeps readable ink in dark (KEA-7886 F4, lote 6 review)", () => {
+  // In dark, --ci-color-accent-surface-strong is lime at 14 % over the dark surface, so the
+  // light-theme ink (--ci-color-accent-foreground = neutral-950) disappears; dark uses the lime.
+  assert.match(
+    css,
+    /\.ci-badge\[data-tone="primary"\] \{\s*color: var\(--ci-color-accent-foreground\);\s*background: var\(--ci-color-accent-surface-strong\);/
+  );
+  assert.match(
+    css,
+    /:root\[data-theme="dark"\] \.ci-badge\[data-tone="primary"\] \{\s*color: var\(--ci-color-accent\);\s*\}/
+  );
+});
