@@ -97,7 +97,6 @@ import {
   Filter,
   Fingerprint,
   Flag,
-  Flame,
   FlaskConical,
   Folder,
   FolderArchive,
