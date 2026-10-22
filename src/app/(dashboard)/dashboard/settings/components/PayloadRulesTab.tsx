@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useId, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Alert } from "@omniroute/ui-kit/alert";
+import { Field } from "@omniroute/ui-kit/field";
 import { Badge, Card, Button, Textarea } from "@/shared/components";
 import Icon from "@/shared/components/Icon";
 
@@ -79,7 +80,9 @@ export default function PayloadRulesTab() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<StatusMessage | null>(null);
-  const editorLabelId = useId();
+  const editorId = useId();
+  const editorHintId = `${editorId}-hint`;
+  const editorErrorId = `${editorId}-error`;
 
   const parsedEditor = useMemo(() => {
     try {
@@ -228,38 +231,41 @@ export default function PayloadRulesTab() {
           />
         )}
 
-        <div className="rounded-xl border border-border overflow-hidden">
-          <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-border bg-bg-subtle">
-            <div>
-              <p className="text-sm font-medium" id={editorLabelId}>
-                {t("payloadEditorTitle")}
-              </p>
-              <p className="text-xs text-text-muted">{t("payloadEditorDesc")}</p>
-            </div>
-            <div className="text-xs text-text-muted" role="status">
+        <Field
+          htmlFor={editorId}
+          label={t("payloadEditorTitle")}
+          hint={<span id={editorHintId}>{t("payloadEditorDesc")}</span>}
+          error={
+            parsedEditor.error ? (
+              <span id={editorErrorId} role="alert">
+                {t("payloadJsonParseError", { error: parsedEditor.error })}
+              </span>
+            ) : undefined
+          }
+        >
+          <div className="rounded-xl border border-border overflow-hidden">
+            <div
+              className="flex justify-end px-4 py-2 border-b border-border bg-bg-subtle text-xs text-text-muted"
+              role="status"
+            >
               {loading ? tCommon("loading") : t("payloadEditorReady")}
             </div>
+            <Textarea
+              id={editorId}
+              aria-describedby={parsedEditor.error ? editorErrorId : editorHintId}
+              value={editorValue}
+              onChange={(event) => {
+                setEditorValue(event.target.value);
+                if (message?.type === "error") setMessage(null);
+              }}
+              error={Boolean(parsedEditor.error)}
+              spellCheck={false}
+              rows={22}
+              className="w-full rounded-none border-0 px-4 py-4 text-sm font-mono leading-6 resize-y min-h-[420px]"
+              disabled={loading || saving}
+            />
           </div>
-          <Textarea
-            aria-labelledby={editorLabelId}
-            value={editorValue}
-            onChange={(event) => {
-              setEditorValue(event.target.value);
-              if (message?.type === "error") setMessage(null);
-            }}
-            error={Boolean(parsedEditor.error)}
-            spellCheck={false}
-            rows={22}
-            className="w-full rounded-none border-0 px-4 py-4 text-sm font-mono leading-6 resize-y min-h-[420px]"
-            disabled={loading || saving}
-          />
-        </div>
-
-        {parsedEditor.error && (
-          <p className="text-sm text-error" role="alert">
-            {t("payloadJsonParseError", { error: parsedEditor.error })}
-          </p>
-        )}
+        </Field>
 
         <div className="flex flex-wrap gap-2">
           <Button variant="secondary" onClick={loadConfig} disabled={loading || saving}>

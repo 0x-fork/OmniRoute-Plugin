@@ -268,6 +268,13 @@ export default function SubscriptionTab() {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  // Field-level validation lives on the fields themselves (Input / CheckboxGroup `error`);
+  // `formError` stays for server responses.
+  const [fieldErrors, setFieldErrors] = useState<{
+    name?: string;
+    url?: string;
+    ruleProviders?: string;
+  }>({});
 
   const applyLoadResult = useCallback((result: SubscriptionsFetchResult) => {
     if (result.items) setSubs(result.items);
@@ -315,6 +322,7 @@ export default function SubscriptionTab() {
     setForm(EMPTY_FORM);
     setEditingId(null);
     setFormError(null);
+    setFieldErrors({});
     setShowForm(false);
   };
 
@@ -333,18 +341,22 @@ export default function SubscriptionTab() {
       updateIntervalMinutes: sub.updateIntervalMinutes,
       enabled: sub.enabled,
     });
+    setFieldErrors({});
     setShowForm(true);
   };
 
   const save = async () => {
-    setSaving(true);
     setFormError(null);
+    const nextFieldErrors: { name?: string; url?: string; ruleProviders?: string } = {};
+    if (!form.name.trim()) nextFieldErrors.name = t("proxySubscription.nameRequired");
+    if (!form.url.trim()) nextFieldErrors.url = t("proxySubscription.urlRequired");
+    if (form.mode === "rule" && form.ruleProviders.length === 0) {
+      nextFieldErrors.ruleProviders = t("proxySubscription.ruleModeProviderRequired");
+    }
+    setFieldErrors(nextFieldErrors);
+    if (Object.keys(nextFieldErrors).length > 0) return;
+    setSaving(true);
     try {
-      if (!form.name.trim()) throw new Error(t("proxySubscription.nameRequired"));
-      if (!form.url.trim()) throw new Error(t("proxySubscription.urlRequired"));
-      if (form.mode === "rule" && form.ruleProviders.length === 0) {
-        throw new Error(t("proxySubscription.ruleModeProviderRequired"));
-      }
       const payload: Record<string, unknown> = {
         name: form.name.trim(),
         url: form.url.trim(),
@@ -500,14 +512,22 @@ export default function SubscriptionTab() {
               <Input
                 label={t("proxySubscription.name")}
                 value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                onChange={(e) => {
+                  setForm({ ...form, name: e.target.value });
+                  if (fieldErrors.name) setFieldErrors({ ...fieldErrors, name: undefined });
+                }}
                 placeholder={t("proxySubscription.namePlaceholder")}
+                error={fieldErrors.name}
               />
               <Input
                 label={t("proxySubscription.url")}
                 value={form.url}
-                onChange={(e) => setForm({ ...form, url: e.target.value })}
+                onChange={(e) => {
+                  setForm({ ...form, url: e.target.value });
+                  if (fieldErrors.url) setFieldErrors({ ...fieldErrors, url: undefined });
+                }}
                 placeholder={t("proxySubscription.urlPlaceholder")}
+                error={fieldErrors.url}
               />
             </div>
 
@@ -548,7 +568,14 @@ export default function SubscriptionTab() {
                   {t("proxySubscription.loadingProviders")}
                 </p>
               ) : (
-                <CheckboxGroup label={t("proxySubscription.routeByProvider")}>
+                <CheckboxGroup
+                  label={t("proxySubscription.routeByProvider")}
+                  error={
+                    fieldErrors.ruleProviders ? (
+                      <span role="alert">{fieldErrors.ruleProviders}</span>
+                    ) : undefined
+                  }
+                >
                   <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
                     {providers.map((p) => {
                       const checked = form.ruleProviders.includes(p.id);

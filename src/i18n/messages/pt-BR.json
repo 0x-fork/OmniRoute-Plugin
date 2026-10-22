@@ -11461,7 +11461,7 @@
     "loading": "Loading",
     "noProxies": "No Proxies",
     "tableName": "Table Name",
-    "tableEndpoint": "Table Endpoint",
+    "tableEndpoint": "Endpoint",
     "tableStatus": "Table Status",
     "tableHealth": "Table Health",
     "tableUsage": "Table Usage",

@@ -75,7 +75,7 @@ function StatusLine({ status }: { status: Status }) {
   if (!status.message) return null;
   const tone = status.type === "error" ? "text-error" : "text-success";
   return (
-    <p role="status" className={`text-xs ${tone}`}>
+    <p role={status.type === "error" ? "alert" : "status"} className={`text-xs ${tone}`}>
       {status.message}
     </p>
   );

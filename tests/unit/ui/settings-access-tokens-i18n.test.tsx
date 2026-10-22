@@ -138,6 +138,11 @@ describe("access-token settings with real Chinese catalogs", () => {
     expect(copy).toHaveBeenCalledWith("omni_disposable_test_secret");
     fireEvent.click(screen.getByRole("button", { name: "关闭" }));
     expect(screen.queryByText("omni_disposable_test_secret")).toBeNull();
+    // The opener ("Create") is disabled again after the name is cleared, so focus goes back
+    // to the name field rather than falling to <body>.
+    await waitFor(() =>
+      expect(document.activeElement).toBe(screen.getByPlaceholderText("名称（例如：笔记本电脑）"))
+    );
   });
 
   it("uses a localized create failure instead of surfacing English transport errors", async () => {

@@ -17,6 +17,7 @@ export default function SecurityTab() {
   const [loading, setLoading] = useState(true);
   const [passwords, setPasswords] = useState({ current: "", new: "", confirm: "" });
   const [passStatus, setPassStatus] = useState({ type: "", message: "" });
+  const [confirmError, setConfirmError] = useState("");
   const [passLoading, setPassLoading] = useState(false);
 
   const [requireLoginModalOpen, setRequireLoginModalOpen] = useState(false);
@@ -161,10 +162,12 @@ export default function SecurityTab() {
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     if (passwords.new !== passwords.confirm) {
-      setPassStatus({ type: "error", message: t("passwordsNoMatch") });
+      setPassStatus({ type: "", message: "" });
+      setConfirmError(t("passwordsNoMatch"));
       return;
     }
 
+    setConfirmError("");
     setPassLoading(true);
     setPassStatus({ type: "", message: "" });
 
@@ -280,7 +283,11 @@ export default function SecurityTab() {
                   type="password"
                   placeholder={t("confirmPasswordPlaceholder")}
                   value={passwords.confirm}
-                  onChange={(e) => setPasswords({ ...passwords, confirm: e.target.value })}
+                  onChange={(e) => {
+                    setPasswords({ ...passwords, confirm: e.target.value });
+                    if (confirmError) setConfirmError("");
+                  }}
+                  error={confirmError || undefined}
                   required
                 />
               </div>
@@ -365,7 +372,6 @@ export default function SecurityTab() {
                       checked={isBlocked}
                       onChange={() => toggleBlockedProvider(provider.id)}
                       disabled={loading}
-
                       title={
                         isBlocked
                           ? t("unblockProviderTitle", { provider: provider.name })

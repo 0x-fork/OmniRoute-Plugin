@@ -780,6 +780,7 @@ export default function ProxyRegistryManager({
                   />
                 </TableHead>
                 <TableHead>{t("tableName")}</TableHead>
+                <TableHead>{t("tableEndpoint")}</TableHead>
                 <TableHead>{t("tableStatus")}</TableHead>
                 <TableHead>{t("tableHealth")}</TableHead>
                 <TableHead>{t("tableUsage")}</TableHead>

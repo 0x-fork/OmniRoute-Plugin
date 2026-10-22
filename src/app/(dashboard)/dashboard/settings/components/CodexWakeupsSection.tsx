@@ -364,7 +364,7 @@ export default function CodexWakeupsSection({ accounts }: { accounts: WakeupAcco
       <WakeupForm accounts={accounts} onCreate={(task) => act({ action: "create", task })} />
       {notice && (
         <p
-          role="status"
+          role={notice.tone === "ok" ? "status" : "alert"}
           className={`text-xs ${notice.tone === "ok" ? "text-success" : "text-error"}`}
         >
           {notice.text}

@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { PageHeader } from "@omniroute/ui-kit/page-header";
-import { Button, EmptyState, Input, Select, Skeleton } from "@/shared/components";
+import { Button, EmptyState, Input, SegmentedControl, Select, Skeleton } from "@/shared/components";
 import Icon from "@/shared/components/Icon";
 import { matchesSearch } from "@/shared/utils/turkishText";
 import FeatureFlagCard from "./FeatureFlagCard";
@@ -292,19 +292,6 @@ export default function FeatureFlagsGrid() {
     }
   }, [loadFlags, t]);
 
-  const modeButton = (mode: DescriptionMode, label: string) => (
-    <Button
-      size="sm"
-      variant={descriptionMode === mode ? "secondary" : "ghost"}
-      role="radio"
-      aria-checked={descriptionMode === mode}
-      onClick={() => setDescriptionMode(mode)}
-      className="h-7 whitespace-nowrap px-2 text-xs"
-    >
-      {label}
-    </Button>
-  );
-
   return (
     <div className="space-y-6">
       <PageHeader
@@ -328,14 +315,17 @@ export default function FeatureFlagsGrid() {
         actions={
           <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
             {/* Description view: compact with hover tooltip vs always full text */}
-            <div
-              role="radiogroup"
-              aria-label={t("descriptionModeLabel")}
-              title={t("descriptionModeHint")}
-              className="flex items-center gap-1 rounded-control border border-border bg-bg-subtle p-0.5"
-            >
-              {modeButton("clamp", t("descriptionModeHover"))}
-              {modeButton("full", t("descriptionModeFull"))}
+            <div title={t("descriptionModeHint")}>
+              <SegmentedControl
+                size="sm"
+                aria-label={t("descriptionModeLabel")}
+                value={descriptionMode}
+                onChange={(next) => setDescriptionMode(next as DescriptionMode)}
+                options={[
+                  { value: "clamp", label: t("descriptionModeHover") },
+                  { value: "full", label: t("descriptionModeFull") },
+                ]}
+              />
             </div>
 
             <Input

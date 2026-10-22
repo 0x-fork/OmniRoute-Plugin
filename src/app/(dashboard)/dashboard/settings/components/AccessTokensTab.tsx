@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { CodePreview } from "@omniroute/ui-kit/code-preview";
-import { SectionHeader } from "@omniroute/ui-kit/page-header";
+import { PageHeader } from "@omniroute/ui-kit/page-header";
 import {
   Table,
   TableBody,
@@ -51,6 +51,7 @@ async function fetchTokens(): Promise<AccessTokenRow[]> {
 export default function AccessTokensTab() {
   const t = useTranslations("settings");
   const tc = useTranslations("common");
+  const nameRef = useRef<HTMLInputElement>(null);
   const format = useFormatter();
   const scopeLabels = {
     read: t("accessTokensScopeReadLabel"),
@@ -158,14 +159,26 @@ export default function AccessTokensTab() {
       : format.dateTime(date, { dateStyle: "medium", timeStyle: "short" });
   };
 
+  // The dialog's opener ("Create") is disabled again once the name is cleared, so the Modal's
+  // own focus return lands on <body>; send focus back to the name field instead.
+  const dismissSecret = () => {
+    setNewSecret(null);
+    requestAnimationFrame(() => nameRef.current?.focus());
+  };
+
   return (
     <div className="space-y-6">
-      <SectionHeader title={t("accessTokensTitle")} description={t("accessTokensDescription")} />
+      <PageHeader
+        compact
+        title={t("accessTokensTitle")}
+        description={t("accessTokensDescription")}
+      />
 
       {/* Create */}
       <Card title={t("accessTokensCreateHeading")}>
         <div className="grid gap-3 sm:grid-cols-4 sm:items-end">
           <Input
+            ref={nameRef}
             label={t("accessTokensColName")}
             placeholder={t("accessTokensNamePlaceholder")}
             value={name}
@@ -197,13 +210,13 @@ export default function AccessTokensTab() {
 
       <Modal
         isOpen={Boolean(newSecret)}
-        onClose={() => setNewSecret(null)}
+        onClose={dismissSecret}
         title={t("accessTokensTitle")}
         size="lg"
         closeOnOverlay={false}
         showCloseButton={false}
         footer={
-          <Button variant="secondary" onClick={() => setNewSecret(null)}>
+          <Button variant="secondary" onClick={dismissSecret}>
             {t("accessTokensDismiss")}
           </Button>
         }
