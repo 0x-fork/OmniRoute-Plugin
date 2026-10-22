@@ -279,11 +279,15 @@ export default function OnboardingWizard() {
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-lg">
         {/* Progress Indicator */}
-        <ol aria-label={t("stepProgress")} className="flex items-center justify-center gap-2 mb-8">
+        {/* Narrow below sm: 6 dots + 5 connectors must fit 390 px (F4). */}
+        <ol
+          aria-label={t("stepProgress")}
+          className="flex items-center justify-center gap-1 sm:gap-2 mb-8"
+        >
           {STEPS.map((s, i) => (
             <li
               key={s.id}
-              className="flex items-center gap-2"
+              className="flex items-center gap-1 sm:gap-2"
               aria-current={i === step ? "step" : undefined}
             >
               <span
@@ -303,7 +307,7 @@ export default function OnboardingWizard() {
                 <span
                   aria-hidden="true"
                   className={cn(
-                    "w-8 h-0.5 rounded-full transition-colors",
+                    "w-3 sm:w-8 h-0.5 rounded-full transition-colors",
                     i < step ? "bg-success/40" : "bg-border"
                   )}
                 />
@@ -324,7 +328,8 @@ export default function OnboardingWizard() {
                 currentStep.id === "done" ? "text-success" : "text-primary"
               )}
             />
-            <h2 className="text-2xl font-bold text-text-main">{currentStep.title}</h2>
+            {/* The step title is the page heading (the wizard has no PageHeader). */}
+            <h1 className="text-2xl font-bold text-text-main">{currentStep.title}</h1>
             {currentStep.id === "tiers" && (
               <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-text-muted text-balance">
                 {t("tier.subtitle")}
