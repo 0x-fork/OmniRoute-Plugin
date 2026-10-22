@@ -232,7 +232,8 @@ export default function Header({ onOpenCommandPalette }: HeaderProps) {
       <SidebarTrigger aria-label={triggerLabel}>
         <Icon name="menu" size={18} />
       </SidebarTrigger>
-      <div className="hidden min-w-0 items-center gap-3 lg:flex">
+      {/* Hidden when the page renders a kit PageHeader (its own h1): one title, one h1 (F4). */}
+      <div className="hidden min-w-0 items-center gap-3 lg:flex [body:has(.ci-page-header)_&]:hidden">
         {(icon || providerId) && (
           <span className="flex size-9 shrink-0 items-center justify-center rounded-control bg-accent-light text-heading">
             {icon ? (

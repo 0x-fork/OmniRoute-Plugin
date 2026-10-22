@@ -56,6 +56,21 @@ describe("Header on the kit shell", () => {
     }
   );
 
+  // F4 (wave-1 checkpoint, api-manager/endpoint): 67 of the dashboard pages render a kit
+  // PageHeader (its own h1), so the shell title repeated it ("API Keys" × "API Key Management")
+  // and the page carried two h1s. The shell title block hides itself whenever a PageHeader is on
+  // the page; pages without one keep the shell h1.
+  it("hides its title block when the page renders a kit PageHeader", () => {
+    render(
+      <SidebarProvider>
+        <Header />
+      </SidebarProvider>
+    );
+    const title = screen.getByRole("heading", { level: 1 });
+    const block = title.closest("header.ci-sidebar-shell-header > div")!;
+    expect(block.className).toContain("[body:has(.ci-page-header)_&]:hidden");
+  });
+
   it(
     "grows the kit header by the safe-area inset instead of squeezing its controls",
     { timeout: 20_000 },
