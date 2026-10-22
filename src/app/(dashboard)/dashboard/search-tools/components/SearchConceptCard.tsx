@@ -61,7 +61,7 @@ export default function SearchConceptCard({ defaultCollapsed = false }: SearchCo
       data-testid="search-concept-card"
     >
       {/* Header */}
-      {/* Full-width disclosure header (label + chevron across the card): the kit Button is a
+      {/* kit-exception: Full-width disclosure header (label + chevron across the card): the kit Button is a
           centred single-line pill, so the header stays a native <button> on kit tokens. */}
       <button
         type="button"

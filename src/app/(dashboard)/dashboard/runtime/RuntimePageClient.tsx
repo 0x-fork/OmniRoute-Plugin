@@ -1043,7 +1043,7 @@ function KpiCard({
   onClick: () => void;
   active: boolean;
 }) {
-  // Multi-line KPI tile that also filters the feed: the kit Button is a single-line pill, so
+  // kit-exception: Multi-line KPI tile that also filters the feed: the kit Button is a single-line pill, so
   // this stays a native <button> on kit tokens (state exposed through aria-pressed).
   return (
     <button

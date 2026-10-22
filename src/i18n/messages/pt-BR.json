@@ -13641,7 +13641,8 @@
       }
     },
     "leaderboardTitle": "Ranking",
-    "leaderboardDescription": "Classificação e conquistas entre as suas chaves de API"
+    "leaderboardDescription": "Classificação e conquistas entre as suas chaves de API",
+    "badgeLocked": "Bloqueado"
   },
   "featureFlags": {
     "title": "Sinalizadores de recursos",

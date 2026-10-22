@@ -417,6 +417,7 @@ function FileChooser({
     >
       <Icon name="upload_file" size={16} />
       {label}
+      {/* kit-exception: hidden native file input inside the chip label (no kit file picker) */}
       <input type="file" accept=".json" className="sr-only" onChange={onChange} />
     </label>
   );

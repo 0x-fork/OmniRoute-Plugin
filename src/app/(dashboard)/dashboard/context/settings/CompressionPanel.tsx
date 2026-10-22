@@ -635,7 +635,9 @@ export default function CompressionPanel() {
       />
 
       {/* Engine grid */}
-      <div className={`divide-y divide-border ${config.enabled ? "" : "opacity-60"}`}>
+      {/* No list-wide opacity while compression is off (it put the rows under AA, 19 axe nodes):
+          the selects and toggles carry their own disabled look (F4). */}
+      <div className="divide-y divide-border" data-disabled={config.enabled ? undefined : "true"}>
         {ENGINE_IDS.map((id) => {
           const meta = engineMeta(id);
           const engine = config.engines[id] ?? { enabled: false };

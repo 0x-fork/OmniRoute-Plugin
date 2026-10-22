@@ -239,7 +239,7 @@ export default function AgentsPage() {
           <Icon name="fingerprint" size={14} className="text-text-muted" />
           <p className="text-xs text-text-muted">
             {t("fingerprintSettingsHint")}{" "}
-            <Link href="/dashboard/settings?tab=routing" className="text-primary hover:underline">
+            <Link href="/dashboard/settings?tab=routing" className="text-primary underline">
               {t("settingsRoutingLink")}
             </Link>
           </p>

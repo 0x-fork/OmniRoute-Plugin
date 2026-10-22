@@ -14,6 +14,7 @@ interface InfoTooltipProps {
 export default function InfoTooltip({ text, className }: InfoTooltipProps) {
   return (
     <Tooltip content={text} multiline delayMs={100}>
+      {/* kit-exception: an inline 16 px info trigger; the kit icon Button is a 32 px control */}
       <button
         type="button"
         aria-label={text}

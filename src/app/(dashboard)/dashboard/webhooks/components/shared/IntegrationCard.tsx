@@ -46,7 +46,7 @@ export function IntegrationCard({
   disabled,
   comingSoonLabel,
 }: IntegrationCardProps) {
-  // A multi-line choice tile (icon, name, description, "coming soon" badge, check mark): the kit
+  // kit-exception: A multi-line choice tile (icon, name, description, "coming soon" badge, check mark): the kit
   // Button is a single-line pill, so this stays a native <button> on kit tokens, with aria-pressed.
   return (
     <button

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useTranslations } from "next-intl";
+import { PageHeader } from "@omniroute/ui-kit/page-header";
 import Icon from "@/shared/components/Icon";
 import Button from "@/shared/components/Button";
 import Card from "@/shared/components/Card";
@@ -56,6 +57,7 @@ function CoverageBarSkeleton(): JSX.Element {
 
 export function AgentSkillsPageClient(): JSX.Element {
   const t = useTranslations("agentSkills");
+  const tSidebar = useTranslations("sidebar");
 
   // State
   const [catalog, setCatalog] = useState<AgentSkill[]>([]);
@@ -208,6 +210,12 @@ export function AgentSkillsPageClient(): JSX.Element {
 
   return (
     <div className="flex flex-col gap-4">
+      {/* Page title (lote 7 pendência 12): the shell title hides when a PageHeader is present. */}
+      <PageHeader
+        compact
+        title={tSidebar("agentSkills")}
+        description={tSidebar("agentSkillsSubtitle")}
+      />
       {/* Concept card — full width */}
       <SkillsConceptCard variant="agent" />
 

@@ -63,6 +63,43 @@ describe("CommandPalette on the kit Dialog", () => {
     }
   );
 
+  // F4 (F1 checkpoint pendência): the palette has no DialogTrigger and its search field takes
+  // focus itself, so Radix had nothing to return focus to and Escape left it on <body>.
+  it(
+    "returns focus to the opener when Escape closes the palette",
+    { timeout: 20_000 },
+    async () => {
+      function Harness() {
+        const [open, setOpen] = React.useState(false);
+        return (
+          <>
+            <button type="button" onClick={() => setOpen(true)}>
+              Open palette
+            </button>
+            <CommandPalette isOpen={open} onClose={() => setOpen(false)} />
+          </>
+        );
+      }
+      render(<Harness />);
+      const opener = screen.getByRole("button", { name: "Open palette" });
+      act(() => {
+        opener.focus();
+        opener.click();
+      });
+      const input = await screen.findByRole("searchbox");
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 60));
+      });
+      expect(document.activeElement).toBe(input);
+      fireEvent.keyDown(input, { key: "Escape" });
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      });
+      expect(screen.queryByRole("dialog")).toBeNull();
+      expect(document.activeElement).toBe(opener);
+    }
+  );
+
   it("renders nothing while closed", () => {
     render(<CommandPalette isOpen={false} onClose={vi.fn()} />);
     expect(screen.queryByRole("dialog")).toBeNull();

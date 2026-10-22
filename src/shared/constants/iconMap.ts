@@ -310,19 +310,19 @@ import {
   SquareCode,
   Stethoscope,
 } from "lucide-react";
-
-// F4 (Task 41) — the last null entries; the Material fallback is gone (KEA-7886).
+// F4 sweep (KEA-7886): the last null entries + lookup-object values the literal scanner missed.
+// Droplet and Mail are imported by the blocks above.
 import {
   Aperture,
-  ArrowBigUpDash,
+  AudioWaveform,
+  BellRing,
   Bird,
-  Blend,
   Box,
+  BrainCog,
   BriefcaseBusiness,
   Brush,
   CircuitBoard,
   CloudCheck,
-  Droplets,
   Factory,
   Fence,
   Flower2,
@@ -330,22 +330,28 @@ import {
   Handshake,
   LayoutDashboard,
   Leaf,
-  PackageOpen,
+  MicVocal,
+  PackageCheck,
   PawPrint,
   Plane,
   Router,
+  ScanText,
   ShieldPlus,
   Smile,
-  TableProperties,
+  Table2,
   UserLock,
   UsersRound,
   Wand,
   Wind,
 } from "lucide-react";
 
+// F4 (Task 41) — picks that the F4 sweep block above does not import (KEA-7886).
+import { ArrowBigUpDash, Blend } from "lucide-react";
+
 /**
  * Icon name (the Material Symbols vocabulary the screens use) → Lucide icon. Every name in use
- * MUST map to a Lucide glyph (tests/unit/icon-map-coverage.test.ts); `npm run gen:icon-map`
+ * MUST map to a Lucide glyph (tests/unit/icon-map-coverage.test.ts for literal names,
+ * tests/unit/icon-map-object-values.test.ts for object-map values); `npm run gen:icon-map`
  * prints the missing ones. An unmapped name renders <Icon>'s neutral placeholder glyph.
  * Navigation uses one ink (no per-item accent) — SIDEBAR_ICON_ACCENTS was retired (spec §3.5).
  */
@@ -557,13 +563,14 @@ export const ICON_MAP: Record<string, LucideIcon> = {
   date_range: CalendarRange,
   delete_forever: Trash2,
   delete_sweep: ListX,
-  deployed_code_history: PackageOpen,
+  deployed_code_history: PackageCheck,
   developer_board: CircuitBoard,
   devices: MonitorSmartphone,
   diamond: Gem,
   diversity_3: UsersRound,
   do_not_disturb: CircleMinus,
   do_not_disturb_on: CircleMinus,
+  document_scanner: ScanText,
   done_all: CheckCheck,
   download_done: HardDriveDownload,
   downloading: CloudDownload,
@@ -573,6 +580,7 @@ export const ICON_MAP: Record<string, LucideIcon> = {
   edit_note: NotebookPen,
   edit_square: SquarePen,
   electrical_services: PlugZap,
+  email: Mail,
   error_outline: CircleAlert,
   event_available: CalendarCheck,
   event_busy: CalendarX,
@@ -650,6 +658,7 @@ export const ICON_MAP: Record<string, LucideIcon> = {
   network_ping: Radar,
   neurology: BrainCircuit,
   new_releases: BadgePlus,
+  notifications_active: BellRing,
   notifications_off: BellOff,
   open_in_browser: ExternalLink,
   output: ArrowRightFromLine,
@@ -667,7 +676,7 @@ export const ICON_MAP: Record<string, LucideIcon> = {
   playlist_add: ListPlus,
   precision_manufacturing: Factory,
   priority_high: CircleAlert,
-  psychology_alt: BrainCircuit,
+  psychology_alt: BrainCog,
   public_off: GlobeOff,
   query_stats: ChartNoAxesCombined,
   radio_button_checked: CircleDot,
@@ -700,7 +709,7 @@ export const ICON_MAP: Record<string, LucideIcon> = {
   shuffle: Shuffle,
   skip_next: SkipForward,
   sort: ArrowDownWideNarrow,
-  spatial_audio: AudioLines,
+  spatial_audio: AudioWaveform,
   stacked_line_chart: ChartArea,
   stop_circle: CircleStop,
   storefront: Store,
@@ -715,7 +724,7 @@ export const ICON_MAP: Record<string, LucideIcon> = {
   sync_disabled: RefreshCwOff,
   sync_problem: RefreshCwOff,
   system_update_alt: MonitorDown,
-  table_chart: TableProperties,
+  table_chart: Table2,
   tag: Hash,
   task_alt: CircleCheckBig,
   text_fields: Type,
@@ -742,13 +751,13 @@ export const ICON_MAP: Record<string, LucideIcon> = {
   view_agenda: Rows2,
   view_in_ar: Box,
   view_module: LayoutGrid,
-  voice_chat: MessagesSquare,
+  voice_chat: MicVocal,
   volume_up: Volume2,
   volunteer_activism: HandHeart,
   vpn_key_off: ShieldOff,
   vpn_lock: GlobeLock,
   water: Droplet,
-  water_drop: Droplets,
+  water_drop: Droplet,
   web: AppWindow,
   widgets: LayoutGrid,
   width_normal: MoveHorizontal,

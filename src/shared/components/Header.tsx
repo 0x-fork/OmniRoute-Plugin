@@ -12,6 +12,33 @@ const getPlatformIsMac = () => {
   return /Mac|iPhone|iPad|iPod/.test(platform);
 };
 const getPlatformIsMacServer = () => false;
+
+// One title per page (F4): 67+ dashboard pages render a kit PageHeader (their own h1), and the
+// shell title repeated it ("API Keys" × "API Key Management", two h1s). The shell title is
+// dropped from the DOM while a PageHeader is mounted — removed, not CSS-hidden, so `h1` locators
+// and the accessibility tree see exactly one page heading. SSR and hydration render the title
+// (server snapshot false); client navigation re-checks through the observer. Scoped to the shell's
+// content region (#main-content): a PageHeader inside a portalled dialog does not count, and the
+// observer does not wake on unrelated body mutations (review M-1/N-6).
+const PAGE_HEADER_SELECTOR = "#main-content .ci-page-header";
+const contentRoot = () => document.getElementById("main-content") ?? document.body;
+function subscribePageHeader(onChange: () => void) {
+  let frame = 0;
+  const observer = new MutationObserver(() => {
+    if (frame) return;
+    frame = requestAnimationFrame(() => {
+      frame = 0;
+      onChange();
+    });
+  });
+  observer.observe(contentRoot(), { childList: true, subtree: true });
+  return () => {
+    observer.disconnect();
+    if (frame) cancelAnimationFrame(frame);
+  };
+}
+const getPageHasHeader = () => document.querySelector(PAGE_HEADER_SELECTOR) !== null;
+const getPageHasHeaderServer = () => false;
 import ThemeToggle from "./ThemeToggle";
 import TokenHealthBadge from "./TokenHealthBadge";
 import DegradationBadge from "./DegradationBadge";
@@ -188,6 +215,11 @@ function usePageInfo(pathname: string | null): PageInfo {
  */
 export default function Header({ onOpenCommandPalette }: HeaderProps) {
   const isMac = useSyncExternalStore(subscribePlatform, getPlatformIsMac, getPlatformIsMacServer);
+  const pageHasHeader = useSyncExternalStore(
+    subscribePageHeader,
+    getPageHasHeader,
+    getPageHasHeaderServer
+  );
   const pathname = usePathname();
   const router = useRouter();
   const isElectron = useIsElectron();
@@ -233,7 +265,8 @@ export default function Header({ onOpenCommandPalette }: HeaderProps) {
         <Icon name="menu" size={18} />
       </SidebarTrigger>
       <div className="hidden min-w-0 items-center gap-3 lg:flex">
-        {(icon || providerId) && (
+        {/* The icon tile goes with the title: alone it would be an orphan glyph (review M-2). */}
+        {(icon || providerId) && !pageHasHeader && (
           <span className="flex size-9 shrink-0 items-center justify-center rounded-control bg-accent-light text-heading">
             {icon ? (
               <Icon name={icon} size={20} />
@@ -242,7 +275,7 @@ export default function Header({ onOpenCommandPalette }: HeaderProps) {
             )}
           </span>
         )}
-        {title && (
+        {title && !pageHasHeader && (
           <div className="min-w-0">
             <h1 className="ci-heading truncate text-lg">{title}</h1>
             {description && <p className="truncate text-xs text-text-muted">{description}</p>}

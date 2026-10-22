@@ -827,8 +827,8 @@ html[dir="rtl"] :where(.react-flow) {
     background: var(--ci-color-accent-surface-strong);
     border-color: transparent;
   }
-  /* Dark: the strong accent surface is lime at 14 % over the dark background, so the
-     neutral-950 ink above vanishes; the lime itself reads there (same as --color-primary-ink). */
+  /* Dark: the surface is a 14 % lime tint over the dark background, so the near-black accent
+     foreground vanished ("8 features" on the translator, F4); the lime itself is the ink. */
   :root[data-theme="dark"] .ci-badge[data-tone="primary"] {
     color: var(--ci-color-accent);
   }

@@ -100,7 +100,7 @@ export default function ProviderDisplayModeControl({
                 : "text-text-muted hover:bg-bg-primary/70 hover:text-text-main"
             } ${option.disabled ? "cursor-not-allowed opacity-50" : ""}`}
           >
-            {/* Visually hidden native radio: the label is the visible control and the radio
+            {/* kit-exception: Visually hidden native radio: the label is the visible control and the radio
                 carries the radiogroup semantics and keyboard model (kit-faithful exception). */}
             <input
               type="radio"

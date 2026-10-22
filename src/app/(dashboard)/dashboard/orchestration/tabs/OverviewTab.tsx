@@ -116,7 +116,7 @@ export function OverviewTab({
     <div className="flex flex-col gap-4 p-4 h-full overflow-auto">
       <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
         {(Object.keys(counts) as OrchState[]).map((s) => (
-          // Two-line count tile that filters the board: stays a native <button> (the kit
+          // kit-exception: Two-line count tile that filters the board: stays a native <button> (the kit
           // Button is a single-line pill), on kit tokens, with the filter state in aria-pressed.
           <button
             key={s}

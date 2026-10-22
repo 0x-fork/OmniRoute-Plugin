@@ -266,9 +266,11 @@ export default function ProviderSummaryCard({
               >
                 {cat.color && <CategoryDot color={cat.color} label={cat.label} />}
                 <span>{cat.label}</span>
+                {/* Full-opacity muted ink: the old opacity-70 "/total" fell to 3.28:1 on the kit
+                    button (axe color-contrast, F4). */}
                 <span className="text-[11px] text-text-muted">
                   {cat.stat.configured}
-                  <span className="opacity-70">/{cat.stat.total}</span>
+                  <span>/{cat.stat.total}</span>
                 </span>
               </Button>
             );

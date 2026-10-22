@@ -13641,7 +13641,8 @@
       }
     },
     "leaderboardTitle": "Bảng xếp hạng",
-    "leaderboardDescription": "Xếp hạng và thành tích giữa các khóa API của bạn"
+    "leaderboardDescription": "Xếp hạng và thành tích giữa các khóa API của bạn",
+    "badgeLocked": "Đã khóa"
   },
   "featureFlags": {
     "title": "Cờ tính năng",

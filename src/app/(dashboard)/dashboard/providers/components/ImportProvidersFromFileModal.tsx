@@ -124,7 +124,7 @@ interface FilePickerRowProps {
 function FilePickerRow({ fileInputRef, fileName, onFile, t }: FilePickerRowProps) {
   return (
     <div className="flex items-center gap-3">
-      {/* Hidden native file input, opened by the Button below (no visible raw control). */}
+      {/* kit-exception: Hidden native file input, opened by the Button below (no visible raw control). */}
       <input
         ref={fileInputRef}
         type="file"

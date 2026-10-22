@@ -1,7 +1,7 @@
 import "./globals.css";
 import { ThemeProvider } from "@/shared/components/ThemeProvider";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, getLocale, getTranslations } from "next-intl/server";
+import { getMessages, getLocale } from "next-intl/server";
 import { RTL_LOCALES } from "@/i18n/config";
 import { normalizeComplianceEventTypes } from "@/i18n/request";
 import { pickMessages } from "@/i18n/pickMessages";
@@ -52,7 +52,6 @@ export async function generateMetadata() {
 
 export default async function RootLayout({ children }) {
   const locale = await getLocale();
-  const t = await getTranslations("sidebar");
   // Serialize ONLY the public-surface namespaces into the flight payload.
   // The full merged catalog is ~664 KB across 132 namespaces and used to be
   // embedded in every rendered page (757-865 KB HTML even for /login and
@@ -139,13 +138,9 @@ export default async function RootLayout({ children }) {
           }}
         />
       </head>
+      {/* No skip link here: its #main-content target exists only in the dashboard shell, which
+          renders its own skip link as the first tab stop (F4). */}
       <body className="font-sans antialiased" suppressHydrationWarning>
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-accent focus:text-accent-foreground focus:rounded-lg focus:text-sm focus:font-semibold focus:shadow-lg"
-        >
-          {t("skipToContent")}
-        </a>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <BasePathNetworkProvider>
             <PwaRegister />

@@ -174,7 +174,7 @@ export default function SearchToolsConfigPane({
 
       {/* History section (collapsible placeholder) */}
       <div className="p-3 flex-1">
-        {/* Full-width disclosure header: stays a native <button> on kit tokens. */}
+        {/* kit-exception: Full-width disclosure header: stays a native <button> on kit tokens. */}
         <button
           type="button"
           className="flex justify-between items-center w-full"

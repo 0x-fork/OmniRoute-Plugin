@@ -72,7 +72,7 @@ function RtkTomlEditor({
       <div className="mt-3 flex flex-col gap-3">
         <label className="text-xs font-medium text-text-main">
           {t("tomlChooseFile")}
-          {/* Native file picker: the kit has no file input; tokens style its button. */}
+          {/* kit-exception: Native file picker: the kit has no file input; tokens style its button. */}
           <input
             type="file"
             accept=".toml,text/plain,application/toml"

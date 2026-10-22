@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useTranslations } from "next-intl";
+import { PageHeader } from "@omniroute/ui-kit/page-header";
+import { interpolateNodes, nodeArgs } from "@/shared/utils/interpolateNodes";
 import { Switch } from "@omniroute/ui-kit/switch";
 import { Card } from "@/shared/components";
 import Badge from "@/shared/components/Badge";
@@ -68,6 +70,7 @@ function DisabledPanel() {
 
 export default function A2APage() {
   const t = useTranslations("a2aDashboard");
+  const tSidebar = useTranslations("sidebar");
   const [a2aStatus, setA2aStatus] = useState<ServiceStatus>({ online: false, loading: true });
   const [a2aEnabled, setA2aEnabled] = useState(false);
   const [a2aToggling, setA2aToggling] = useState(false);
@@ -129,27 +132,29 @@ export default function A2APage() {
 
   return (
     <div className="flex flex-col gap-6">
+      {/* Page title (lote 7 pendência 12): the shell title hides when a PageHeader is present. */}
+      <PageHeader compact title={tSidebar("a2a")} description={tSidebar("a2aSubtitle")} />
       <Card>
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="text-sm text-text-muted">{t("a2aIntro")}</p>
             <ol className="mt-2 text-sm space-y-0.5 list-decimal list-inside text-text-muted">
               <li>
-                {t.rich("a2aStep1", {
-                  code: (chunks) => <code className="text-xs">{t("agentCardPath")}</code>,
+                {interpolateNodes(t("a2aStep1", nodeArgs(["code"])), {
+                  code: <code className="text-xs">{t("agentCardPath")}</code>,
                 })}
               </li>
               <li>
-                {t.rich("a2aStep2", {
-                  code1: (chunks) => <code className="text-xs">{t("rpcEndpoint")}</code>,
-                  code2: (chunks) => <code className="text-xs">{t("rpcMethodSend")}</code>,
-                  code3: (chunks) => <code className="text-xs">{t("rpcMethodStream")}</code>,
+                {interpolateNodes(t("a2aStep2", nodeArgs(["code1", "code2", "code3"])), {
+                  code1: <code className="text-xs">{t("rpcEndpoint")}</code>,
+                  code2: <code className="text-xs">{t("rpcMethodSend")}</code>,
+                  code3: <code className="text-xs">{t("rpcMethodStream")}</code>,
                 })}
               </li>
               <li>
-                {t.rich("a2aStep3", {
-                  code1: (chunks) => <code className="text-xs">{t("rpcMethodGet")}</code>,
-                  code2: (chunks) => <code className="text-xs">{t("rpcMethodCancel")}</code>,
+                {interpolateNodes(t("a2aStep3", nodeArgs(["code1", "code2"])), {
+                  code1: <code className="text-xs">{t("rpcMethodGet")}</code>,
+                  code2: <code className="text-xs">{t("rpcMethodCancel")}</code>,
                 })}
               </li>
             </ol>
