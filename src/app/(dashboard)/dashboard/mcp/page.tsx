@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { PageHeader } from "@omniroute/ui-kit/page-header";
+import { interpolateNodes, nodeArgs } from "@/shared/utils/interpolateNodes";
 import { RadioGroup, RadioGroupItem } from "@omniroute/ui-kit/radio-group";
 import { Switch } from "@omniroute/ui-kit/switch";
 import { Card } from "@/shared/components";
@@ -246,15 +247,14 @@ export default function McpPage() {
             </p>
             <ol className="mt-2 text-sm space-y-0.5 list-decimal list-inside text-text-muted">
               <li>
-                {t.rich("mcpStep1", {
-                  // `{code}` is an ICU argument, not a tag: it takes a node, never a function
-                  // ("Functions are not valid as a React child").
+                {interpolateNodes(t("mcpStep1", nodeArgs(["code"])), {
+                  // `{code}` is an ICU argument, not a tag (see interpolateNodes).
                   code: <code className="text-xs">omniroute --mcp</code>,
                 })}
               </li>
               <li>{t("mcpStep2")}</li>
               <li>
-                {t.rich("mcpStep3", {
+                {interpolateNodes(t("mcpStep3", nodeArgs(["code1", "code2"])), {
                   code1: <code className="text-xs">omniroute_get_health</code>,
                   code2: <code className="text-xs">omniroute_list_combos</code>,
                 })}

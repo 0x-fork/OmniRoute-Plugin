@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { PageHeader } from "@omniroute/ui-kit/page-header";
+import { interpolateNodes, nodeArgs } from "@/shared/utils/interpolateNodes";
 import { Switch } from "@omniroute/ui-kit/switch";
 import { Card } from "@/shared/components";
 import Badge from "@/shared/components/Badge";
@@ -139,19 +140,19 @@ export default function A2APage() {
             <p className="text-sm text-text-muted">{t("a2aIntro")}</p>
             <ol className="mt-2 text-sm space-y-0.5 list-decimal list-inside text-text-muted">
               <li>
-                {t.rich("a2aStep1", {
+                {interpolateNodes(t("a2aStep1", nodeArgs(["code"])), {
                   code: <code className="text-xs">{t("agentCardPath")}</code>,
                 })}
               </li>
               <li>
-                {t.rich("a2aStep2", {
+                {interpolateNodes(t("a2aStep2", nodeArgs(["code1", "code2", "code3"])), {
                   code1: <code className="text-xs">{t("rpcEndpoint")}</code>,
                   code2: <code className="text-xs">{t("rpcMethodSend")}</code>,
                   code3: <code className="text-xs">{t("rpcMethodStream")}</code>,
                 })}
               </li>
               <li>
-                {t.rich("a2aStep3", {
+                {interpolateNodes(t("a2aStep3", nodeArgs(["code1", "code2"])), {
                   code1: <code className="text-xs">{t("rpcMethodGet")}</code>,
                   code2: <code className="text-xs">{t("rpcMethodCancel")}</code>,
                 })}
