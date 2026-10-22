@@ -958,6 +958,11 @@ html[dir="rtl"] :where(.material-symbols-outlined, .traffic-lights, .react-flow)
     background: var(--ci-color-accent-surface-strong);
     border-color: transparent;
   }
+  /* Dark: the surface is a 14 % lime tint over the dark background, so the near-black accent
+     foreground vanished ("8 features" on the translator, F4); the lime itself is the ink. */
+  :root[data-theme="dark"] .ci-badge[data-tone="primary"] {
+    color: var(--ci-color-accent);
+  }
 }
 
 /* === OmniRoute kit extensions: trilha C === */
