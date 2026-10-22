@@ -458,7 +458,7 @@ export default function QuotaSharePageClient() {
         }
         actions={
           <a
-            href="https://github.com/diegosouzapw/OmniRoute/issues/new?labels=quota-share,beta&title=%5Bquota-share%5D%20"
+            href="https://github.com/cheaper-inference/OmniRoute/issues/new?labels=quota-share,beta&title=%5Bquota-share%5D%20"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 font-medium underline-offset-2 hover:underline"

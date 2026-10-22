@@ -915,7 +915,7 @@ function ProvidersPageContent() {
                     {providerText(t, "onboardingWizard", "Provider Onboarding Wizard")}
                   </Button>
                   <a
-                    href="https://github.com/diegosouzapw/OmniRoute#-documentation"
+                    href="https://github.com/cheaper-inference/OmniRoute#-documentation"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={buttonVariants({ variant: "outline" })}
