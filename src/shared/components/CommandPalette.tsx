@@ -71,6 +71,13 @@ function CommandPaletteDialog({ onClose }: { onClose: () => void }) {
   const [hiddenItems, setHiddenItems] = useState<Set<string>>(new Set());
   const [activePreset, setActivePreset] = useState<string | null>(null);
   const [radarAdminUrl, setRadarAdminUrl] = useState<unknown>(null);
+  // The palette has no DialogTrigger (Radix's own focus return target) and mounts fresh on
+  // open, so the element focused before the first render is the one to return to on close.
+  const [opener] = useState<HTMLElement | null>(() => {
+    if (typeof document === "undefined") return null;
+    const active = document.activeElement;
+    return active instanceof HTMLElement && active !== document.body ? active : null;
+  });
 
   useEffect(() => {
     const ctrl = new AbortController();
@@ -265,6 +272,10 @@ function CommandPaletteDialog({ onClose }: { onClose: () => void }) {
       <DialogContent
         showCloseButton={false}
         aria-describedby={undefined}
+        onCloseAutoFocus={(e) => {
+          e.preventDefault();
+          if (opener?.isConnected) opener.focus();
+        }}
         className="top-[10vh] max-w-3xl overflow-hidden p-0 [animation-name:ci-fade-in] [transform:translateX(-50%)]"
       >
         <DialogTitle className="ci-sr-only">{t("commandPalette.title")}</DialogTitle>

@@ -15,7 +15,7 @@ const cleanups: Array<() => void> = [];
 // `setTimeout(0)` after the dialog unmounts — flush one macrotask inside act.
 const flush = () => act(() => new Promise<void>((resolve) => setTimeout(resolve, 0)));
 
-function Harness() {
+function Harness({ autoFocusField = false }: { autoFocusField?: boolean }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -24,17 +24,17 @@ function Harness() {
         Open details
       </button>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title="Details">
-        Modal body
+        {autoFocusField ? <input aria-label="Key name" autoFocus /> : "Modal body"}
       </Modal>
     </>
   );
 }
 
-function renderHarness() {
+function renderHarness(props: { autoFocusField?: boolean } = {}) {
   const container = document.createElement("div");
   document.body.appendChild(container);
   const root = createRoot(container);
-  act(() => root.render(<Harness />));
+  act(() => root.render(<Harness {...props} />));
   cleanups.push(() => {
     act(() => root.unmount());
     container.remove();
@@ -95,6 +95,30 @@ describe("shared Modal focus restoration", () => {
     act(() => {
       closeButton.focus();
       closeButton.click();
+    });
+    await flush();
+
+    expect(getDialog()).toBeNull();
+    expect(document.activeElement).toBe(trigger);
+  });
+
+  // F4 (F1 checkpoint pendência): a field with autoFocus takes focus during the commit, before
+  // Radix's FocusScope mounts; FocusScope then skips onOpenAutoFocus (focus is already inside),
+  // so the opener was never captured and Escape dropped focus on <body> ("Create API Key").
+  it("returns focus to the trigger when a field inside the dialog has autoFocus", async () => {
+    const container = renderHarness({ autoFocusField: true });
+    const trigger = container.querySelector<HTMLButtonElement>("button")!;
+
+    act(() => {
+      trigger.focus();
+      trigger.click();
+    });
+
+    const field = getDialog()!.querySelector<HTMLInputElement>("input")!;
+    expect(document.activeElement).toBe(field);
+
+    act(() => {
+      document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
     });
     await flush();
 

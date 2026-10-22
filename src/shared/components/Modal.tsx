@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   Dialog,
@@ -68,11 +68,21 @@ const SIZES = {
   full: "max-w-4xl",
 } as const;
 
+// The element focused right now, unless it is <body> (nothing to return to).
+function currentFocus(): HTMLElement | null {
+  if (typeof document === "undefined") return null;
+  const active = document.activeElement;
+  return active instanceof HTMLElement && active !== document.body ? active : null;
+}
+
 // Initial focus, the focus trap, Escape, body scroll lock and the aria-labelledby
 // wiring are Radix's (via the kit Dialog). Focus restoration is ours:
 // Radix's modal content restores focus to its own DialogTrigger, which a controlled
-// `isOpen` never uses, so we remember the opener when the dialog takes focus and put
-// focus back on it when the dialog closes (nothing happens if it left the DOM).
+// `isOpen` never uses, so we remember the opener and put focus back on it when the dialog
+// closes (nothing happens if it left the DOM). The opener is captured while rendering the
+// open transition, before the commit: a field with `autoFocus` takes focus during the commit,
+// and Radix's FocusScope then skips onOpenAutoFocus (focus is already inside), so capturing
+// there alone lost the opener and dropped focus on <body> (F1 checkpoint, "Create API Key").
 export default function Modal({
   isOpen,
   onClose,
@@ -89,6 +99,16 @@ export default function Modal({
 }: ModalProps) {
   const t = useTranslations("common");
   const openerRef = useRef<HTMLElement | null>(null);
+  // "Adjust state while rendering" (react.dev): runs before the commit that mounts the content.
+  const [wasOpen, setWasOpen] = useState(isOpen);
+  const [renderOpener, setRenderOpener] = useState<HTMLElement | null>(() =>
+    isOpen ? currentFocus() : null
+  );
+  // Kept (not cleared) on close: the closing render still feeds onCloseAutoFocus.
+  if (isOpen !== wasOpen) {
+    setWasOpen(isOpen);
+    if (isOpen) setRenderOpener(currentFocus());
+  }
   const inlineMaxWidth = maxWidth && /\d/.test(maxWidth) ? maxWidth : undefined;
   // Resolved only when a string title is missing, so a locale catalog that has not
   // received `common.dialogTitleFallback` yet is never asked for it needlessly.
@@ -116,11 +136,11 @@ export default function Modal({
         style={inlineMaxWidth ? { maxWidth: inlineMaxWidth } : undefined}
         onOpenAutoFocus={() => {
           const active = document.activeElement;
-          openerRef.current = active instanceof HTMLElement ? active : null;
+          openerRef.current = renderOpener ?? (active instanceof HTMLElement ? active : null);
         }}
         onCloseAutoFocus={(e) => {
           e.preventDefault();
-          const opener = openerRef.current;
+          const opener = openerRef.current ?? renderOpener;
           openerRef.current = null;
           if (opener?.isConnected) opener.focus();
         }}
