@@ -298,13 +298,23 @@ export default function ProfilePage() {
                   type="button"
                   onClick={() => !isHiddenAndLocked && setSelectedBadge(badge)}
                   disabled={isHiddenAndLocked}
-                  className={`relative p-4 rounded-xl border transition-all text-left ${
+                  // Locked: dashed border, muted surface, dimmed glyph and a lock mark. The text
+                  // keeps full token ink — the old tile-wide opacity-50 + grayscale put names and
+                  // descriptions under AA (36 axe color-contrast nodes, F4).
+                  className={`relative p-4 rounded-xl border transition-all text-start ${
                     isEarned
                       ? `${rarityColor} bg-surface hover:shadow-md`
-                      : "border-border/50 bg-surface/50 opacity-50 grayscale enabled:hover:opacity-70 disabled:cursor-default"
+                      : "border-dashed border-border bg-bg-subtle enabled:hover:border-text-muted disabled:cursor-default"
                   }`}
+                  data-locked={isEarned ? undefined : "true"}
                 >
-                  <div className="text-3xl mb-2">
+                  {!isEarned && (
+                    <span className="absolute top-2 end-2 text-text-muted">
+                      <Icon name="lock" size={14} />
+                      <span className="ci-sr-only">{tg("badgeLocked")}</span>
+                    </span>
+                  )}
+                  <div className={`text-3xl mb-2 ${isEarned ? "" : "opacity-50 grayscale"}`}>
                     <BadgeIcon icon={isHiddenAndLocked ? null : badge.icon} earned={isEarned} />
                   </div>
                   <p className="font-semibold text-sm truncate">
