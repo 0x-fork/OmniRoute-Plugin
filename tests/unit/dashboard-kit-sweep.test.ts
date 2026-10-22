@@ -112,3 +112,10 @@ test("no hand-rolled role=dialog outside the Modal adapter", () => {
   delete hits["src/shared/components/RequestLoggerDetail.tsx"];
   assert.deepEqual(hits, {});
 });
+
+test("the dead shared Footer stays removed (landing renders its own)", () => {
+  // Rendered nowhere since the kit shell (track G); removal approved for F4.
+  assert.ok(!fs.existsSync(path.join(ROOT, "src/shared/components/Footer.tsx")));
+  const barrel = fs.readFileSync(path.join(ROOT, "src/shared/components/index.tsx"), "utf8");
+  assert.doesNotMatch(barrel, /\bas Footer\b/);
+});
