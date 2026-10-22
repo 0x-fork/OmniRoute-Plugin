@@ -28,8 +28,8 @@ lastUpdated: 2026-10-20
   `globals.css`) and the legacy Tailwind `dark:` utilities key on the `.dark` class. There are no
   accent color presets: the accent always comes from the kit.
 - **Components.** `src/shared/components/*` keep the OmniRoute component API. `Button variant="primary"`
-  paints with the bridged accent (`--grad-brand` → `--ci-color-accent`) and the kit's accent ink
-  (`text-accent-foreground`); the `.ci-button--warning` and `.ci-badge[data-tone]` rules at the end of
+  is the kit `default` button (`--ci-button-primary-*`: the inverse surface in light, the accent with
+  its `--ci-color-accent-foreground` ink in dark); the `.ci-button--warning` and `.ci-badge[data-tone]` rules at the end of
   `globals.css` (`@layer components`) are OmniRoute extensions on top of the kit classes.
 - **Icons.** `<Icon name="material_name">` (`src/shared/components/Icon.tsx`) resolves the name (the
   Material Symbols vocabulary the screens use) through `ICON_MAP` (`src/shared/constants/iconMap.ts`) to a

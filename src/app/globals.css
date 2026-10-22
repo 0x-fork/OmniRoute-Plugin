@@ -60,10 +60,8 @@
      to the lime below. */
   --color-primary-ink: var(--ci-lime-800);
   --color-accent: var(--ci-color-accent);
-  --color-accent-hover: var(--ci-color-accent-hover);
   --color-accent-light: var(--ci-color-accent-surface-strong);
   --color-accent-foreground: var(--ci-color-accent-foreground);
-  --grad-brand: var(--ci-color-accent);
 
   /* Semantic */
   --color-error: var(--ci-color-danger);
@@ -81,11 +79,6 @@
   --orch-status-error: var(--ci-color-danger);
   --orch-status-muted: var(--ci-color-text-muted);
   --orch-status-approval: var(--ci-chart-3);
-
-  /* Traffic lights (terminal chrome only) */
-  --color-traffic-red: var(--ci-color-danger);
-  --color-traffic-yellow: var(--ci-color-warning);
-  --color-traffic-green: var(--ci-color-success);
 
   /* Surfaces & text */
   --color-bg: var(--ci-color-background);
@@ -141,10 +134,6 @@
 
   /* Data-table surfaces */
   --table-header-bg: var(--ci-color-surface-muted);
-  --table-row-zebra: var(--ci-color-neutral-tint);
-  --table-row-hover: var(--ci-color-neutral-tint);
-  --table-cell-border: var(--ci-color-border-subtle);
-  --table-row-selected: var(--ci-color-accent-surface-subtle);
 }
 
 /* Dark: lime reads on the dark background (≈ 17:1), so the primary ink is the accent itself.
@@ -174,7 +163,6 @@
 
   /* Accent */
   --color-accent: var(--color-accent);
-  --color-accent-hover: var(--color-accent-hover);
   --color-accent-light: var(--color-accent-light);
 
   /* Semantic */
@@ -450,30 +438,6 @@ body.electron-macos {
 
 .dark .bg-vibrancy {
   background: rgba(16, 20, 30, 0.72);
-}
-
-/* macOS Traffic Lights */
-.traffic-lights {
-  display: flex;
-  gap: 8px;
-}
-
-.traffic-light {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-}
-
-.traffic-light.red {
-  background: var(--color-traffic-red);
-}
-
-.traffic-light.yellow {
-  background: var(--color-traffic-yellow);
-}
-
-.traffic-light.green {
-  background: var(--color-traffic-green);
 }
 
 /* ── Mobile Layout Fixes (Issue #659) ── */
@@ -806,7 +770,7 @@ html[dir="rtl"] :where(code, pre, kbd, samp, input[type="email"], input[type="ur
   direction: ltr;
   text-align: left;
 }
-html[dir="rtl"] :where(.traffic-lights, .react-flow) {
+html[dir="rtl"] :where(.react-flow) {
   direction: ltr;
 }
 

@@ -62,9 +62,7 @@ test("the OmniRoute color tokens are aliases of kit tokens (no hex left in :root
     ["--color-primary", "var(--ci-color-accent)"],
     ["--color-primary-hover", "var(--ci-color-accent-hover)"],
     ["--color-accent", "var(--ci-color-accent)"],
-    ["--color-accent-hover", "var(--ci-color-accent-hover)"],
     ["--color-accent-light", "var(--ci-color-accent-surface-strong)"],
-    ["--grad-brand", "var(--ci-color-accent)"],
     ["--color-success", "var(--ci-color-success)"],
     ["--color-warning", "var(--ci-color-warning)"],
     ["--color-error", "var(--ci-color-danger)"],
@@ -76,7 +74,6 @@ test("the OmniRoute color tokens are aliases of kit tokens (no hex left in :root
     ["--color-fd-background", "var(--ci-color-background)"],
     ["--color-fd-primary", "var(--ci-color-accent)"],
     ["--table-header-bg", "var(--ci-color-surface-muted)"],
-    ["--table-cell-border", "var(--ci-color-border-subtle)"],
   ] as const) {
     assert.ok(root.includes(`${name}: ${target};`), `:root maps ${name} → ${target}`);
   }
@@ -406,4 +403,21 @@ test("text-primary resolves to a readable primary ink; lime stays on bg/border/r
 
   // The inline ::selection rule colours TEXT, so it reads the ink too.
   assert.match(css, /::selection \{[^}]*\n\s*color: var\(--color-primary-ink\);/);
+});
+
+test("token aliases with no consumer are gone (KEA-7886 F4)", () => {
+  for (const token of [
+    "--grad-brand",
+    "--color-accent-hover",
+    "--color-traffic-red",
+    "--color-traffic-yellow",
+    "--color-traffic-green",
+    "--table-row-zebra",
+    "--table-row-hover",
+    "--table-cell-border",
+    "--table-row-selected",
+  ]) {
+    assert.ok(!css.includes(`${token}:`), `${token} is no longer declared`);
+  }
+  assert.doesNotMatch(css, /\.traffic-lights?\b/, "the unused .traffic-light(s) chrome is gone");
 });
