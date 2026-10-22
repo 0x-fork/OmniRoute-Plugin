@@ -208,12 +208,15 @@ export default function NewBatchWizard({
     dispatch({ type: "SET_ERROR", error: null });
 
     try {
-      // Step 1: upload input file
+      // Step 1: upload the original JSONL, never its sampled preview.
+      // CSV input is uploaded as the complete converted JSONL.
       const formData = new FormData();
       formData.append("purpose", "batch");
       formData.append(
         "file",
-        new Blob([state.input.rawContent], { type: "application/jsonl" }),
+        state.input.kind === "jsonl" && state.input.originalFile
+          ? state.input.originalFile
+          : new Blob([state.input.rawContent], { type: "application/jsonl" }),
         "batch-input.jsonl"
       );
 
