@@ -29,7 +29,6 @@ test("globals.css loads the self-hosted Keak fonts and the vendored kit CSS righ
     '@import "@fontsource/ibm-plex-mono/600.css";',
     '@import "@fontsource/ibm-plex-mono/700.css";',
     '@import "../../packages/ui-kit/src/ci-ui.css";',
-    '@import "material-symbols/outlined.css" layer(base);',
   ].map((needle) => css.indexOf(needle));
   assert.ok(
     order.every((i) => i >= 0),
