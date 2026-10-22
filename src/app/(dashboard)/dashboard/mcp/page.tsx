@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useTranslations } from "next-intl";
+import { PageHeader } from "@omniroute/ui-kit/page-header";
 import { RadioGroup, RadioGroupItem } from "@omniroute/ui-kit/radio-group";
 import { Switch } from "@omniroute/ui-kit/switch";
 import { Card } from "@/shared/components";
@@ -148,6 +149,7 @@ function DisabledPanel() {
 
 export default function McpPage() {
   const t = useTranslations("mcpDashboard");
+  const tSidebar = useTranslations("sidebar");
   const [mcpStatus, setMcpStatus] = useState<ServiceStatus>({ online: false, loading: true });
   const [mcpEnabled, setMcpEnabled] = useState(false);
   const [mcpToggling, setMcpToggling] = useState(false);
@@ -234,6 +236,8 @@ export default function McpPage() {
 
   return (
     <div className="flex flex-col gap-6">
+      {/* Page title (lote 7 pendência 12): the shell title hides when a PageHeader is present. */}
+      <PageHeader compact title={tSidebar("mcp")} description={tSidebar("mcpSubtitle")} />
       <Card>
         <div className="flex items-start justify-between gap-4">
           <div>

@@ -8,6 +8,7 @@ import EmptyState from "@/shared/components/EmptyState";
 import Select from "@/shared/components/Select";
 import Textarea from "@/shared/components/Textarea";
 import { useLocale, useTranslations } from "next-intl";
+import { PageHeader } from "@omniroute/ui-kit/page-header";
 import { buttonVariants } from "@omniroute/ui-kit/button";
 import { Field } from "@omniroute/ui-kit/field";
 import { Switch } from "@omniroute/ui-kit/switch";
@@ -113,6 +114,7 @@ export default function CloudAgentsPage() {
   const locale = useLocale();
   const [activeTab, setActiveTab] = useState<TabId>("tasks");
   const t = useTranslations("cloudAgents");
+  const tSidebar = useTranslations("sidebar");
   const taskPromptId = useId();
 
   // ── Tasks state ──────────────────────────────────────────────────────────
@@ -400,6 +402,12 @@ export default function CloudAgentsPage() {
 
   return (
     <div className="flex flex-col gap-6">
+      {/* Page title (lote 7 pendência 12): the shell title hides when a PageHeader is present. */}
+      <PageHeader
+        compact
+        title={tSidebar("cloudAgents")}
+        description={tSidebar("cloudAgentsSubtitle")}
+      />
       {/* Header */}
       <Card className="border-primary/20 bg-primary/5">
         <div className="flex items-start justify-between gap-4 flex-wrap">

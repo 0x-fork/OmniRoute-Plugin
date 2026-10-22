@@ -3,6 +3,7 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
 import { useTranslations } from "next-intl";
+import { PageHeader } from "@omniroute/ui-kit/page-header";
 import { Switch } from "@omniroute/ui-kit/switch";
 import { Tabs, TabsList, TabsTrigger } from "@omniroute/ui-kit/tabs";
 import MemoryConceptCard from "./components/MemoryConceptCard";
@@ -17,6 +18,7 @@ const TABS: TabId[] = ["memories", "engine", "playground"];
 
 function MemoryPageContent() {
   const t = useTranslations("memory");
+  const tSidebar = useTranslations("sidebar");
   const searchParams = useSearchParams();
   const router = useRouter();
   const { settings, save } = useMemorySettings();
@@ -33,6 +35,8 @@ function MemoryPageContent() {
 
   return (
     <div className="space-y-6">
+      {/* Page title (lote 7 pendência 12): the shell title hides when a PageHeader is present. */}
+      <PageHeader compact title={tSidebar("memory")} description={tSidebar("memorySubtitle")} />
       {/* Concept card */}
       <MemoryConceptCard />
 

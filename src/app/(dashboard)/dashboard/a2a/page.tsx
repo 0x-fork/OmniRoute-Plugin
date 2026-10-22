@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useTranslations } from "next-intl";
+import { PageHeader } from "@omniroute/ui-kit/page-header";
 import { Switch } from "@omniroute/ui-kit/switch";
 import { Card } from "@/shared/components";
 import Badge from "@/shared/components/Badge";
@@ -68,6 +69,7 @@ function DisabledPanel() {
 
 export default function A2APage() {
   const t = useTranslations("a2aDashboard");
+  const tSidebar = useTranslations("sidebar");
   const [a2aStatus, setA2aStatus] = useState<ServiceStatus>({ online: false, loading: true });
   const [a2aEnabled, setA2aEnabled] = useState(false);
   const [a2aToggling, setA2aToggling] = useState(false);
@@ -129,6 +131,8 @@ export default function A2APage() {
 
   return (
     <div className="flex flex-col gap-6">
+      {/* Page title (lote 7 pendência 12): the shell title hides when a PageHeader is present. */}
+      <PageHeader compact title={tSidebar("a2a")} description={tSidebar("a2aSubtitle")} />
       <Card>
         <div className="flex items-start justify-between gap-4">
           <div>
