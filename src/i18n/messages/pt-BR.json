@@ -1492,7 +1492,11 @@
       "chatIdPlaceholder": "-100123456789 ou @nomecanal",
       "chatIdHint": "O identificador numérico único ou nome de usuário público do chat/canal.",
       "tutorial": "Tutorial"
-    }
+    },
+    "copy": "Copiar",
+    "copied": "Copiado!",
+    "expandDetails": "Mostrar detalhes",
+    "collapseDetails": "Ocultar detalhes"
   },
   "compliance": {
     "auditTitle": "Auditoria",
@@ -2617,7 +2621,9 @@
     "imageToTextBridgeCta": "Configure a ponte Imagem→Texto nas configurações da Ponte de Modalidade",
     "sttBridgeCta": "Configure a ponte de Fala→Texto nas configurações da Ponte de Modalidade",
     "existingConnection": "Conexão existente",
-    "openrouterSttDescription": "Os modelos de reconhecimento de fala do OpenRouter usam sua conexão OpenRouter configurada. Nenhuma credencial separada é necessária."
+    "openrouterSttDescription": "Os modelos de reconhecimento de fala do OpenRouter usam sua conexão OpenRouter configurada. Nenhuma credencial separada é necessária.",
+    "modalityTabsAria": "Tipo de mídia",
+    "serviceKindsAria": "Tipo de serviço"
   },
   "search": {
     "searchQuery": "Consulta de busca",
@@ -11278,7 +11284,8 @@
     "minutesAgo": "{minutes}m atrás",
     "hoursAgo": "{hours}h atrás",
     "daysAgo": "{days}d atrás",
-    "entries": "Entradas"
+    "entries": "Entradas",
+    "viewSwitcherAria": "Visualização do cache"
   },
   "proxyConfigModal": {
     "levelGlobal": "Globais",
@@ -11901,7 +11908,8 @@
     "assistant": "Assistente",
     "errorLabel": "Erro",
     "requestFailed": "Falha na requisição",
-    "stop": "Pare"
+    "stop": "Pare",
+    "messageInputAria": "Mensagem"
   },
   "requestLogger": {
     "recording": "Gravando",
@@ -12219,7 +12227,8 @@
     "statusExhausted": "ESGOTADO",
     "statusAlerting": "ALERTANDO",
     "statusError": "ERRO",
-    "moreSuffix": "+{count} mais"
+    "moreSuffix": "+{count} mais",
+    "feedFilterLabel": "Filtrar eventos"
   },
   "quotaShare": {
     "weightPercent": "Peso %",
@@ -13382,7 +13391,11 @@
     "method": "Método",
     "auth": "Autenticação",
     "feasibility": "Viabilidade",
-    "models": "Modelos"
+    "models": "Modelos",
+    "provider": "Provedor",
+    "status": "Status",
+    "endpoint": "Endpoint",
+    "actions": "Ações"
   },
   "noAuthProvider": {
     "title": "Não requer autenticação",
