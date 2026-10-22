@@ -238,12 +238,8 @@ test("flow surfaces still express state with --orch-status-* tokens, not fixed h
 // ── Guards carried verbatim in spirit from design-grid-background.test.ts (383c5dc5d479) that
 // stay true after the bridge; the grid/14px/gradient/STATUS_HEX ones were obsolete by design.
 test("DashboardLayout content shell is fluid up to ~4K before centering", () => {
-  // DashboardLayout.tsx is the UI_KIT_SHELL selector since trilha F: the content wrapper lives in
-  // the kit shell (DashboardShell) and in the legacy shell kept behind the flag.
-  for (const file of [
-    "src/shared/components/layouts/DashboardShell.tsx",
-    "src/shared/components/layouts/legacy/DashboardLayoutLegacy.tsx",
-  ]) {
+  // The content wrapper lives in the kit shell (DashboardShell), the only shell since KEA-7886 F4.
+  for (const file of ["src/shared/components/layouts/DashboardShell.tsx"]) {
     const dashboardLayout = read(file);
     assert.ok(
       dashboardLayout.includes("max-w-[3840px] mx-auto"),
