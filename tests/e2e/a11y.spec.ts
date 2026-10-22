@@ -41,17 +41,27 @@ import { gotoDashboardRoute } from "./helpers/dashboardAuth";
 // Conditional import — skip entire suite if @axe-core/playwright is absent.
 // ---------------------------------------------------------------------------
 
-let AxeBuilder: (new (args: { page: Page }) => {
-  analyze(): Promise<{ violations: Array<{ id: string; description: string; impact: string | null; nodes: unknown[] }> }>;
-  withTags(tags: string[]): unknown;
-  exclude(selector: string): unknown;
-  disableRules(rules: string[]): unknown;
-}) | null = null;
+let AxeBuilder:
+  | (new (args: { page: Page }) => {
+      analyze(): Promise<{
+        violations: Array<{
+          id: string;
+          description: string;
+          impact: string | null;
+          nodes: unknown[];
+        }>;
+      }>;
+      withTags(tags: string[]): unknown;
+      exclude(selector: string): unknown;
+      disableRules(rules: string[]): unknown;
+    })
+  | null = null;
 
 try {
   // Dynamic import so the module parse does not fail when the package is absent.
   const mod = await import("@axe-core/playwright");
-  AxeBuilder = mod.default ?? (mod as unknown as { AxeBuilder: typeof AxeBuilder }).AxeBuilder ?? null;
+  AxeBuilder =
+    mod.default ?? (mod as unknown as { AxeBuilder: typeof AxeBuilder }).AxeBuilder ?? null;
 } catch {
   // Package not installed — suite will skip gracefully below.
   AxeBuilder = null;
@@ -87,10 +97,7 @@ type AxeViolation = {
   nodes: unknown[];
 };
 
-async function runAxe(
-  page: Page,
-  label: string
-): Promise<AxeViolation[]> {
+async function runAxe(page: Page, label: string): Promise<AxeViolation[]> {
   if (!AxeBuilder) {
     throw new Error("@axe-core/playwright not available");
   }
@@ -105,7 +112,10 @@ async function runAxe(
 
   if (results.violations.length > 0) {
     const summary = results.violations
-      .map((v) => `  [${v.impact ?? "unknown"}] ${v.id}: ${v.description} (${(v.nodes as unknown[]).length} nodes)`)
+      .map(
+        (v) =>
+          `  [${v.impact ?? "unknown"}] ${v.id}: ${v.description} (${(v.nodes as unknown[]).length} nodes)`
+      )
       .join("\n");
     console.log(`axeViolations page=${label}:\n${summary}`);
   }
@@ -243,7 +253,12 @@ test.describe("A11y — Dashboard key surfaces (@axe-core, nightly advisory)", (
     }
 
     // The settings route redirects to /dashboard/settings/general; follow it.
+    // The redirect lands as a client navigation a few hundred ms after the first
+    // load, so wait for it — otherwise axe's evaluate dies with "Execution context
+    // was destroyed" when the navigation races the analysis.
     await gotoDashboardRoute(page, "/dashboard/settings");
+    await page.waitForURL(/\/dashboard\/settings\/general(?:[?#].*)?$/, { timeout: 60_000 });
+    await page.waitForLoadState("load");
 
     const violations = await runAxe(page, "/dashboard/settings");
     const baseline = VIOLATION_BASELINES["/dashboard/settings"] ?? 0;
