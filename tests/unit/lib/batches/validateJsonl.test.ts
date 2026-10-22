@@ -151,17 +151,48 @@ test("validateJsonl: method is GET instead of POST → error on field=method", (
 
 // ── Sampling ──────────────────────────────────────────────────────────────────
 
-test("validateJsonl: sampling — 1500 lines with maxLinesToInspect=1000, tailLinesToInspect=100", () => {
-  const lines = Array.from({ length: 1500 }, (_, i) => makeLine(`req-${i}`));
+test("validateJsonl: inspects the tail with original line numbers and skips the middle", () => {
+  const lines = Array.from({ length: 8 }, (_, i) => makeLine(`req-${i}`));
+  lines[3] = "not-json";
+  lines[7] = makeLine("req-7", ENDPOINT, "GET");
   const result = validateJsonl(makeJsonl(lines), {
     endpoint: ENDPOINT,
-    maxLinesToInspect: 1000,
-    tailLinesToInspect: 100,
+    maxLinesToInspect: 2,
+    tailLinesToInspect: 2,
   });
-  assert.equal(result.totalLines, 1500);
-  // sampledLines = head 1000 + tail 100 (but head already covers 1000..1399, so tail adds 100 extra beyond 1000)
-  assert.ok(result.sampledLines >= 1000, "should have sampled at least 1000 lines");
-  assert.ok(result.sampledLines <= 1100, "should not exceed head+tail");
+  assert.equal(result.totalLines, 8);
+  assert.equal(result.sampledLines, 4);
+  assert.equal(result.ok, false);
+  assert.deepEqual(result.errors, [
+    { lineNumber: 8, reason: "method must be POST", field: "method" },
+  ]);
+});
+
+test("validateJsonl: detects duplicate ids spanning the head and tail samples", () => {
+  const lines = Array.from({ length: 8 }, (_, i) => makeLine(`req-${i}`));
+  lines[7] = makeLine("req-0");
+  const result = validateJsonl(makeJsonl(lines), {
+    endpoint: ENDPOINT,
+    maxLinesToInspect: 2,
+    tailLinesToInspect: 2,
+  });
+  assert.equal(result.ok, false);
+  assert.deepEqual(result.duplicateCustomIds, ["req-0"]);
+  assert.equal(result.uniqueCustomIds, 3);
+  assert.deepEqual(result.errors, []);
+});
+
+test("validateJsonl: overlapping head and tail inspect each line once", () => {
+  const lines = Array.from({ length: 8 }, (_, i) => makeLine(`req-${i}`));
+  const result = validateJsonl(makeJsonl(lines), {
+    endpoint: ENDPOINT,
+    maxLinesToInspect: 5,
+    tailLinesToInspect: 5,
+  });
+  assert.equal(result.ok, true);
+  assert.equal(result.sampledLines, 8);
+  assert.equal(result.uniqueCustomIds, 8);
+  assert.deepEqual(result.duplicateCustomIds, []);
 });
 
 test("validateJsonl: no sampling — all lines inspected when maxLinesToInspect >= totalLines", () => {
