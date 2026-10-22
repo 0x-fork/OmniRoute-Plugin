@@ -1491,7 +1491,11 @@
       "chatIdPlaceholder": "-100123456789 or @channelname",
       "chatIdHint": "The unique numerical identifier or public username of the chat/channel.",
       "tutorial": "How to configure Telegram webhook:"
-    }
+    },
+    "copy": "Copy",
+    "copied": "Copied!",
+    "expandDetails": "Show details",
+    "collapseDetails": "Hide details"
   },
   "compliance": {
     "auditTitle": "Audit",
@@ -2616,7 +2620,9 @@
     "imageToTextBridgeCta": "Configure the Image→Text bridge in Modality Bridge settings",
     "sttBridgeCta": "Configure the Speech→Text bridge in Modality Bridge settings",
     "existingConnection": "Existing connection",
-    "openrouterSttDescription": "OpenRouter speech-to-text models use your configured OpenRouter connection. No separate credential is required."
+    "openrouterSttDescription": "OpenRouter speech-to-text models use your configured OpenRouter connection. No separate credential is required.",
+    "modalityTabsAria": "Media type",
+    "serviceKindsAria": "Service type"
   },
   "search": {
     "searchQuery": "Search Query",
@@ -11277,7 +11283,8 @@
     "minutesAgo": "{minutes}m ago",
     "hoursAgo": "{hours}h ago",
     "daysAgo": "{days}d ago",
-    "entries": "Entries"
+    "entries": "Entries",
+    "viewSwitcherAria": "Cache view"
   },
   "proxyConfigModal": {
     "levelGlobal": "Global",
@@ -11899,7 +11906,8 @@
     "assistant": "Assistant",
     "errorLabel": "Error",
     "requestFailed": "Request failed",
-    "stop": "Stop"
+    "stop": "Stop",
+    "messageInputAria": "Message"
   },
   "requestLogger": {
     "recording": "Recording",
@@ -12217,7 +12225,8 @@
     "statusExhausted": "EXHAUSTED",
     "statusAlerting": "ALERTING",
     "statusError": "ERROR",
-    "moreSuffix": "+{count} more"
+    "moreSuffix": "+{count} more",
+    "feedFilterLabel": "Filter events"
   },
   "quotaShare": {
     "weightPercent": "Weight %",
@@ -13380,7 +13389,11 @@
     "method": "Method",
     "auth": "Auth",
     "feasibility": "Feasibility",
-    "models": "Models"
+    "models": "Models",
+    "provider": "Provider",
+    "status": "Status",
+    "endpoint": "Endpoint",
+    "actions": "Actions"
   },
   "noAuthProvider": {
     "title": "No authentication required",
