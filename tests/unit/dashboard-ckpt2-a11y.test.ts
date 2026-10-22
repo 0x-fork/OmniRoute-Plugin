@@ -12,6 +12,9 @@ const read = (p: string) => fs.readFileSync(path.join(ROOT, p), "utf8");
 test("console log timestamps and ids use the terminal's readable gray (§6.3, 17 contrast nodes)", () => {
   const src = read("src/shared/components/ConsoleLogViewer.tsx");
   assert.doesNotMatch(src, /#484f58/i); // 2.4:1 on #0d1117; #8b949e is ≈ 6:1
+  // Positive pins (review M-6): timestamp and correlation-id spans carry the readable gray.
+  assert.match(src, /<span className="text-\[#8b949e\] whitespace-nowrap shrink-0 select-none">/);
+  assert.match(src, /<span className="text-\[#8b949e\] ml-2">cid:/);
   assert.doesNotMatch(src, /mt-1 opacity-60">\{tv\("emptyFileLoggingHint"\)/);
 });
 
@@ -19,6 +22,12 @@ test("context engine rows are not dimmed with a list-wide opacity (§6.4, 19 con
   assert.doesNotMatch(
     read("src/app/(dashboard)/dashboard/context/settings/CompressionPanel.tsx"),
     /divide-y divide-border \$\{config\.enabled \? "" : "opacity-60"\}/
+  );
+  // Positive pin (review M-6): the list states "off" through data-disabled, not through opacity.
+  const panel = read("src/app/(dashboard)/dashboard/context/settings/CompressionPanel.tsx");
+  assert.match(
+    panel,
+    /className="divide-y divide-border"\s+data-disabled=\{config\.enabled \? undefined : "true"\}/
   );
 });
 

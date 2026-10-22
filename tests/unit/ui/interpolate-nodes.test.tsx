@@ -55,4 +55,10 @@ describe("interpolateNodes", () => {
     ]);
     expect(container.textContent).not.toMatch(/\u0000/);
   });
+
+  it("ignores prototype keys and renders nothing for a sentinel without a node", () => {
+    const text = `a ${nodeArgs(["toString"]).toString} b ${nodeArgs(["missing"]).missing} c`;
+    const { container } = render(<p>{interpolateNodes(text, {})}</p>);
+    expect(container.textContent).toBe("a  b  c");
+  });
 });

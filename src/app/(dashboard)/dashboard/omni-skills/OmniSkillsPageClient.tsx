@@ -331,7 +331,7 @@ export function OmniSkillsPageClient(): JSX.Element {
           className="h-48 resize-none font-mono text-sm"
         />
         <div className="flex flex-wrap items-center gap-3 mt-3">
-          {/* Native file picker for the JSON upload (driven by the button; adapters have none). */}
+          {/* kit-exception: Native file picker for the JSON upload (driven by the button; adapters have none). */}
           <input
             ref={fileInputRef}
             type="file"

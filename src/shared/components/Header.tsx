@@ -17,8 +17,11 @@ const getPlatformIsMacServer = () => false;
 // shell title repeated it ("API Keys" × "API Key Management", two h1s). The shell title is
 // dropped from the DOM while a PageHeader is mounted — removed, not CSS-hidden, so `h1` locators
 // and the accessibility tree see exactly one page heading. SSR and hydration render the title
-// (server snapshot false); client navigation re-checks through the observer.
-const PAGE_HEADER_SELECTOR = ".ci-page-header";
+// (server snapshot false); client navigation re-checks through the observer. Scoped to the shell's
+// content region (#main-content): a PageHeader inside a portalled dialog does not count, and the
+// observer does not wake on unrelated body mutations (review M-1/N-6).
+const PAGE_HEADER_SELECTOR = "#main-content .ci-page-header";
+const contentRoot = () => document.getElementById("main-content") ?? document.body;
 function subscribePageHeader(onChange: () => void) {
   let frame = 0;
   const observer = new MutationObserver(() => {
@@ -28,7 +31,7 @@ function subscribePageHeader(onChange: () => void) {
       onChange();
     });
   });
-  observer.observe(document.body, { childList: true, subtree: true });
+  observer.observe(contentRoot(), { childList: true, subtree: true });
   return () => {
     observer.disconnect();
     if (frame) cancelAnimationFrame(frame);
@@ -262,7 +265,8 @@ export default function Header({ onOpenCommandPalette }: HeaderProps) {
         <Icon name="menu" size={18} />
       </SidebarTrigger>
       <div className="hidden min-w-0 items-center gap-3 lg:flex">
-        {(icon || providerId) && (
+        {/* The icon tile goes with the title: alone it would be an orphan glyph (review M-2). */}
+        {(icon || providerId) && !pageHasHeader && (
           <span className="flex size-9 shrink-0 items-center justify-center rounded-control bg-accent-light text-heading">
             {icon ? (
               <Icon name={icon} size={20} />

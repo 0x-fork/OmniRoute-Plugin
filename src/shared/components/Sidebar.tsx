@@ -570,7 +570,7 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
           )}
         </SidebarMenuButton>
         {showPin && (
-          // Native button on kit tokens (track F): the pin overlays the kit SidebarMenuButton
+          // kit-exception: Native button on kit tokens (track F): the pin overlays the kit SidebarMenuButton
           // (absolute, hover-revealed); the kit has no SidebarMenuAction slot.
           <button
             type="button"
@@ -610,7 +610,7 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
     return (
       <SidebarMenuItem key={child.id} className="mt-1">
         {!separatorHidden && (
-          // Native disclosure button on kit tokens (track F): full-width subgroup header row.
+          // kit-exception: Native disclosure button on kit tokens (track F): full-width subgroup header row.
           <button
             type="button"
             aria-expanded={groupExpanded}
@@ -758,7 +758,7 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
             return (
               <SidebarGroup key={section.id}>
                 <SidebarGroupLabel className="group/header h-auto gap-1 px-0">
-                  {/* Native disclosure button on kit tokens (track F): a full-width section header
+                  {/* kit-exception: Native disclosure button on kit tokens (track F): a full-width section header
                       inside the kit SidebarGroupLabel (the kit Button is a fixed-height pill). */}
                   <button
                     type="button"
@@ -775,7 +775,7 @@ export default function Sidebar({ isMacElectron = false }: SidebarProps) {
                     />
                   </button>
                   {sectionId !== "pinned" && (
-                    // Native button on kit tokens (track F): a hover-revealed pin inside the kit
+                    // kit-exception: Native button on kit tokens (track F): a hover-revealed pin inside the kit
                     // SidebarGroupLabel; the kit has no SidebarGroupAction slot.
                     <button
                       type="button"

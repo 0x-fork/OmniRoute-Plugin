@@ -7,7 +7,7 @@ vi.mock("next-intl", () => ({
   useTranslations: () => (key: string) => key,
 }));
 
-const { default: Modal } = await import("../../../src/shared/components/Modal");
+const { default: Modal, ConfirmModal } = await import("../../../src/shared/components/Modal");
 
 const cleanups: Array<() => void> = [];
 
@@ -124,6 +124,96 @@ describe("shared Modal focus restoration", () => {
 
     expect(getDialog()).toBeNull();
     expect(document.activeElement).toBe(trigger);
+  });
+
+  // Review M-5: the useState-initializer path (dialog mounted already open, e.g. `{show && <Modal isOpen />}`).
+  it("returns focus to the opener when the dialog mounts already open with an autoFocus field", async () => {
+    function Conditional() {
+      const [show, setShow] = useState(false);
+      return (
+        <>
+          <button type="button" onClick={() => setShow(true)}>
+            Open
+          </button>
+          {show && (
+            <Modal isOpen onClose={() => setShow(false)} title="Mounted open">
+              <input aria-label="Name" autoFocus />
+            </Modal>
+          )}
+        </>
+      );
+    }
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    const root = createRoot(container);
+    act(() => root.render(<Conditional />));
+    cleanups.push(() => {
+      act(() => root.unmount());
+      container.remove();
+    });
+    const trigger = container.querySelector<HTMLButtonElement>("button")!;
+    act(() => {
+      trigger.focus();
+      trigger.click();
+    });
+    expect(document.activeElement).toBe(getDialog()!.querySelector("input"));
+    act(() => {
+      document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+    });
+    await flush();
+    expect(getDialog()).toBeNull();
+    expect(document.activeElement).toBe(trigger);
+  });
+
+  // Review M-5: a ConfirmModal opened from inside a Modal returns focus to the inner opener.
+  it("returns focus to the button inside the outer dialog when a nested ConfirmModal closes", async () => {
+    function Nested() {
+      const [outer, setOuter] = useState(false);
+      const [inner, setInner] = useState(false);
+      return (
+        <>
+          <button type="button" onClick={() => setOuter(true)}>
+            Open outer
+          </button>
+          <Modal isOpen={outer} onClose={() => setOuter(false)} title="Outer">
+            <button type="button" onClick={() => setInner(true)}>
+              Delete
+            </button>
+          </Modal>
+          <ConfirmModal
+            isOpen={inner}
+            onClose={() => setInner(false)}
+            onConfirm={() => setInner(false)}
+            message="Sure?"
+          />
+        </>
+      );
+    }
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    const root = createRoot(container);
+    act(() => root.render(<Nested />));
+    cleanups.push(() => {
+      act(() => root.unmount());
+      container.remove();
+    });
+    act(() => container.querySelector<HTMLButtonElement>("button")!.click());
+    await flush();
+    const del = [
+      ...document.body.querySelectorAll<HTMLButtonElement>('[role="dialog"] button'),
+    ].find((b) => b.textContent === "Delete")!;
+    act(() => {
+      del.focus();
+      del.click();
+    });
+    await flush();
+    expect(document.body.querySelectorAll('[role="dialog"]').length).toBe(2);
+    act(() => {
+      document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+    });
+    await flush();
+    expect(document.body.querySelectorAll('[role="dialog"]').length).toBe(1);
+    expect(document.activeElement).toBe(del);
   });
 
   it("does not try to focus an opener that was removed while the dialog was open", async () => {

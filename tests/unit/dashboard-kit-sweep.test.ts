@@ -60,7 +60,30 @@ test("no raw <select>, <textarea> or <table> outside the adapters (dashboard + s
   assert.deepEqual(hits, {});
 });
 
-test("every raw <button>/<input> left in the dashboard tree carries its kit-exception comment", () => {
+// Comments blanked (newlines kept) so `<button>` mentioned inside a comment is not a site.
+function blankComments(src: string): string {
+  const blank = (m: string) => m.replace(/[^\n]/g, " ");
+  return src.replace(/\/\*[\s\S]*?\*\//g, blank).replace(/\/\/[^\n]*/g, blank);
+}
+
+// The comment block that ends within the 3 lines above `i` (a `//` run or a `/* … */` block).
+function commentAbove(lines: string[], i: number): string | null {
+  for (let j = i - 1; j >= Math.max(0, i - 3); j--) {
+    if (/^\s*\/\//.test(lines[j])) {
+      let k = j;
+      while (k > 0 && /^\s*\/\//.test(lines[k - 1])) k--;
+      return lines.slice(k, j + 1).join("\n");
+    }
+    if (lines[j].includes("*/")) {
+      let k = j;
+      while (k > 0 && !lines[k].includes("/*")) k--;
+      return lines.slice(k, j + 1).join("\n");
+    }
+  }
+  return null;
+}
+
+test("every raw <button>/<input> left in the dashboard tree carries a `kit-exception:` comment", () => {
   // Adapters wrap the native element on purpose.
   const ADAPTERS = new Set([
     "src/shared/components/Select.tsx",
@@ -69,17 +92,34 @@ test("every raw <button>/<input> left in the dashboard tree carries its kit-exce
     "src/shared/components/ModelSelectField.tsx",
   ]);
   const unexplained: string[] = [];
+  let sites = 0;
   for (const f of DASHBOARD) {
     if (ADAPTERS.has(rel(f))) continue;
-    const lines = fs.readFileSync(f, "utf8").split("\n");
-    lines.forEach((line, i) => {
-      if (!/<(button|input)\b/.test(line) || /^\s*(\/\/|\*|\{\/\*)/.test(line)) return;
-      const before = lines.slice(Math.max(0, i - 12), i + 1).join("\n");
-      if (!/native|kit-exception|raw <button>|hidden|real button/i.test(before))
-        unexplained.push(`${rel(f)}:${i + 1}`);
-    });
+    const src = fs.readFileSync(f, "utf8");
+    const lines = src.split("\n");
+    blankComments(src)
+      .split("\n")
+      .forEach((code, i) => {
+        if (!/<(button|input)\b/.test(code)) return;
+        sites++;
+        // An explicit marker, not loose words (aria-hidden / overflow-hidden used to pass).
+        if (!/kit-exception:/.test(commentAbove(lines, i) ?? ""))
+          unexplained.push(`${rel(f)}:${i + 1}`);
+      });
   }
+  assert.ok(sites > 20, `found only ${sites} raw controls; the scan is broken`);
   assert.deepEqual(unexplained, []);
+});
+
+test("the exception check rejects loose words and accepts the marker", () => {
+  const loose = [
+    '<div className="overflow-hidden" aria-hidden="true">',
+    '  <button type="button">',
+  ];
+  assert.equal(commentAbove(loose, 1), null);
+  const marked = ["  {/* kit-exception: multi-line tile", "      (icon, title) */}", "  <button>"];
+  assert.match(commentAbove(marked, 2) ?? "", /kit-exception:/);
+  assert.doesNotMatch(blankComments("{/* a native <button> here */}"), /<button/);
 });
 
 test("hard-coded palette hues and dark: variants only where the exception is documented", () => {

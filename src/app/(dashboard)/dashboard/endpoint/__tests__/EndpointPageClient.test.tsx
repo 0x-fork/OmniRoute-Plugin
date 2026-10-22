@@ -305,6 +305,32 @@ describe("EndpointPageClient", () => {
     expect(line.parentElement!.parentElement!.className).toMatch(/\bflex-wrap\b/);
   });
 
+  it("does not break-all the 'not configured' fallback when no cloud URL is set", async () => {
+    fetchMock.mockImplementation((input: RequestInfo | URL) => {
+      if (getRequestPath(input) === "/api/settings")
+        return Promise.resolve(
+          jsonResponse({
+            cloudEnabled: false,
+            cloudConfigured: false,
+            hideEndpointCloudflaredTunnel: true,
+            hideEndpointTailscaleFunnel: true,
+            hideEndpointNgrokTunnel: true,
+          })
+        );
+      return Promise.resolve(jsonResponse({ data: [], providers: [], keys: [] }));
+    });
+    renderEndpointPage();
+    await waitForText("notConfigured");
+    const line = document.querySelector<HTMLElement>('[data-testid="cloud-sync-destination"]')!;
+    expect(line).not.toBeNull();
+    const fallback = [...line.querySelectorAll("span")].find(
+      (s) => s.textContent === "notConfigured"
+    );
+    expect(fallback).toBeDefined();
+    expect(fallback!.className).not.toMatch(/\bbreak-all\b/);
+    expect(line.querySelector(".break-all")).toBeNull();
+  });
+
   it("renders the endpoint shell before models finish and skips hidden tunnel probes", async () => {
     const modelsDeferred = createDeferred<Response>();
 

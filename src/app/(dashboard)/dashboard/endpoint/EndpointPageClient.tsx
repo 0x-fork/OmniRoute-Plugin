@@ -1430,7 +1430,10 @@ export default function APIPageClient({ machineId }: Readonly<APIPageClientProps
                   "cloudUploadDestination",
                   "Cloud sync destination (not local backups):"
                 )}{" "}
-                <span className="break-all">{cloudBaseUrl || tc("notConfigured")}</span>
+                {/* break-all only for a URL: the "Not configured" fallback is words (review I-1). */}
+                <span className={cloudBaseUrl ? "break-all" : undefined}>
+                  {cloudBaseUrl || tc("notConfigured")}
+                </span>
               </p>
             </div>
             <span
@@ -2139,7 +2142,9 @@ export default function APIPageClient({ machineId }: Readonly<APIPageClientProps
           </div>
 
           <div className="rounded-lg border border-error/40 bg-error/10 p-4">
-            <p className="text-sm break-all">{cloudBaseUrl || tc("notConfigured")}</p>
+            <p className={cloudBaseUrl ? "text-sm break-all" : "text-sm"}>
+              {cloudBaseUrl || tc("notConfigured")}
+            </p>
             <p className="text-sm mt-2">
               {translateOrFallback(
                 "cloudUploadWarning",

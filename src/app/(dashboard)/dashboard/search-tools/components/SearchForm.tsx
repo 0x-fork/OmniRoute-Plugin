@@ -216,7 +216,7 @@ export default function SearchForm({
 
       {/* Filters (collapsible) */}
       <div className="p-4 border-b border-border">
-        {/* Full-width disclosure header: stays a native <button> on kit tokens. */}
+        {/* kit-exception: Full-width disclosure header: stays a native <button> on kit tokens. */}
         <button
           type="button"
           className="flex justify-between items-center w-full"

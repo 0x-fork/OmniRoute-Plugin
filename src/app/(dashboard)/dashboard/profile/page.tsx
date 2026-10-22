@@ -291,7 +291,7 @@ export default function ProfilePage() {
               const rarityColor = RARITY_COLORS[badge.rarity] || RARITY_COLORS.common;
 
               return (
-                // Multi-line badge tile (icon, name, description, date, progress): the kit Button
+                // kit-exception: Multi-line badge tile (icon, name, description, date, progress): the kit Button
                 // is a single-line pill, so the tile stays a native <button> on kit tokens.
                 <button
                   key={badge.id}

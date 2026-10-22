@@ -129,7 +129,7 @@ export default function HarImportButton({ provider, onImport }: HarImportButtonP
             "Export from DevTools Network tab after sending at least one chat message."
           )}
         </span>
-        {/* Hidden native file input, opened by the Button above (no visible raw control). */}
+        {/* kit-exception: Hidden native file input, opened by the Button above (no visible raw control). */}
         <input
           ref={fileInputRef}
           type="file"

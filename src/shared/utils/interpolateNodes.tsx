@@ -18,7 +18,8 @@ export function interpolateNodes(text: string, nodes: Record<string, ReactNode>)
   const parts = text.split(/\u0000([A-Za-z0-9_]+)\u0000/);
   return parts.map((part, i) =>
     i % 2 === 1 ? (
-      <Fragment key={i}>{part in nodes ? nodes[part] : part}</Fragment>
+      // Own keys only (no prototype lookup); a sentinel without a node renders nothing.
+      <Fragment key={i}>{Object.hasOwn(nodes, part) ? nodes[part] : null}</Fragment>
     ) : (
       <Fragment key={i}>{part}</Fragment>
     )

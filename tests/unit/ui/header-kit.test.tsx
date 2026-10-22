@@ -60,23 +60,29 @@ describe("Header on the kit shell", () => {
   // (its own h1), so the shell title repeated it ("API Keys" × "API Key Management") and the
   // page carried two h1s. The shell drops its title while a PageHeader is mounted (removed from
   // the DOM, not CSS-hidden, so h1 locators still find the page's own heading first).
-  it("drops its title while the page renders a kit PageHeader, and brings it back after", async () => {
+  it("drops its title and icon tile while the page renders a kit PageHeader, and brings them back after", async () => {
+    // The shell renders the Header inside #main-content (SidebarInset); the detection is scoped there.
     render(
       <SidebarProvider>
-        <Header />
+        <main id="main-content">
+          <Header />
+        </main>
       </SidebarProvider>
     );
     const shell = () => document.querySelector("header.ci-sidebar-shell-header")!;
+    const tile = () => shell().querySelector("span.size-9");
     expect(shell().querySelector("h1")?.textContent).toMatch(/Providers/);
+    const hadTile = tile() !== null;
 
     const pageHeader = document.createElement("header");
     pageHeader.className = "ci-page-header";
     pageHeader.innerHTML = "<h1>Providers page</h1>";
     await act(async () => {
-      document.body.appendChild(pageHeader);
+      document.getElementById("main-content")!.appendChild(pageHeader);
       await new Promise((resolve) => setTimeout(resolve, 50));
     });
     expect(shell().querySelector("h1")).toBeNull();
+    expect(tile()).toBeNull();
     expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
 
     await act(async () => {
@@ -84,6 +90,28 @@ describe("Header on the kit shell", () => {
       await new Promise((resolve) => setTimeout(resolve, 50));
     });
     expect(shell().querySelector("h1")?.textContent).toMatch(/Providers/);
+    expect(tile() !== null).toBe(hadTile);
+  });
+
+  it("ignores a PageHeader outside the content region (e.g. inside a portalled dialog)", async () => {
+    render(
+      <SidebarProvider>
+        <main id="main-content">
+          <Header />
+        </main>
+      </SidebarProvider>
+    );
+    const portal = document.createElement("div");
+    portal.setAttribute("role", "dialog");
+    portal.innerHTML = '<header class="ci-page-header"><h1>Dialog</h1></header>';
+    await act(async () => {
+      document.body.appendChild(portal);
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    });
+    expect(document.querySelector("header.ci-sidebar-shell-header h1")?.textContent).toMatch(
+      /Providers/
+    );
+    portal.remove();
   });
 
   it(

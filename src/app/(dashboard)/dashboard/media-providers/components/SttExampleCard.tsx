@@ -179,7 +179,7 @@ export function SttExampleCard({ providerId }: Props) {
             <span className="text-xs text-text-muted">{Math.round(file.size / 1024)}KB</span>
           )}
         </div>
-        {/* The native picker stays hidden behind the kit Button above (it opens it). */}
+        {/* kit-exception: The native picker stays hidden behind the kit Button above (it opens it). */}
         <input
           ref={inputRef}
           id={fileInputId}
