@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import React from "react";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { SidebarProvider } from "@omniroute/ui-kit/sidebar";
 
@@ -56,19 +56,34 @@ describe("Header on the kit shell", () => {
     }
   );
 
-  // F4 (wave-1 checkpoint, api-manager/endpoint): 67 of the dashboard pages render a kit
-  // PageHeader (its own h1), so the shell title repeated it ("API Keys" × "API Key Management")
-  // and the page carried two h1s. The shell title block hides itself whenever a PageHeader is on
-  // the page; pages without one keep the shell h1.
-  it("hides its title block when the page renders a kit PageHeader", () => {
+  // F4 (wave-1 checkpoint, api-manager/endpoint): 67+ dashboard pages render a kit PageHeader
+  // (its own h1), so the shell title repeated it ("API Keys" × "API Key Management") and the
+  // page carried two h1s. The shell drops its title while a PageHeader is mounted (removed from
+  // the DOM, not CSS-hidden, so h1 locators still find the page's own heading first).
+  it("drops its title while the page renders a kit PageHeader, and brings it back after", async () => {
     render(
       <SidebarProvider>
         <Header />
       </SidebarProvider>
     );
-    const title = screen.getByRole("heading", { level: 1 });
-    const block = title.closest("header.ci-sidebar-shell-header > div")!;
-    expect(block.className).toContain("[body:has(.ci-page-header)_&]:hidden");
+    const shell = () => document.querySelector("header.ci-sidebar-shell-header")!;
+    expect(shell().querySelector("h1")?.textContent).toMatch(/Providers/);
+
+    const pageHeader = document.createElement("header");
+    pageHeader.className = "ci-page-header";
+    pageHeader.innerHTML = "<h1>Providers page</h1>";
+    await act(async () => {
+      document.body.appendChild(pageHeader);
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    });
+    expect(shell().querySelector("h1")).toBeNull();
+    expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+
+    await act(async () => {
+      pageHeader.remove();
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    });
+    expect(shell().querySelector("h1")?.textContent).toMatch(/Providers/);
   });
 
   it(
