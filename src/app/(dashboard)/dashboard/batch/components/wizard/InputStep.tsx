@@ -25,6 +25,10 @@ async function readFileContent(file: File): Promise<string> {
   return headText + "\n[...sample only...]\n" + tailText;
 }
 
+function getSourceContent(input: WizardInput): string | null | undefined {
+  return input.kind === "csv" ? input.csvContent : input.rawContent;
+}
+
 interface InputStepProps {
   input: WizardInput;
   onChange: (input: WizardInput) => void;
@@ -40,7 +44,6 @@ export default function InputStep({ input, onChange, destination }: InputStepPro
   // event-loop tick (React state lags behind dispatches within a tick).
   const isReadingRef = useRef(false);
   const inputRevisionRef = useRef(0);
-  const [csvJsonl, setCsvJsonl] = useState<string | null>(null);
 
   const isJsonl = input.kind === "jsonl";
   const isCsv = input.kind === "csv";
@@ -53,7 +56,6 @@ export default function InputStep({ input, onChange, destination }: InputStepPro
       rawContent: null,
       csvMapping: kind === "csv" ? {} : undefined,
     });
-    setCsvJsonl(null);
   }
 
   async function processFile(file: File) {
@@ -68,6 +70,7 @@ export default function InputStep({ input, onChange, destination }: InputStepPro
       // Soft warning — don't block, let validation catch it
     }
     setIsReading(true);
+    if (isCsv) onChange({ ...input, rawContent: null });
     try {
       // CSV conversion needs every row; JSONL keeps a bounded preview (D7).
       const content = input.kind === "csv" ? await file.text() : await readFileContent(file);
@@ -76,7 +79,8 @@ export default function InputStep({ input, onChange, destination }: InputStepPro
       onChange({
         kind: input.kind,
         fileName: file.name,
-        rawContent: content,
+        rawContent: isCsv ? null : content,
+        csvContent: isCsv ? content : undefined,
         originalFile: input.kind === "jsonl" ? file : undefined,
         csvMapping: input.kind === "csv" ? (input.csvMapping ?? {}) : undefined,
       });
@@ -112,19 +116,18 @@ export default function InputStep({ input, onChange, destination }: InputStepPro
   }
 
   function handleCsvMappingChange(mapping: WizardCsvMapping) {
-    onChange({ ...input, csvMapping: mapping });
-    setCsvJsonl(null);
+    onChange({ ...input, rawContent: null, csvMapping: mapping });
   }
 
   function handleJsonlReady(jsonl: string, _rowsParsed: number, _rowsSkipped: number) {
-    setCsvJsonl(jsonl);
     // Replace rawContent with the converted JSONL so validation step gets it
     onChange({ ...input, rawContent: jsonl, csvMapping: input.csvMapping });
   }
 
-  const isLargeFile = input.rawContent != null && input.rawContent.includes("[...sample only...]");
-  const hasFile = input.fileName != null && input.rawContent != null;
-  const csvMappingReady = isCsv && csvJsonl != null;
+  const sourceContent = getSourceContent(input);
+  const isLargeFile = sourceContent != null && sourceContent.includes("[...sample only...]");
+  const hasFile = input.fileName != null && sourceContent != null;
+  const csvMappingReady = isCsv && input.rawContent != null;
 
   // For CSV: needs mapping complete + jsonl generated to be "ready"
   // rawContent will be updated by handleJsonlReady once mapping applied
@@ -200,10 +203,10 @@ export default function InputStep({ input, onChange, destination }: InputStepPro
       )}
 
       {/* CSV mapping (inline step 2.5) */}
-      {isCsv && hasFile && input.rawContent && (
+      {isCsv && !isReading && hasFile && input.csvContent && (
         <div className="rounded-xl border border-[var(--color-border)] p-4">
           <CsvMappingStep
-            csvContent={input.rawContent}
+            csvContent={input.csvContent}
             mapping={input.csvMapping ?? {}}
             onChange={handleCsvMappingChange}
             destination={destination}
