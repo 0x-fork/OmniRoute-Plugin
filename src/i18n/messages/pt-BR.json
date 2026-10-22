@@ -1608,7 +1608,8 @@
     "mcpMetricCalls24h": "Chamadas (24h)",
     "mcpMetricSuccessRate": "Taxa de sucesso",
     "mcpMetricAvgDuration": "Duração média",
-    "mcpMetricTopTool": "Ferramenta principal"
+    "mcpMetricTopTool": "Ferramenta principal",
+    "dismissError": "Dispensar erro"
   },
   "themesPage": {
     "title": "Temas",
@@ -9059,7 +9060,8 @@
     "tomlTestPassed": "Aprovado",
     "tomlTestFailed": "Reprovado",
     "tomlImportError": "Não foi possível processar o arquivo TOML do RTK.",
-    "tomlFileReadError": "Não foi possível ler o arquivo TOML selecionado."
+    "tomlFileReadError": "Não foi possível ler o arquivo TOML selecionado.",
+    "viewMode": "Modo de visualização"
   },
   "compressionEngineConfig": {
     "loading": "Carregando…",
@@ -9281,7 +9283,8 @@
     "languagePacksList": "Pacotes de idioma: {packs}",
     "dragToReorder": "Arraste para reordenar a etapa",
     "engine": "Mecanismo",
-    "intensity": "Intensidade"
+    "intensity": "Intensidade",
+    "compressionOverride": "Substituição de compressão"
   },
   "compressionStudio": {
     "noRun": "Nenhuma execução de compressão disponível.",
@@ -9341,7 +9344,8 @@
     "encoderWinner": "vencedor: {winner}",
     "encoder": "codificador",
     "bytes": "bytes",
-    "tokensCl100k": "tokens (cl100k)"
+    "tokensCl100k": "tokens (cl100k)",
+    "studioViews": "Visões do estúdio"
   },
   "omniglyph": {
     "preview": "Visualização",
@@ -9547,7 +9551,9 @@
     "tooltipMinLength": "Mensagens menores que isso não são compactadas. Menor = mais compressão.",
     "tooltipMinSavings": "Compacte apenas se salvar pelo menos esse número de tokens.",
     "ultraSettings": "Configurações Ultra",
-    "ultraSettingsDesc": "Compressão semântica alimentada por SLM"
+    "ultraSettingsDesc": "Compressão semântica alimentada por SLM",
+    "defaultLanguage": "Idioma padrão",
+    "viewMode": "Modo de visualização"
   },
   "translator": {
     "title": "Tradutor",
@@ -12096,8 +12102,18 @@
       "resilienceRotations": "{count} rotações de conta",
       "resilienceRetried": "Turno vazio repetido",
       "resilienceContinued": "Retomado no meio do fluxo",
-      "resilienceRecovered": "Recuperado por uma ação de resiliência"
-    }
+      "resilienceRecovered": "Recuperado por uma ação de resiliência",
+      "conversationContext": "Contexto da conversa",
+      "goToBottom": "Ir para o fim",
+      "liveRefreshOn": "Atualização ao vivo: ligada",
+      "liveRefreshOff": "Atualização ao vivo: desligada",
+      "liveRefresh": "Atualização ao vivo",
+      "continuesFromParent": "continua da requisição pai",
+      "continuesFrom": "Continua de {id}",
+      "viewConversation": "ver conversa",
+      "openConversation": "Abrir conversa {id}"
+    },
+    "tableLabel": "Logs de requisições"
   },
   "proxyLogger": {
     "filterAll": "Todos",
@@ -12142,7 +12158,9 @@
     "colServedBy": "Atendido por",
     "filterTraffic": "Tráfego",
     "filterTests": "Testes",
-    "filterSource": "Fonte"
+    "filterSource": "Fonte",
+    "tableLabel": "Logs de proxy",
+    "sortLogs": "Ordenar logs"
   },
   "endpointOptions": {
     "speech": "Fala",
@@ -12395,7 +12413,10 @@
     "ungroupedTitle": "Sem grupo",
     "ungroupedHint": "Estes pools não estão atribuídos a um grupo conhecido. Edite um pool para movê-lo para um grupo real.",
     "removeFailed": "Não foi possível remover este pool.",
-    "dismiss": "Dispensar"
+    "dismiss": "Dispensar",
+    "allocationsHeading": "Alocações",
+    "wizardRemoveDimension": "Remover dimensão",
+    "wizardRemoveKey": "Remover chave"
   },
   "plugins": {
     "title": "Plugins",
@@ -12553,7 +12574,8 @@
       "settingsUpdateFailed": "Falha ao atualizar configurações",
       "serviceRevealApiKey": "{actor} visualizou API key de {target}",
       "genericEvent": "{actor} {target}"
-    }
+    },
+    "dismissError": "Dispensar erro"
   },
   "agentBridge": {
     "title": "AgentBridge",
@@ -14888,7 +14910,20 @@
     "mcp": "MCP",
     "mcpTool": "MCP tool",
     "scope": "Scope",
-    "apiKey": "API key"
+    "apiKey": "API key",
+    "visibleCount": "{visible} visíveis / {total} no total",
+    "modeLabel": "Modo de visualização",
+    "jumpToNow": "Ir para o horário atual; a linha AGORA volta para a posição {position}%",
+    "laneReuse": "Reúso de faixa",
+    "laneReuseLabel": "Janela de reúso de faixa (minutos)",
+    "laneReuseHint": "Requisições com o mesmo id de conversa ficam na mesma linha da timeline enquanto o intervalo entre elas for menor que estes minutos.",
+    "laneReuseUnit": "min",
+    "autoRefresh": "Atualização automática",
+    "autoRefreshLabel": "Intervalo de atualização automática (segundos)",
+    "autoRefreshHint": "Com que frequência a timeline busca de novo a lista de requisições no servidor.",
+    "autoRefreshUnit": "s",
+    "zoomOut": "Diminuir zoom",
+    "zoomIn": "Aumentar zoom"
   },
   "metadata": {
     "compressionTitle": "Compressão",

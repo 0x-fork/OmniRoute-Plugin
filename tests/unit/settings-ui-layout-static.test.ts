@@ -80,8 +80,9 @@ test("Proxy Logs table uses the same blue row hover emphasis as Logs", () => {
   const proxyLogger = readSrc("src/shared/components/ProxyLogger.tsx");
   const requestLogger = readSrc("src/shared/components/RequestLoggerV2.tsx");
 
-  assert.match(proxyLogger, /hover:bg-sky-500\/10 dark:hover:bg-sky-400\/10/);
-  assert.match(requestLogger, /hover:bg-sky-500\/10 dark:hover:bg-sky-400\/10/);
+  // KEA-7886: the blue (sky) hover is the kit info token, which resolves per theme.
+  assert.match(proxyLogger, /hover:bg-info\/10/);
+  assert.match(requestLogger, /hover:bg-info\/10/);
   assert.doesNotMatch(proxyLogger, /hover:bg-primary\/5/);
 });
 

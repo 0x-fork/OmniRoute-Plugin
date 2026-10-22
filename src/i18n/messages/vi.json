@@ -1608,7 +1608,8 @@
     "mcpMetricCalls24h": "Lượt gọi (24 giờ)",
     "mcpMetricSuccessRate": "Tỷ lệ thành công",
     "mcpMetricAvgDuration": "Thời lượng trung bình",
-    "mcpMetricTopTool": "tool hàng đầu"
+    "mcpMetricTopTool": "tool hàng đầu",
+    "dismissError": "Bỏ qua lỗi"
   },
   "themesPage": {
     "title": "Chủ đề",
@@ -9059,7 +9060,8 @@
     "tomlTestPassed": "Đạt",
     "tomlTestFailed": "Không đạt",
     "tomlImportError": "Không thể xử lý tệp RTK TOML.",
-    "tomlFileReadError": "Không thể đọc tệp TOML đã chọn."
+    "tomlFileReadError": "Không thể đọc tệp TOML đã chọn.",
+    "viewMode": "Chế độ xem"
   },
   "compressionEngineConfig": {
     "loading": "Đang tải…",
@@ -9281,7 +9283,8 @@
     "languagePacksList": "Gói ngôn ngữ: {packs}",
     "dragToReorder": "Kéo để sắp xếp lại bước",
     "engine": "Bộ máy",
-    "intensity": "Cường độ"
+    "intensity": "Cường độ",
+    "compressionOverride": "Ghi đè nén"
   },
   "compressionStudio": {
     "noRun": "Chưa có lượt nén nào.",
@@ -9341,7 +9344,8 @@
     "encoderWinner": "tốt nhất: {winner}",
     "encoder": "bộ mã hóa",
     "bytes": "byte",
-    "tokensCl100k": "token (cl100k)"
+    "tokensCl100k": "token (cl100k)",
+    "studioViews": "Các chế độ xem của studio"
   },
   "omniglyph": {
     "preview": "Xem trước",
@@ -9547,7 +9551,9 @@
     "tooltipMinLength": "Tin nhắn ngắn hơn mức này sẽ không được nén. Thấp hơn = nén nhiều hơn.",
     "tooltipMinSavings": "Chỉ nén nếu tiết kiệm được ít nhất ngần này token.",
     "ultraSettings": "Cài đặt tối đa",
-    "ultraSettingsDesc": "Nén ngữ nghĩa sử dụng SLM"
+    "ultraSettingsDesc": "Nén ngữ nghĩa sử dụng SLM",
+    "defaultLanguage": "Ngôn ngữ mặc định",
+    "viewMode": "Chế độ xem"
   },
   "translator": {
     "title": "Trình dịch",
@@ -12096,8 +12102,18 @@
       "resilienceRotations": "{count} lần chuyển tài khoản",
       "resilienceRetried": "Đã thử lại lượt trống",
       "resilienceContinued": "Đã tiếp tục giữa luồng",
-      "resilienceRecovered": "Đã khôi phục bằng hành động phục hồi"
-    }
+      "resilienceRecovered": "Đã khôi phục bằng hành động phục hồi",
+      "conversationContext": "Ngữ cảnh hội thoại",
+      "goToBottom": "Xuống cuối",
+      "liveRefreshOn": "Làm mới trực tiếp: bật",
+      "liveRefreshOff": "Làm mới trực tiếp: tắt",
+      "liveRefresh": "Làm mới trực tiếp",
+      "continuesFromParent": "tiếp nối từ yêu cầu cha",
+      "continuesFrom": "Tiếp nối từ {id}",
+      "viewConversation": "xem hội thoại",
+      "openConversation": "Mở hội thoại {id}"
+    },
+    "tableLabel": "Nhật ký yêu cầu"
   },
   "proxyLogger": {
     "filterAll": "Tất cả",
@@ -12142,7 +12158,9 @@
     "colServedBy": "Được phục vụ bởi",
     "filterTraffic": "Lưu lượng",
     "filterTests": "Bài kiểm tra",
-    "filterSource": "Nguồn"
+    "filterSource": "Nguồn",
+    "tableLabel": "Nhật ký proxy",
+    "sortLogs": "Sắp xếp nhật ký"
   },
   "endpointOptions": {
     "speech": "Giọng nói",
@@ -12395,7 +12413,10 @@
     "ungroupedTitle": "Chưa phân nhóm",
     "ungroupedHint": "Các pool này chưa được gán cho một nhóm mà hệ thống nhận diện. Hãy chỉnh sửa một pool để chuyển pool đó vào một nhóm hợp lệ.",
     "removeFailed": "Không thể xóa nhóm này.",
-    "dismiss": "Đóng"
+    "dismiss": "Đóng",
+    "allocationsHeading": "Phân bổ",
+    "wizardRemoveDimension": "Xóa chiều hạn mức",
+    "wizardRemoveKey": "Xóa khóa"
   },
   "plugins": {
     "title": "Plugin",
@@ -12553,7 +12574,8 @@
       "settingsUpdateFailed": "Cập nhật cài đặt thất bại",
       "serviceRevealApiKey": "{actor} đã hiển thị khóa API của {target}",
       "genericEvent": "{actor} {target}"
-    }
+    },
+    "dismissError": "Bỏ qua lỗi"
   },
   "agentBridge": {
     "title": "AgentBridge",
@@ -14888,7 +14910,20 @@
     "mcp": "MCP",
     "mcpTool": "Công cụ MCP",
     "scope": "Phạm vi",
-    "apiKey": "Khóa API"
+    "apiKey": "Khóa API",
+    "visibleCount": "{visible} hiển thị / {total} tổng",
+    "modeLabel": "Chế độ xem",
+    "jumpToNow": "Về thời điểm hiện tại, vạch HIỆN TẠI trở về vị trí {position}%",
+    "laneReuse": "Tái dùng làn",
+    "laneReuseLabel": "Khoảng tái dùng làn (phút)",
+    "laneReuseHint": "Các yêu cầu cùng mã hội thoại ở lại cùng một hàng trên dòng thời gian khi khoảng cách giữa chúng nhỏ hơn số phút này.",
+    "laneReuseUnit": "phút",
+    "autoRefresh": "Tự động làm mới",
+    "autoRefreshLabel": "Chu kỳ tự động làm mới (giây)",
+    "autoRefreshHint": "Tần suất dòng thời gian tải lại danh sách yêu cầu từ máy chủ.",
+    "autoRefreshUnit": "giây",
+    "zoomOut": "Thu nhỏ",
+    "zoomIn": "Phóng to"
   },
   "metadata": {
     "compressionTitle": "Nén",

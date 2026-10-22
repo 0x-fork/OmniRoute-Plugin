@@ -1608,7 +1608,8 @@
     "mcpMetricCalls24h": "Calls (24h)",
     "mcpMetricSuccessRate": "Success rate",
     "mcpMetricAvgDuration": "Avg duration",
-    "mcpMetricTopTool": "Top tool"
+    "mcpMetricTopTool": "Top tool",
+    "dismissError": "Dismiss error"
   },
   "themesPage": {
     "title": "Themes",
@@ -9059,7 +9060,8 @@
     "tomlTestPassed": "Passed",
     "tomlTestFailed": "Failed",
     "tomlImportError": "Could not process the RTK TOML file.",
-    "tomlFileReadError": "Could not read the selected TOML file."
+    "tomlFileReadError": "Could not read the selected TOML file.",
+    "viewMode": "View mode"
   },
   "compressionEngineConfig": {
     "loading": "Loading…",
@@ -9281,7 +9283,8 @@
     "languagePacksList": "Language packs: {packs}",
     "dragToReorder": "Drag to reorder step",
     "engine": "Engine",
-    "intensity": "Intensity"
+    "intensity": "Intensity",
+    "compressionOverride": "Compression override"
   },
   "compressionStudio": {
     "noRun": "No compression run available.",
@@ -9341,7 +9344,8 @@
     "encoderWinner": "winner: {winner}",
     "encoder": "encoder",
     "bytes": "bytes",
-    "tokensCl100k": "tokens (cl100k)"
+    "tokensCl100k": "tokens (cl100k)",
+    "studioViews": "Studio views"
   },
   "omniglyph": {
     "preview": "Preview",
@@ -9547,7 +9551,9 @@
     "tooltipMinLength": "Messages shorter than this are not compressed. Lower = more compression.",
     "tooltipMinSavings": "Only compress if it saves at least this many tokens.",
     "ultraSettings": "Ultra Settings",
-    "ultraSettingsDesc": "SLM-powered semantic compression"
+    "ultraSettingsDesc": "SLM-powered semantic compression",
+    "defaultLanguage": "Default language",
+    "viewMode": "View mode"
   },
   "translator": {
     "title": "Translator",
@@ -12096,8 +12102,18 @@
       "resilienceRotations": "{count} account rotations",
       "resilienceRetried": "Retried empty turn",
       "resilienceContinued": "Resumed mid-stream",
-      "resilienceRecovered": "Recovered by a resilience action"
-    }
+      "resilienceRecovered": "Recovered by a resilience action",
+      "conversationContext": "Conversation Context",
+      "goToBottom": "Go to bottom",
+      "liveRefreshOn": "Live refresh: on",
+      "liveRefreshOff": "Live refresh: off",
+      "liveRefresh": "Live refresh",
+      "continuesFromParent": "continues from parent",
+      "continuesFrom": "Continues from {id}",
+      "viewConversation": "view conversation",
+      "openConversation": "Open conversation {id}"
+    },
+    "tableLabel": "Request logs"
   },
   "proxyLogger": {
     "filterAll": "All",
@@ -12142,7 +12158,9 @@
     "colServedBy": "Served by",
     "filterTraffic": "Traffic",
     "filterTests": "Tests",
-    "filterSource": "Source"
+    "filterSource": "Source",
+    "tableLabel": "Proxy logs",
+    "sortLogs": "Sort logs"
   },
   "endpointOptions": {
     "speech": "Speech",
@@ -12395,7 +12413,10 @@
     "ungroupedTitle": "Ungrouped",
     "ungroupedHint": "These pools are not assigned to a known group. Edit a pool to move it into a real group.",
     "removeFailed": "Could not remove this pool.",
-    "dismiss": "Dismiss"
+    "dismiss": "Dismiss",
+    "allocationsHeading": "Allocations",
+    "wizardRemoveDimension": "Remove dimension",
+    "wizardRemoveKey": "Remove key"
   },
   "plugins": {
     "title": "Plugins",
@@ -12553,7 +12574,8 @@
       "settingsUpdateFailed": "Settings update failed",
       "serviceRevealApiKey": "{actor} revealed API key for {target}",
       "genericEvent": "{actor} {target}"
-    }
+    },
+    "dismissError": "Dismiss error"
   },
   "agentBridge": {
     "title": "AgentBridge",
@@ -14888,7 +14910,20 @@
     "mcp": "MCP",
     "mcpTool": "MCP tool",
     "scope": "Scope",
-    "apiKey": "API key"
+    "apiKey": "API key",
+    "visibleCount": "{visible} visible / {total} total",
+    "modeLabel": "View mode",
+    "jumpToNow": "Jump to current time, NOW line resets to position {position}%",
+    "laneReuse": "Lane reuse",
+    "laneReuseLabel": "Lane reuse window (minutes)",
+    "laneReuseHint": "Requests sharing a conversation id stay on the same timeline row as long as the gap between them is under this many minutes.",
+    "laneReuseUnit": "min",
+    "autoRefresh": "Auto-refresh",
+    "autoRefreshLabel": "Auto-refresh interval (seconds)",
+    "autoRefreshHint": "How often the timeline re-fetches the request list from the server.",
+    "autoRefreshUnit": "s",
+    "zoomOut": "Zoom out",
+    "zoomIn": "Zoom in"
   },
   "metadata": {
     "compressionTitle": "Compression",
