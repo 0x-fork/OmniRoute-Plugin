@@ -641,7 +641,7 @@ export default function CustomModelsSection({
                     {typeof model.maxOutputTokenOverride === "number" && (
                       <CapabilityBadge
                         icon="output"
-                        className="bg-blue-500/15 text-blue-400"
+                        className="bg-info/15 text-info"
                         title={t("maxOutputTokenOverrideHint")}
                       >
                         {model.maxOutputTokenOverride.toLocaleString()}
@@ -775,17 +775,14 @@ export default function CustomModelsSection({
                           />
                         </div>
                         <div className="min-w-0 lg:w-[10rem] lg:shrink-0">
-                          <label className="text-xs text-text-muted mb-1 block">
-                            {t("maxOutputTokenOverrideLabel")}
-                          </label>
-                          <input
-                            type="text"
+                          <Input
+                            label={t("maxOutputTokenOverrideLabel")}
+                            inputClassName="text-xs"
                             inputMode="numeric"
                             value={editingMaxOutputTokenOverride}
                             onChange={(e) => setEditingMaxOutputTokenOverride(e.target.value)}
                             placeholder="4096"
                             title={t("maxOutputTokenOverrideHint")}
-                            className="w-full px-2.5 py-2 text-xs border border-border rounded-lg bg-background text-text-main focus:outline-none focus:border-primary"
                           />
                         </div>
                         <div className="flex min-w-0 flex-col lg:w-[9rem] lg:shrink-0">
