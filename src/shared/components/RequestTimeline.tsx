@@ -564,10 +564,12 @@ export default function RequestTimeline({
 
   return (
     <div className="flex flex-col h-full min-h-0 select-none">
-      {/* Header */}
+      {/* Header — HEADER_HEIGHT is a minimum, not a fixed height: below ~1100 px the controls
+          wrap to a second row instead of being clipped (390 px, F4). Nothing in the canvas
+          maths reads the header height (the canvas is the flex-1 sibling). */}
       <div
-        className="flex items-center justify-between px-4 py-2 border-b border-border shrink-0"
-        style={{ height: HEADER_HEIGHT }}
+        className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 px-4 py-2 border-b border-border shrink-0"
+        style={{ minHeight: HEADER_HEIGHT }}
       >
         <div className="flex items-center gap-3">
           <h2 className="text-sm font-semibold text-text-main">{t("title")}</h2>
@@ -575,7 +577,7 @@ export default function RequestTimeline({
             {t("visibleCount", { visible: visibleLogs.length, total: logs.length })}
           </span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {/* Mode selector */}
           <div role="group" aria-label={t("modeLabel")} className="flex items-center gap-0.5">
             {(["follow", "live", "pan"] as ViewMode[]).map((m) => (
