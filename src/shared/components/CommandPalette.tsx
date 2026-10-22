@@ -351,6 +351,7 @@ function CommandPaletteDialog({ onClose }: { onClose: () => void }) {
                               aria-selected={selected}
                               data-flat-index={flatIndex}
                             >
+                              {/* Native button styled as the kit menu row (.ci-menu__item). */}
                               <button
                                 type="button"
                                 className={cn(
