@@ -247,14 +247,16 @@ export default function McpPage() {
             <ol className="mt-2 text-sm space-y-0.5 list-decimal list-inside text-text-muted">
               <li>
                 {t.rich("mcpStep1", {
-                  code: (chunks) => <code className="text-xs">{chunks}</code>,
+                  // `{code}` is an ICU argument, not a tag: it takes a node, never a function
+                  // ("Functions are not valid as a React child").
+                  code: <code className="text-xs">omniroute --mcp</code>,
                 })}
               </li>
               <li>{t("mcpStep2")}</li>
               <li>
                 {t.rich("mcpStep3", {
-                  code1: (chunks) => <code className="text-xs">omniroute_get_health</code>,
-                  code2: (chunks) => <code className="text-xs">omniroute_list_combos</code>,
+                  code1: <code className="text-xs">omniroute_get_health</code>,
+                  code2: <code className="text-xs">omniroute_list_combos</code>,
                 })}
               </li>
             </ol>

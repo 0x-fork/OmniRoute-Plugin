@@ -653,11 +653,6 @@
       "count": 2
     }
   },
-  "src/app/(dashboard)/dashboard/a2a/page.tsx": {
-    "@typescript-eslint/no-unused-vars": {
-      "count": 6
-    }
-  },
   "src/app/(dashboard)/dashboard/analytics/CompressionAnalyticsTab.tsx": {
     "@typescript-eslint/no-unused-vars": {
       "count": 1
@@ -726,11 +721,6 @@
   "src/app/(dashboard)/dashboard/health/page.tsx": {
     "@typescript-eslint/no-unused-vars": {
       "count": 1
-    }
-  },
-  "src/app/(dashboard)/dashboard/mcp/page.tsx": {
-    "@typescript-eslint/no-unused-vars": {
-      "count": 2
     }
   },
   "src/app/(dashboard)/dashboard/playground/components/tabs/CompareTab.tsx": {
