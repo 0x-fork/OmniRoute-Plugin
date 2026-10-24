@@ -34,3 +34,15 @@ test("P2: the orphan settings MitmProxyTab stays deleted (live screen is /dashbo
   assert.equal(fs.existsSync(path.join(ROOT, file)), false, `${file} must not come back`);
   assert.deepEqual(referencing(/settings\/components\/MitmProxyTab|\bMitmProxyTab\b/), []);
 });
+
+test("P10: the orphan AuthLayout stays deleted and out of the layouts barrel", () => {
+  const file = "src/shared/components/layouts/AuthLayout.tsx";
+  assert.equal(fs.existsSync(path.join(ROOT, file)), false, `${file} must not come back`);
+  assert.deepEqual(referencing(/\bAuthLayout\b/), []);
+});
+
+test("P10: MODEL_COLORS / getModelColor stay out of src/shared/constants/colors.ts", () => {
+  const colors = fs.readFileSync(path.join(ROOT, "src/shared/constants/colors.ts"), "utf8");
+  assert.doesNotMatch(colors, /MODEL_COLORS|getModelColor/);
+  assert.deepEqual(referencing(/\b(MODEL_COLORS|getModelColor)\b/), []);
+});
