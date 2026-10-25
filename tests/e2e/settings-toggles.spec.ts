@@ -1,4 +1,4 @@
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect, type Locator, type Page, type Request } from "@playwright/test";
 import { gotoDashboardRoute } from "./helpers/dashboardAuth";
 
 // `/dashboard/settings` has no tab strip since the Nav Restructure: it redirects to the first
@@ -23,6 +23,41 @@ test.describe("Settings Toggles", () => {
         response.ok()
     );
 
+  // The controls render (server HTML) before React hydrates them and before the client has
+  // loaded /api/settings, so under a cold dev server the first click can land on a control
+  // that is not wired yet. Click until the control's own state flips (the UI updates
+  // optimistically, so a click that did register is never repeated), then require the PATCH.
+  const clickUntilFlipped = async (
+    page: Page,
+    control: Locator,
+    readState: () => Promise<string>
+  ) => {
+    const initialState = await readState();
+    const patch = waitForSettingsPatch(page);
+    await expect(async () => {
+      if ((await readState()) === initialState) await control.click();
+      expect(await readState()).not.toBe(initialState);
+    }).toPass({ timeout: 60_000, intervals: [1000, 2500, 5000] });
+    await patch;
+    return initialState;
+  };
+
+  // Same hydration race for the storage buttons: keep clicking until the request leaves
+  // (a repeated DELETE /api/cache or purge is harmless), and fail if it never does.
+  const clickUntilRequest = async (
+    page: Page,
+    control: Locator,
+    matches: (req: Request) => boolean
+  ) => {
+    let sent: Request | null = null;
+    const request = page.waitForRequest(matches).then((req) => (sent = req));
+    await expect(async () => {
+      if (!sent) await control.click();
+      expect(sent).not.toBeNull();
+    }).toPass({ timeout: 60_000, intervals: [1000, 2500, 5000] });
+    return request;
+  };
+
   test("/dashboard/settings redirects to a settings sub-route", async ({ page }) => {
     await gotoDashboardRoute(page, "/dashboard/settings");
     await expect(page).toHaveURL(/\/dashboard\/settings\/general(?:[?#].*)?$/, {
@@ -39,10 +74,13 @@ test.describe("Settings Toggles", () => {
     const debugToggle = getDebugToggle(page);
 
     await expect(debugToggle).toBeVisible({ timeout: 15000 });
-    await expect(debugToggle).toBeEnabled({ timeout: 15000 });
+    await expect(debugToggle).toBeEnabled({ timeout: 60_000 });
 
-    const initialState = await debugToggle.getAttribute("aria-checked");
-    await Promise.all([waitForSettingsPatch(page), debugToggle.click()]);
+    const initialState = await clickUntilFlipped(
+      page,
+      debugToggle,
+      async () => (await debugToggle.getAttribute("aria-checked")) ?? ""
+    );
     await expect(debugToggle).toHaveAttribute(
       "aria-checked",
       initialState === "true" ? "false" : "true",
@@ -58,9 +96,10 @@ test.describe("Settings Toggles", () => {
     await expect(sidebarToggle).toBeVisible({ timeout: 15000 });
     await expect(sidebarToggle).toBeEnabled({ timeout: 15000 });
 
-    const initiallyChecked = await sidebarToggle.isChecked();
-    await Promise.all([waitForSettingsPatch(page), sidebarToggle.click()]);
-    if (initiallyChecked) {
+    const initialState = await clickUntilFlipped(page, sidebarToggle, async () =>
+      String(await sidebarToggle.isChecked())
+    );
+    if (initialState === "true") {
       await expect(sidebarToggle).not.toBeChecked({ timeout: 15000 });
     } else {
       await expect(sidebarToggle).toBeChecked({ timeout: 15000 });
@@ -73,10 +112,11 @@ test.describe("Settings Toggles", () => {
     const clearBtn = page.getByRole("button", { name: /clear cache/i });
     await expect(clearBtn).toBeVisible({ timeout: 15000 });
 
-    const [request] = await Promise.all([
-      page.waitForRequest((req) => req.url().includes("/api/cache") && req.method() === "DELETE"),
-      clearBtn.click(),
-    ]);
+    const request = await clickUntilRequest(
+      page,
+      clearBtn,
+      (req) => req.url().includes("/api/cache") && req.method() === "DELETE"
+    );
     expect(request).toBeTruthy();
   });
 
@@ -86,12 +126,11 @@ test.describe("Settings Toggles", () => {
     const purgeBtn = page.getByRole("button", { name: /purge expired logs/i });
     await expect(purgeBtn).toBeVisible({ timeout: 15000 });
 
-    const [request] = await Promise.all([
-      page.waitForRequest(
-        (req) => req.url().includes("/api/settings/purge-logs") && req.method() === "POST"
-      ),
-      purgeBtn.click(),
-    ]);
+    const request = await clickUntilRequest(
+      page,
+      purgeBtn,
+      (req) => req.url().includes("/api/settings/purge-logs") && req.method() === "POST"
+    );
     expect(request).toBeTruthy();
   });
 
@@ -101,17 +140,20 @@ test.describe("Settings Toggles", () => {
     const debugToggle = getDebugToggle(page);
 
     await expect(debugToggle).toBeVisible({ timeout: 15000 });
-    await expect(debugToggle).toBeEnabled({ timeout: 15000 });
+    await expect(debugToggle).toBeEnabled({ timeout: 60_000 });
 
-    const initialState = await debugToggle.getAttribute("aria-checked");
-    await Promise.all([waitForSettingsPatch(page), debugToggle.click()]);
+    const initialState = await clickUntilFlipped(
+      page,
+      debugToggle,
+      async () => (await debugToggle.getAttribute("aria-checked")) ?? ""
+    );
     const nextState = initialState === "true" ? "false" : "true";
     await expect(debugToggle).toHaveAttribute("aria-checked", nextState, { timeout: 15000 });
     await page.reload();
     await page.waitForLoadState("domcontentloaded");
 
     const reloadedToggle = getDebugToggle(page);
-    await expect(reloadedToggle).toBeEnabled({ timeout: 15000 });
+    await expect(reloadedToggle).toBeEnabled({ timeout: 60_000 });
     await expect(reloadedToggle).toHaveAttribute("aria-checked", nextState, {
       timeout: 15000,
     });
