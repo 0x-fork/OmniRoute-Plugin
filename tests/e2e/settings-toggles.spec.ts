@@ -1,27 +1,21 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 import { gotoDashboardRoute } from "./helpers/dashboardAuth";
 
+// `/dashboard/settings` has no tab strip since the Nav Restructure: it redirects to the first
+// sub-route and every settings area is its own page reached from the sidebar (owner decision P1,
+// KEA-7886). Each check below runs on the sub-route that now owns the control:
+//   - debug mode            → /dashboard/settings/advanced (DebugModeCard)
+//   - sidebar visibility    → /dashboard/settings/sidebar  (SidebarTab, one checkbox per item)
+//   - clear cache / purge   → /dashboard/settings/general  (SystemStorageTab)
 test.describe("Settings Toggles", () => {
-  const waitForSettingsShell = async (page) => {
-    await expect(page.getByRole("tab", { name: /general/i }).first()).toBeVisible({
-      timeout: 15000,
-    });
-  };
+  const getDebugToggle = (page: Page) => page.getByRole("switch", { name: /enable debug mode/i });
 
-  const getDebugToggle = (page) =>
-    page
-      .getByText(/enable debug mode/i)
-      .locator('xpath=ancestor::div[contains(@class, "flex items-center justify-between")][1]')
-      .getByRole("switch");
+  // Sidebar visibility rows are kit checkboxes named by the item label; every section of the
+  // accordion starts expanded, so the row is reachable without opening anything.
+  const getSidebarVisibilityToggle = (page: Page, itemLabel: string) =>
+    page.getByRole("checkbox", { name: new RegExp(`^${itemLabel}$`, "i") });
 
-  const getSidebarVisibilityToggle = (page, itemLabel: string) =>
-    page
-      .getByRole("tabpanel", { name: /appearance/i })
-      .getByText(new RegExp(`^${itemLabel}$`, "i"))
-      .locator('xpath=ancestor::div[contains(@class, "flex items-center justify-between")][1]')
-      .getByRole("switch");
-
-  const waitForSettingsPatch = (page) =>
+  const waitForSettingsPatch = (page: Page) =>
     page.waitForResponse(
       (response) =>
         response.url().includes("/api/settings") &&
@@ -29,10 +23,18 @@ test.describe("Settings Toggles", () => {
         response.ok()
     );
 
-  test("Debug mode toggle should work", async ({ page }) => {
+  test("/dashboard/settings redirects to a settings sub-route", async ({ page }) => {
     await gotoDashboardRoute(page, "/dashboard/settings");
-    await waitForSettingsShell(page);
-    await page.getByRole("tab", { name: /general/i }).click();
+    await expect(page).toHaveURL(/\/dashboard\/settings\/general(?:[?#].*)?$/, {
+      timeout: 15000,
+    });
+    await expect(page.getByRole("button", { name: /clear cache/i })).toBeVisible({
+      timeout: 15000,
+    });
+  });
+
+  test("Debug mode toggle should work", async ({ page }) => {
+    await gotoDashboardRoute(page, "/dashboard/settings/advanced");
 
     const debugToggle = getDebugToggle(page);
 
@@ -49,27 +51,24 @@ test.describe("Settings Toggles", () => {
   });
 
   test("Sidebar visibility toggle should work", async ({ page }) => {
-    await gotoDashboardRoute(page, "/dashboard/settings");
-    await waitForSettingsShell(page);
-    await page.getByRole("tab", { name: /appearance/i }).click();
+    await gotoDashboardRoute(page, "/dashboard/settings/sidebar");
 
     const sidebarToggle = getSidebarVisibilityToggle(page, "Health");
 
     await expect(sidebarToggle).toBeVisible({ timeout: 15000 });
+    await expect(sidebarToggle).toBeEnabled({ timeout: 15000 });
 
-    const initialState = await sidebarToggle.getAttribute("aria-checked");
+    const initiallyChecked = await sidebarToggle.isChecked();
     await Promise.all([waitForSettingsPatch(page), sidebarToggle.click()]);
-    await expect(sidebarToggle).toHaveAttribute(
-      "aria-checked",
-      initialState === "true" ? "false" : "true",
-      { timeout: 15000 }
-    );
+    if (initiallyChecked) {
+      await expect(sidebarToggle).not.toBeChecked({ timeout: 15000 });
+    } else {
+      await expect(sidebarToggle).toBeChecked({ timeout: 15000 });
+    }
   });
 
   test("Clear Cache button calls DELETE /api/cache", async ({ page }) => {
-    await gotoDashboardRoute(page, "/dashboard/settings");
-    await waitForSettingsShell(page);
-    await page.getByRole("tab", { name: /general/i }).click();
+    await gotoDashboardRoute(page, "/dashboard/settings/general");
 
     const clearBtn = page.getByRole("button", { name: /clear cache/i });
     await expect(clearBtn).toBeVisible({ timeout: 15000 });
@@ -82,9 +81,7 @@ test.describe("Settings Toggles", () => {
   });
 
   test("Purge Expired Logs button calls POST /api/settings/purge-logs", async ({ page }) => {
-    await gotoDashboardRoute(page, "/dashboard/settings");
-    await waitForSettingsShell(page);
-    await page.getByRole("tab", { name: /general/i }).click();
+    await gotoDashboardRoute(page, "/dashboard/settings/general");
 
     const purgeBtn = page.getByRole("button", { name: /purge expired logs/i });
     await expect(purgeBtn).toBeVisible({ timeout: 15000 });
@@ -99,9 +96,7 @@ test.describe("Settings Toggles", () => {
   });
 
   test("Debug mode should persist after page reload", async ({ page }) => {
-    await gotoDashboardRoute(page, "/dashboard/settings");
-    await waitForSettingsShell(page);
-    await page.getByRole("tab", { name: /general/i }).click();
+    await gotoDashboardRoute(page, "/dashboard/settings/advanced");
 
     const debugToggle = getDebugToggle(page);
 
@@ -114,9 +109,6 @@ test.describe("Settings Toggles", () => {
     await expect(debugToggle).toHaveAttribute("aria-checked", nextState, { timeout: 15000 });
     await page.reload();
     await page.waitForLoadState("domcontentloaded");
-
-    await waitForSettingsShell(page);
-    await page.getByRole("tab", { name: /general/i }).click();
 
     const reloadedToggle = getDebugToggle(page);
     await expect(reloadedToggle).toBeEnabled({ timeout: 15000 });

@@ -12,17 +12,21 @@ const playwrightWebServerTimeout = Number.parseInt(
 export default defineConfig({
   testDir: "./tests/e2e",
   testMatch: ["**/*.spec.ts"],
-  // Temporarily exclude E2E tests broken by the Nav Restructure refactor
-  // (settings page → redirect to settings/general, logs page split into
-  // subpages, protocol tabs moved out of /endpoint). Track restoration as
-  // a follow-up once the new nav structure stabilises.
+  // Specs still written against the pre-Nav-Restructure layout. Every entry needs a reason;
+  // realign the spec and drop it from this list instead of adding new ones.
+  // `settings-toggles`, `memory-settings` and `skills-marketplace` were realigned to the
+  // current routes (KEA-7886 follow-up, owner decision P1: /dashboard/settings stays a
+  // redirect to its sub-routes).
   testIgnore: [
+    // Expects five in-page tabs on /dashboard/analytics; analytics is now split into the
+    // sub-routes /dashboard/analytics/{evals,search,utilization,combo-health,…}.
     "**/analytics-tabs.spec.ts",
-    "**/memory-settings.spec.ts",
+    // Expects MCP/A2A tabs inside /dashboard/endpoint's segmented control, which the Nav
+    // Restructure removed.
     "**/protocol-visibility.spec.ts",
+    // Opens /dashboard/settings?tab=resilience and reads a "Resilience" tabpanel; the legacy
+    // query now redirects to /dashboard/settings/resilience, which has no tab panel.
     "**/resilience-plan-alignment.spec.ts",
-    "**/settings-toggles.spec.ts",
-    "**/skills-marketplace.spec.ts",
   ],
   fullyParallel: false,
   // Per-test cap. 600s was high enough that one hung test (× retries) could
