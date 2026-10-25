@@ -81,6 +81,8 @@ interface HandleEmbeddingParams {
   apiKeyId?: string | null;
   apiKeyName?: string | null;
   connectionId?: string | null;
+  requestedModel?: string | null;
+  comboName?: string | null;
 }
 
 interface EmbeddingFailure {
@@ -818,6 +820,8 @@ async function handleUpstreamFailure(
     apiKeyId: runtime.apiKeyId,
     apiKeyName: runtime.apiKeyName,
     connectionId: runtime.connectionId,
+    requestedModel: runtime.requestedModel,
+    comboName: runtime.comboName,
   }).catch(() => {});
   if (runtime.connectionId) {
     try {
@@ -886,6 +890,8 @@ function recordEmbeddingSuccess(
     apiKeyId: runtime.apiKeyId,
     apiKeyName: runtime.apiKeyName,
     connectionId: runtime.connectionId,
+    requestedModel: runtime.requestedModel,
+    comboName: runtime.comboName,
   }).catch(() => {});
 }
 
@@ -961,6 +967,8 @@ function handleEmbeddingException(
     apiKeyId: runtime.apiKeyId,
     apiKeyName: runtime.apiKeyName,
     connectionId: runtime.connectionId,
+    requestedModel: runtime.requestedModel,
+    comboName: runtime.comboName,
   }).catch(() => {});
   return failure(status, `Embedding provider error: ${sanitizeErrorMessage(message)}`);
 }
