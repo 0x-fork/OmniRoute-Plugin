@@ -3940,6 +3940,7 @@
     "builderComboRefStep": "Kombinationsreferenz hinzufügen",
     "builderPinnedAccount": "Angeheftetes Konto",
     "builderLegacyEntry": "Legacy-Eintrag",
+    "builderStaleModel": "Nicht im Live-Katalog",
     "reviewName": "Name",
     "reviewStrategy": "Strategie",
     "reviewSteps": "Schritte",
