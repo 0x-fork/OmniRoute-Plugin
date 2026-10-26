@@ -96,7 +96,9 @@ test.describe("Settings Toggles", () => {
     await expect(sidebarToggle).toBeVisible({ timeout: 15000 });
     await expect(sidebarToggle).toBeEnabled({ timeout: 15000 });
 
-    const initialState = await clickUntilFlipped(page, sidebarToggle, async () =>
+    // The kit checkbox input is visually hidden (1×1 px); like a user, click its label row.
+    const sidebarRow = page.locator("label").filter({ has: sidebarToggle });
+    const initialState = await clickUntilFlipped(page, sidebarRow, async () =>
       String(await sidebarToggle.isChecked())
     );
     if (initialState === "true") {
