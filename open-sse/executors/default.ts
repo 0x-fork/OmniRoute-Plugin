@@ -714,8 +714,12 @@ export class DefaultExecutor extends BaseExecutor {
 
   /**
    * Downgrade `response_format: { type: "json_schema" }` to `json_object` for
-   * `openai-compatible-*` providers AND `kilocode`, injecting the JSON schema
-   * into the system prompt instead. DeepSeek / Ollama / local OpenAI-compatible
+   * `openai-compatible-*` providers, the native `deepseek` provider AND
+   * `kilocode`, injecting the JSON schema into the system prompt instead.
+   * Native DeepSeek documents only `json_object` and answers `json_schema` with
+   * HTTP 400 "This response_format type is unavailable now" (upstream report
+   * 9router#5139) — revisit this gate if DeepSeek ever ships native
+   * `json_schema`. DeepSeek / Ollama / local OpenAI-compatible
    * models often lack native Structured Output and return empty or malformed
    * content when a `json_schema` response_format is forwarded as-is (kilocode's
    * DeepSeek V4 Flash rejects it with HTTP 400 `Invalid input: response_format`,
@@ -726,8 +730,9 @@ export class DefaultExecutor extends BaseExecutor {
   applyJsonSchemaFallback<T>(body: T): T {
     const provider = this.provider ?? "";
     const isOpenAiCompatible = provider.startsWith("openai-compatible-");
+    const isDeepSeek = provider === "deepseek";
     const isKiloCode = provider === "kilocode";
-    if (!isOpenAiCompatible && !isKiloCode) return body;
+    if (!isOpenAiCompatible && !isDeepSeek && !isKiloCode) return body;
     if (!body || typeof body !== "object" || Array.isArray(body)) return body;
 
     const record = body as Record<string, unknown>;
@@ -739,9 +744,12 @@ export class DefaultExecutor extends BaseExecutor {
     // json_schema form needs downgrading there. kilocode rejects BOTH forms,
     // so it enters the strip path below regardless.
     if (isOpenAiCompatible && rf.type === "json_object") return body;
+    // Native DeepSeek accepts `text` and `json_object` — only json_schema is
+    // rewritten, and always (a schema-less json_schema 400s there too).
+    if (isDeepSeek && rf.type !== "json_schema") return body;
 
     const schema = rf.type === "json_schema" ? rf.json_schema?.schema : undefined;
-    if (rf.type === "json_schema" && !schema) return body;
+    if (rf.type === "json_schema" && !schema && !isDeepSeek) return body;
 
     const schemaJson = schema ? JSON.stringify(schema, null, 2) : null;
     const prompt =
